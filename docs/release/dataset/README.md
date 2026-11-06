@@ -2,7 +2,7 @@
 pretty_name: Kurrent Pages Benchmark v1.0 page images
 license: other
 license_name: per-image-source-licences-with-evaluation-only-access-terms
-license_link: TERMS.md
+license_link: https://github.com/13fragments/kurrent-pages/blob/main/docs/release/dataset/TERMS.md
 language:
   - de
   - la
@@ -16,12 +16,12 @@ extra_gated_prompt: >-
   These are the held-out test pages of the Kurrent Pages Benchmark v1.0. You may use them
   only to evaluate an engine. Do not train, fine-tune, or select a model on them;
   do not redistribute them; do not publish transcriptions, engine outputs, or
-  per-page scores of these pages. Full terms: TERMS.md.
+  per-page scores of these pages. Full terms: https://github.com/13fragments/kurrent-pages/blob/main/docs/release/dataset/TERMS.md
 extra_gated_fields:
   Name: text
   Affiliation: text
   Engine or project to evaluate: text
-  I accept the evaluation-only terms in TERMS.md: checkbox
+  I accept the evaluation-only access terms: checkbox
 extra_gated_button_content: "Accept terms and request access"
 ---
 
@@ -75,4 +75,5 @@ Source collections and the selection record of every page are in
 
 ## Citation
 
-Cite the benchmark release: Kurrent Pages Benchmark v1.0, `<zenodo-doi>`.
+Cite the benchmark release: Kurrent Pages Benchmark v1.0. Zenodo, 2026.
+https://doi.org/10.5281/zenodo.24015418
