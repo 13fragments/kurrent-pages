@@ -1065,6 +1065,31 @@ lucky subset while most pages collapsed.
   run is sealed until the owner opens it; only aggregates are read. No page IDs, images, GT,
   prompts, metric definitions, or thresholds changed.
 
+* **2026-11-06 — `gpt6_astra_max` gold run, sealed (§2, §6).** Owner request in session: "Can we
+  do astra max and gemini runs for the benchmark?", then "model training is set to off on
+  chatgpt. confirmed" (the ChatGPT account's data controls, the condition of the 2026-10-31
+  `gpt6_astra_max` entry). The dev run `evals/dev_stage_a/runs/20261031-084516_astra_max` had no
+  engine errors (8 of 8 pages). The gold run uses the engine as registered on 2026-10-31 (Codex
+  CLI, `gpt-6-astra`, reasoning effort `max`, the §6 prompt, the page image only, tools
+  disabled). It is sealed: no output is opened or scored until the owner decides. It is an
+  external reference reading, not a model-track release candidate (gold-use guard 3), for a
+  possible frontier reference section beside the 2026-10-31 Fable 5.1 reading. Gemini is not
+  run: the Antigravity quota is exhausted, and the Gemini CLI no longer serves personal
+  accounts. No page IDs, images, GT, prompts, metric definitions, or thresholds changed.
+
+* **2026-11-06 — `gpt6_astra_max` gold run opened (§2).** Owner decision in session: "you can
+  proceed with the 1.0.3 release" (release v1.0.3 adds the frontier reference section with this
+  run). Logged before any output of `20261106-210056_gpt6_astra_max_sealed` is opened or scored.
+  The run stopped at 34 of 55 pages when one Codex session lost its stream ("websocket closed by
+  server"); that session recorded nothing, and the harness then skipped the remaining pages. A
+  resume into the same run directory gave each missing page its first attempt; all 55 pages are
+  recorded with no engine error. The run is scored as the other leaderboard rows were: copied to
+  `evals/release_v1/rescore_rc1/` and reported with `harness report --aggregates-only` from a
+  clean worktree of `v1.0.0-rc1`. It is an external reference reading, not a model-track release
+  candidate: its gold outputs are not used for error analysis that chooses training data or
+  recipes (gold-use guard 3). No page IDs, images, GT, prompts, metric definitions, or thresholds
+  changed.
+
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 
 - **GT stays private — held-out evaluation.** The ground truth is **not published**.

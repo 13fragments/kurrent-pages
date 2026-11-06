@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.0.3
+
+Leaderboard and documentation; the benchmark version stays Kurrent Pages Benchmark v1.0.
+No page, ground truth, prompt, or scoring code changed, and no existing score changed.
+
+- Leaderboard: add a "Frontier reference" section (`frontier_rows` in
+  `leaderboard.json`), not ranked with the main table: Claude Fable 5.1 (run
+  2026-10-31) and GPT-6-Astra (run 2026-11-06), each at its highest effort setting,
+  page image and benchmark prompt only.
+- Leaderboard: remove the "13fragments 9B (internal, Run 11)" row. That model will
+  not be released (owner decision 2026-11-06). v1.0.0 to v1.0.2 keep the row.
+- The Hugging Face leaderboard page shows the frontier section.
+- Protocol §10: log the sealed GPT-6-Astra gold run and its opening.
+- `docs/release/RESCORE_V1.md`: the frontier rows and how they were scored.
+
 ## v1.0.2
 
 Documentation only; the benchmark version stays Kurrent Pages Benchmark v1.0.

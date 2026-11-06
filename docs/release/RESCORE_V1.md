@@ -69,3 +69,15 @@ None.
   (0.445) are two serving states; the leaderboard uses the Gate 0 row.
 - Loop-guard cuts are unchanged: CHURRO 7, Qwen3.5-4B 7, Qwen3-VL-4B 13, Run 11
   step 800 1.
+
+## Frontier reference rows (v1.0.3)
+
+Release v1.0.3 lists two frontier runs in a separate section, scored by the same method
+(copy per engine to `evals/release_v1/rescore_rc1/`, `harness report --aggregates-only` from a
+clean worktree of `v1.0.0-rc1`):
+
+- Claude Fable 5.1, `20261031-155542_fable51_max_sealed`: the unlisted reference run above.
+  Published median 0.055; rescore 0.0550; no difference.
+- GPT-6-Astra, `20261106-210056_gpt6_astra_max_sealed` (§10, 2026-11-06): first scored by this
+  method, so it has no earlier published value. Median 0.0702; no loop-guard cut, no failed page.
+

@@ -135,6 +135,14 @@ footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line);
   <p class="note">Median CER for each stratum. Page counts are in brackets. Strata with three pages or fewer are in gray. Treat them as indicative. The best value in each column is green.</p>
   <div class="frame"><table id="strata"><tbody><tr><td class="status">Loading the results.</td></tr></tbody></table></div>
 
+  <section id="frontier-section" hidden>
+    <h2>Frontier reference</h2>
+    <p class="note" id="frontier-note"></p>
+    <div class="frame"><table id="frontier"></table></div>
+    <p class="note" style="margin-top:12px">Median CER for each stratum.</p>
+    <div class="frame"><table id="frontier-strata"></table></div>
+  </section>
+
   <h2>Metrics</h2>
   <dl>
     <dt>CER</dt><dd>Normalized character error rate. Lower is better.</dd>
@@ -185,7 +193,7 @@ function bestOf(rows, get, dir) {
   return dir === "min" ? Math.min(...values) : Math.max(...values);
 }
 
-function renderOverall(rows) {
+function renderOverall(rows, id = "overall", highlight = true) {
   const cols = [
     ["CER median", (r) => r.overall.cer_norm_median, fix3, "min"],
     ["CER mean", (r) => r.overall.cer_norm_mean, fix3, "min"],
@@ -195,7 +203,7 @@ function renderOverall(rows) {
     // No best value: zero flags can also mean an engine wrote almost nothing.
     ["Fabrication flags", (r) => r.fabrication_proxy_unadjudicated?.["pages_above_0.10"], String, null],
   ];
-  const best = cols.map(([, get, , dir]) => bestOf(rows, get, dir));
+  const best = cols.map(([, get, , dir]) => (highlight ? bestOf(rows, get, dir) : undefined));
   const head = el("tr", {}, el("th", { class: "l" }, "#"), el("th", { class: "l" }, "Engine"),
     ...cols.map(([label]) => el("th", {}, label)));
   const body = rows.map((row, i) => el("tr", {},
@@ -206,13 +214,13 @@ function renderOverall(rows) {
       const v = get(row);
       return el("td", { class: v === best[c] ? "best" : "" }, v == null ? "–" : fmt(v));
     })));
-  document.getElementById("overall").replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
+  document.getElementById(id).replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
 }
 
-function renderStrata(rows) {
+function renderStrata(rows, target = "strata", highlight = true) {
   const n = (id) => rows[0]?.per_stratum?.[id]?.n ?? 0;
   const get = (id) => (r) => r.per_stratum?.[id]?.cer_norm_median;
-  const best = STRATA.map(([id]) => bestOf(rows, get(id), "min"));
+  const best = STRATA.map(([id]) => (highlight ? bestOf(rows, get(id), "min") : undefined));
   const head = el("tr", {}, el("th", { class: "l" }, "Engine"),
     ...STRATA.map(([id, label]) => el("th", { title: id, class: n(id) <= 3 ? "indicative" : "" },
       label, el("small", {}, `(${n(id)})`))));
@@ -223,7 +231,7 @@ function renderStrata(rows) {
       const cls = [n(id) <= 3 ? "indicative" : "", v === best[c] ? "best" : ""].join(" ").trim();
       return el("td", { class: cls }, fix3(v));
     })));
-  document.getElementById("strata").replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
+  document.getElementById(target).replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
 }
 
 async function main() {
@@ -236,6 +244,13 @@ async function main() {
       `${data.benchmark}, harness ${data.harness_tag}, ${rows.length} engines. Sorted by median CER. Lower CER is better. The best value in each column is green.`;
     renderOverall(rows);
     renderStrata(rows);
+    const frontier = [...(data.frontier_rows ?? [])].sort((a, b) => a.overall.cer_norm_median - b.overall.cer_norm_median);
+    if (frontier.length) {
+      document.getElementById("frontier-note").textContent = data.frontier_note ?? "";
+      renderOverall(frontier, "frontier", false);
+      renderStrata(frontier, "frontier-strata", false);
+      document.getElementById("frontier-section").hidden = false;
+    }
   } catch (error) {
     const msg = el("td", { class: "status" }, `The results did not load (${error.message}). `,
       el("a", { href: "https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md" }, "Read them on GitHub."));

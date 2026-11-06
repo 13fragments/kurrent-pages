@@ -7,7 +7,6 @@ Held-out set of 53 scored pages, ground truth v1.0, scored with harness `v1.0.0-
 | Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |
 |---|---|---|---|---|---|---|---|---|---|
 | Transkribus German Genius (Super Model, model ID 265149) | commercial reference, run 2026-09-24 | 53 | **0.131** | 0.186 | 0.850 | 2% | 0.128 | 0.825 | 2 |
-| 13fragments 9B (internal, Run 11) | internal model-track run, not released | 53 | **0.158** | 0.205 | 0.600 | 4% | 0.178 | 0.613 | 1 |
 | Transkribus Text Titan II (model ID 579509) | commercial reference, run 2026-09-24 | 53 | **0.169** | 0.214 | 0.857 | 2% | 0.150 | 0.804 | 1 |
 | CHURRO 3B (stanford-oval/churro-3B) | open VLM, zero-shot | 53 | **0.258** | 0.412 | 0.588 | 4% | 0.266 | 0.508 | 4 |
 | olmOCR-2-7B-1025 (BF16) | open VLM, zero-shot | 53 | **0.440** | 0.385 | 0.533 | 2% | 0.440 | 0.485 | 0 |
@@ -26,7 +25,6 @@ Pages per stratum in brackets.
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Transkribus German Genius (Super Model, model ID 265149) | 0.080 | 0.168 | 0.087 | 0.275 | 0.133 | 0.013 | 0.247 | 0.128 | 0.174 | 0.079 |
-| 13fragments 9B (internal, Run 11) | 0.105 | 0.281 | 0.146 | 0.241 | 0.119 | 0.004 | 0.300 | 0.155 | 0.246 | 0.132 |
 | Transkribus Text Titan II (model ID 579509) | 0.077 | 0.211 | 0.145 | 0.199 | 0.147 | 0.016 | 0.372 | 0.150 | 0.269 | 0.184 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.232 | 0.387 | 2.902 | 0.452 | 0.303 | 0.004 | 0.419 | 0.182 | 0.238 | 0.216 |
 | olmOCR-2-7B-1025 (BF16) | 0.291 | 0.507 | 0.653 | 0.516 | 0.509 | 0.007 | 0.482 | 0.254 | 0.541 | 0.124 |
@@ -45,7 +43,6 @@ Pages per stratum in brackets.
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Transkribus German Genius (Super Model, model ID 265149) | 1.000 | 0.758 | 1.000 | 0.633 | 0.875 | 0.917 | 0.571 | 0.857 | 0.714 | 0.694 |
-| 13fragments 9B (internal, Run 11) | 0.600 | 0.529 | 1.000 | 0.283 | 0.500 | 1.000 | 0.600 | 0.667 | 0.286 | 0.403 |
 | Transkribus Text Titan II (model ID 579509) | 1.000 | 0.321 | 1.000 | 0.550 | 0.875 | 0.929 | 0.429 | 0.750 | 0.143 | 0.528 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.667 | 0.094 | 0.750 | 0.450 | 0.067 | 1.000 | 0.400 | 0.688 | 0.429 | 0.514 |
 | olmOCR-2-7B-1025 (BF16) | 0.643 | 0.038 | 0.500 | 0.350 | 0.533 | 0.980 | 0.400 | 0.562 | 0.000 | 0.542 |
@@ -56,6 +53,22 @@ Pages per stratum in brackets.
 | Kraken 7.0, rec_bohemica model (Zenodo 11673242) | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.069 |
 | Tesseract 5.5.2, deu_latf (tessdata_best) | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.857 | 0.000 | 0.000 | 0.000 | 0.042 |
 | Calamari 2.3.1, fraktur_historical | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.208 | 0.000 | 0.000 | 0.000 | 0.000 |
+
+## Frontier reference
+
+General-purpose frontier models, each a single run on one date through the vendor's command-line tool with the benchmark prompt and the page image only (no tools). Only page images were sent; model training on the data was off in both accounts. Vendor models change, so these rows are snapshots. They are not ranked with the main table.
+
+| Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |
+|---|---|---|---|---|---|---|---|---|---|
+| Claude Fable 5.1 (claude-fable-5-1, effort max, Claude Code CLI) | frontier VLM reference, run 2026-10-31 | 53 | **0.055** | 0.113 | 0.944 | 0% | 0.058 | 0.939 | 0 |
+| GPT-6-Astra (gpt-6-astra, reasoning effort max, Codex CLI) | frontier VLM reference, run 2026-11-06 | 53 | **0.070** | 0.128 | 0.933 | 0% | 0.106 | 0.870 | 0 |
+
+`cer_norm` median per stratum:
+
+| Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Claude Fable 5.1 (claude-fable-5-1, effort max, Claude Code CLI) | 0.011 | 0.139 | 0.081 | 0.132 | 0.088 | 0.003 | 0.228 | 0.083 | 0.180 | 0.027 |
+| GPT-6-Astra (gpt-6-astra, reasoning effort max, Codex CLI) | 0.019 | 0.160 | 0.088 | 0.105 | 0.078 | 0.003 | 0.320 | 0.106 | 0.237 | 0.028 |
 
 ## Notes
 
@@ -74,8 +87,9 @@ Pages per stratum in brackets.
 - **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).
 - **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus
   service.
-- **Internal row.** "13fragments 9B (internal, Run 11)" is a model-track run
-  (Qwen3.5-9B with a LoRA adapter, Run 11 step 800). It is a reference, not a
-  released model.
+- **Frontier reference.** Claude Fable 5.1 and GPT-6-Astra ran at their highest
+  effort setting through the Claude Code CLI and the Codex CLI on the maintainer's
+  subscriptions. The rows record the run date; a later model version can score
+  differently.
 - **Submissions:** see [`SUBMITTING.md`](../SUBMITTING.md). One scored submission per
   engine per 30 days.

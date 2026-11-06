@@ -3,7 +3,8 @@
 
   uv run python scripts/build_leaderboard.py --aggregates <dir of <run>__<engine>/aggregates.json>
 
-Rows come from leaderboard/rows.yml. The inputs are the aggregates-only reports
+Rows come from leaderboard/rows.yml. Rows with `section: frontier` go to `frontier_rows`
+and a separate "Frontier reference" section; they are not ranked with `rows`. The inputs are the aggregates-only reports
 (`harness report --aggregates-only`), so the outputs hold no page ID, page
 score, or page text. The script checks that again before it writes.
 """
@@ -38,17 +39,23 @@ STRATA = (
     "latin_cursive_1940s",
 )
 INDICATIVE_BELOW = 5
+FRONTIER_NOTE = (
+    "General-purpose frontier models, each a single run on one date through the "
+    "vendor's command-line tool with the benchmark prompt and the page image only (no tools). Only page "
+    "images were sent; model training on the data was off in both accounts. Vendor models change, so "
+    "these rows are snapshots. They are not ranked with the main table."
+)
 
 
 def build(aggregates_dir: Path, spec: dict) -> dict:
-    rows = []
+    rows, frontier = [], []
     for row in spec["rows"]:
         public = json.loads((aggregates_dir / row["aggregates"] / "aggregates.json").read_text())
         engine_key = row["aggregates"].split("__", 1)[1]
         engine = public["engines"][engine_key]
         if any(engine["gaps"][key] for key in ("missing_pages", "skipped_no_gt", "unbound_image_pages")):
             raise SystemExit(f"{row['aggregates']}: incomplete run; not a leaderboard row")
-        rows.append(
+        (frontier if row.get("section") == "frontier" else rows).append(
             {
                 "engine": row["engine"],
                 "category": row["category"],
@@ -64,30 +71,20 @@ def build(aggregates_dir: Path, spec: dict) -> dict:
                 "loop_guard_pages": engine["gaps"]["loop_guard_pages"],
             }
         )
-    rows.sort(key=lambda r: r["overall"]["cer_norm_median"])
+    for group in (rows, frontier):
+        group.sort(key=lambda r: r["overall"]["cer_norm_median"])
     return {
         "benchmark": spec["version"],
         "harness_tag": spec["harness_tag"],
         "metric_note": "cer_norm: normalized character error rate (protocol §4, §5); lower is better.",
         "rows": rows,
+        "frontier_note": FRONTIER_NOTE,
+        "frontier_rows": frontier,
     }
 
 
-def render(board: dict) -> str:
-    rows = board["rows"]
-    strata_n = {s: rows[0]["per_stratum"][s]["n"] for s in STRATA}
+def overall_table(rows: list[dict]) -> list[str]:
     lines = [
-        f"# Leaderboard: {board['benchmark']}",
-        "",
-        "Held-out set of 53 scored pages, ground truth v1.0, scored with harness "
-        f"`{board['harness_tag']}`. Aggregates only: no page scores and no outputs are "
-        "published. `cer_norm` is the normalized character error rate (protocol §4, §5); "
-        "lower is better. Entity recall is the share of gold persons, places, and dates "
-        "found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above "
-        "0.75 or an empty output (§5.4). Licence: CC BY 4.0.",
-        "",
-        "## Overall and hard strata",
-        "",
         "| Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |",
         "|---|---|---|---|---|---|---|---|---|---|",
     ]
@@ -100,19 +97,46 @@ def render(board: dict) -> str:
             f"| {_fmt(o['seg_fail_rate'], pct=True)} | {_fmt(h.get('cer_norm_median'))} "
             f"| {_fmt(h.get('entity_recall_median'))} | {proxy['pages_above_0.10'] if proxy else '—'} |"
         )
+    return lines
+
+
+def stratum_table(rows: list[dict], key: str, header: str) -> list[str]:
+    lines = [f"| Engine | {header} |", "|---|" + "---|" * len(STRATA)]
+    for row in rows:
+        cells = " | ".join(_fmt(row["per_stratum"][s].get(key)) for s in STRATA)
+        lines.append(f"| {row['engine']} | {cells} |")
+    return lines
+
+
+def render(board: dict) -> str:
+    rows, frontier = board["rows"], board["frontier_rows"]
+    strata_n = {s: rows[0]["per_stratum"][s]["n"] for s in STRATA}
     header = " | ".join(
         f"{s} ({strata_n[s]}{', indicative' if strata_n[s] < INDICATIVE_BELOW else ''})"
         for s in STRATA
     )
+    lines = [
+        f"# Leaderboard: {board['benchmark']}",
+        "",
+        "Held-out set of 53 scored pages, ground truth v1.0, scored with harness "
+        f"`{board['harness_tag']}`. Aggregates only: no page scores and no outputs are "
+        "published. `cer_norm` is the normalized character error rate (protocol §4, §5); "
+        "lower is better. Entity recall is the share of gold persons, places, and dates "
+        "found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above "
+        "0.75 or an empty output (§5.4). Licence: CC BY 4.0.",
+        "",
+        "## Overall and hard strata",
+        "",
+        *overall_table(rows),
+    ]
     for title, key in (
         ("`cer_norm` median per stratum", "cer_norm_median"),
         ("Entity recall median per stratum", "entity_recall_median"),
     ):
-        lines += ["", f"## {title}", "", "Pages per stratum in brackets.", "", f"| Engine | {header} |",
-                  "|---|" + "---|" * len(STRATA)]
-        for row in rows:
-            cells = " | ".join(_fmt(row["per_stratum"][s].get(key)) for s in STRATA)
-            lines.append(f"| {row['engine']} | {cells} |")
+        lines += ["", f"## {title}", "", "Pages per stratum in brackets.", "", *stratum_table(rows, key, header)]
+    if frontier:
+        lines += ["", "## Frontier reference", "", board["frontier_note"], "", *overall_table(frontier),
+                  "", "`cer_norm` median per stratum:", "", *stratum_table(frontier, "cer_norm_median", header)]
     lines += [
         "",
         "## Notes",
@@ -132,9 +156,10 @@ def render(board: dict) -> str:
         "- **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).",
         "- **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus",
         "  service.",
-        "- **Internal row.** \"13fragments 9B (internal, Run 11)\" is a model-track run",
-        "  (Qwen3.5-9B with a LoRA adapter, Run 11 step 800). It is a reference, not a",
-        "  released model.",
+        "- **Frontier reference.** Claude Fable 5.1 and GPT-6-Astra ran at their highest",
+        "  effort setting through the Claude Code CLI and the Codex CLI on the maintainer's",
+        "  subscriptions. The rows record the run date; a later model version can score",
+        "  differently.",
         "- **Submissions:** see [`SUBMITTING.md`](../SUBMITTING.md). One scored submission per",
         "  engine per 30 days.",
         "",
@@ -158,7 +183,7 @@ def main() -> int:
             raise SystemExit(f"page ID {page.id} would be published; nothing written")
     (OUT / "leaderboard.json").write_text(payload, encoding="utf-8")
     (OUT / "LEADERBOARD.md").write_text(markdown, encoding="utf-8")
-    print(f"leaderboard: {len(board['rows'])} rows; page-ID check clean")
+    print(f"leaderboard: {len(board['rows'])} rows, {len(board['frontier_rows'])} frontier rows; page-ID check clean")
     return 0
 
 
