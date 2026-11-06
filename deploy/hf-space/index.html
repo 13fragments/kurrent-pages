@@ -22,6 +22,22 @@
   --line-row: oklch(0.967 0.003 264.542);
   --hover: oklch(0.985 0.002 247.839);
   --underline: oklch(0.872 0.01 258.338);
+  /* Tailwind v4 green, blue, amber: 700 for text on light, 400 on dark. */
+  --green-text: oklch(0.527 0.154 150.069);
+  --blue-text: oklch(0.488 0.243 264.376);
+  --amber-text: oklch(0.555 0.163 48.998);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --green-text: oklch(0.792 0.209 151.711);
+    --blue-text: oklch(0.707 0.165 254.624);
+    --amber-text: oklch(0.828 0.189 84.429);
+  }
+}
+:root[data-theme="dark"] {
+  --green-text: oklch(0.792 0.209 151.711);
+  --blue-text: oklch(0.707 0.165 254.624);
+  --amber-text: oklch(0.828 0.189 84.429);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -79,9 +95,13 @@ th.l, td.l { text-align: left; }
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td { background: var(--hover); }
 td.engine { font: 600 14px/1.35 "Source Sans Pro", "Source Sans 3", sans-serif; white-space: normal; min-width: 220px; max-width: 360px; }
-.category { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+.category { display: block; margin-top: 2px; font-weight: 400; font-size: 13px; color: var(--muted); }
+.chip { display: inline-block; margin-right: 6px; padding: 0 6px; border-radius: 6px; font: 400 12px/1.5 "IBM Plex Mono", ui-monospace, monospace; color: var(--chip-text, var(--muted)); background: color-mix(in oklch, var(--chip-hue, var(--muted)) 10%, transparent); border: 1px solid color-mix(in oklch, var(--chip-hue, var(--muted)) 30%, transparent); }
+.chip.green { --chip-hue: oklch(0.723 0.219 149.579); --chip-text: var(--green-text); }
+.chip.blue { --chip-hue: oklch(0.623 0.214 259.815); --chip-text: var(--blue-text); }
+.chip.amber { --chip-hue: oklch(0.769 0.188 70.08); --chip-text: var(--amber-text); }
 td.rank { color: var(--faint); width: 2.5em; }
-.best { font-weight: 600; }
+.best { font-weight: 600; color: var(--green-text); }
 .indicative { color: var(--faint); }
 th small { display: block; font-weight: 400; color: var(--muted); }
 dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; margin: 8px 0 12px; font-size: 15px; max-width: 90ch; }
@@ -108,11 +128,11 @@ footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line);
   </ul>
 
   <h2>Overall</h2>
-  <p class="note" id="meta">Lower CER is better. The best value in each column is bold.</p>
+  <p class="note" id="meta">Lower CER is better. The best value in each column is green.</p>
   <div class="frame"><table id="overall"><tbody><tr><td class="status">Loading the results.</td></tr></tbody></table></div>
 
   <h2>By stratum</h2>
-  <p class="note">Median CER for each stratum. Page counts are in brackets. Strata with three pages or fewer are in gray. Treat them as indicative.</p>
+  <p class="note">Median CER for each stratum. Page counts are in brackets. Strata with three pages or fewer are in gray. Treat them as indicative. The best value in each column is green.</p>
   <div class="frame"><table id="strata"><tbody><tr><td class="status">Loading the results.</td></tr></tbody></table></div>
 
   <h2>Metrics</h2>
@@ -154,6 +174,7 @@ const el = (tag, attrs = {}, ...kids) => {
   for (const kid of kids) node.append(kid instanceof Node ? kid : document.createTextNode(kid));
   return node;
 };
+const ACCESS_HUE = { "open source": "green", "open weights": "blue", "commercial service": "amber" };
 const fix3 = (x) => (x == null ? "–" : x.toFixed(3));
 const pct = (x) => (x == null ? "–" : Math.round(x * 100) + "%");
 
@@ -179,7 +200,8 @@ function renderOverall(rows) {
     ...cols.map(([label]) => el("th", {}, label)));
   const body = rows.map((row, i) => el("tr", {},
     el("td", { class: "l rank" }, String(i + 1)),
-    el("td", { class: "l engine" }, row.engine, el("span", { class: "category" }, row.category)),
+    el("td", { class: "l engine" }, row.engine, el("span", { class: "category" },
+      el("span", { class: "chip " + (ACCESS_HUE[row.access] ?? "") }, row.access), row.category)),
     ...cols.map(([, get, fmt], c) => {
       const v = get(row);
       return el("td", { class: v === best[c] ? "best" : "" }, v == null ? "–" : fmt(v));
@@ -211,7 +233,7 @@ async function main() {
     const data = await response.json();
     const rows = [...data.rows].sort((a, b) => a.overall.cer_norm_median - b.overall.cer_norm_median);
     document.getElementById("meta").textContent =
-      `${data.benchmark}, harness ${data.harness_tag}, ${rows.length} engines. Sorted by median CER. Lower CER is better. The best value in each column is bold.`;
+      `${data.benchmark}, harness ${data.harness_tag}, ${rows.length} engines. Sorted by median CER. Lower CER is better. The best value in each column is green.`;
     renderOverall(rows);
     renderStrata(rows);
   } catch (error) {
