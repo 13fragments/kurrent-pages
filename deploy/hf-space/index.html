@@ -4,152 +4,136 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kurrent Pages Leaderboard</title>
-<meta name="description" content="Leaderboard of the Kurrent Pages Benchmark v1.0: 53 held-out pages of German handwriting and print, 1565 to 1948.">
+<meta name="description" content="Results of the Kurrent Pages Benchmark v1.0: 53 held-out pages of German handwriting and print from 1565 to 1948.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* Hugging Face palette: Tailwind v4 grays, as computed on huggingface.co. */
 :root {
-  --paper: #f3ede1;
-  --paper-deep: #e9e0cf;
-  --ink: #231a12;
-  --muted: #6b5d4f;
-  --rule: #d6cab4;
-  --accent: #8f2d1f;
-  --accent-soft: rgba(143, 45, 31, 0.10);
-  --bar: #8f2d1f;
-  --heat: 143, 45, 31;
-  --ledger: rgba(35, 26, 18, 0.045);
+  --bg: #ffffff;
+  --head: oklch(0.985 0.002 247.839);
+  --text: oklch(0.21 0.034 264.665);
+  --text-2: oklch(0.373 0.034 259.733);
+  --prose: oklch(0.446 0.03 256.802);
+  --muted: oklch(0.551 0.027 264.364);
+  --faint: oklch(0.707 0.022 261.325);
+  --line: oklch(0.928 0.006 264.531);
+  --line-row: oklch(0.967 0.003 264.542);
+  --hover: oklch(0.985 0.002 247.839);
+  --underline: oklch(0.872 0.01 258.338);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #17120e;
-    --paper-deep: #211a14;
-    --ink: #efe5d4;
-    --muted: #b3a38f;
-    --rule: #3b3027;
-    --accent: #e0846a;
-    --accent-soft: rgba(224, 132, 106, 0.14);
-    --bar: #e0846a;
-    --heat: 224, 132, 106;
-    --ledger: rgba(239, 229, 212, 0.035);
+    --bg: rgb(11, 15, 25);
+    --head: rgb(16, 22, 35);
+    --text: oklch(0.928 0.006 264.531);
+    --text-2: oklch(0.872 0.01 258.338);
+    --prose: rgb(179, 188, 201);
+    --muted: oklch(0.707 0.022 261.325);
+    --faint: oklch(0.551 0.027 264.364);
+    --line: oklch(0.278 0.033 256.848);
+    --line-row: rgb(20, 28, 46);
+    --hover: rgb(16, 22, 35);
+    --underline: oklch(0.446 0.03 256.802);
   }
 }
 :root[data-theme="dark"] {
-  --paper: #17120e;
-  --paper-deep: #211a14;
-  --ink: #efe5d4;
-  --muted: #b3a38f;
-  --rule: #3b3027;
-  --accent: #e0846a;
-  --accent-soft: rgba(224, 132, 106, 0.14);
-  --bar: #e0846a;
-  --heat: 224, 132, 106;
-  --ledger: rgba(239, 229, 212, 0.035);
+  --bg: rgb(11, 15, 25);
+  --head: rgb(16, 22, 35);
+  --text: oklch(0.928 0.006 264.531);
+  --text-2: oklch(0.872 0.01 258.338);
+  --prose: rgb(179, 188, 201);
+  --muted: oklch(0.707 0.022 261.325);
+  --faint: oklch(0.551 0.027 264.364);
+  --line: oklch(0.278 0.033 256.848);
+  --line-row: rgb(20, 28, 46);
+  --hover: rgb(16, 22, 35);
+  --underline: oklch(0.446 0.03 256.802);
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
-  color: var(--ink);
-  background-color: var(--paper);
-  background-image:
-    radial-gradient(ellipse at 15% -10%, var(--accent-soft), transparent 55%),
-    repeating-linear-gradient(to bottom, transparent 0 31px, var(--ledger) 31px 32px);
-  font: 400 15px/1.55 "IBM Plex Sans", sans-serif;
-  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 16px/1.5 "Source Sans Pro", "Source Sans 3", -apple-system, "Segoe UI", sans-serif;
 }
-main { max-width: 1120px; margin: 0 auto; padding: 48px 16px 64px; }
-header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 28px; }
-.kicker { font: 500 12px/1 "IBM Plex Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
-h1 { font: 600 clamp(32px, 6vw, 56px)/1.02 "Fraunces", serif; margin: 0 0 14px; letter-spacing: -0.01em; }
-.lede { max-width: 62ch; margin: 0 0 16px; color: var(--muted); font-size: 16px; }
-.links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
-a { color: var(--accent); text-underline-offset: 3px; }
-h2 { font: 600 24px/1.2 "Fraunces", serif; margin: 40px 0 6px; }
-.note { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; max-width: 80ch; }
-.scroll { overflow-x: auto; border: 1px solid var(--rule); background: var(--paper-deep); border-radius: 4px; }
-table { border-collapse: collapse; width: 100%; font-size: 14px; }
-th, td { padding: 9px 12px; border-bottom: 1px solid var(--rule); text-align: right; white-space: nowrap; }
-th { font: 500 11.5px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); vertical-align: bottom; background: var(--paper); position: sticky; top: 0; }
+main { max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; }
+h1 { font-size: 26px; font-weight: 700; line-height: 1.25; margin: 0 0 8px; }
+h2 { font-size: 20px; font-weight: 600; color: var(--text-2); margin: 36px 0 4px; }
+p { color: var(--prose); margin: 0 0 12px; max-width: 75ch; }
+a { color: var(--text); font-weight: 600; text-decoration: underline; text-decoration-color: var(--underline); text-underline-offset: 2px; }
+a:hover { text-decoration-color: var(--text); }
+code, .mono { font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 16px 0 0; padding: 0; }
+.links a { display: inline-block; padding: 2px 10px; border: 1px solid var(--line); border-radius: 8px; font-size: 14px; font-weight: 400; color: var(--text-2); text-decoration: none; }
+.links a:hover { background: var(--hover); }
+.note { font-size: 14px; color: var(--muted); }
+.frame { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 8px 12px; border-bottom: 1px solid var(--line-row); text-align: right; white-space: nowrap; }
+th { font: 600 12px/1.3 "IBM Plex Mono", ui-monospace, monospace; background: var(--head); border-bottom-color: var(--line); vertical-align: bottom; }
+td { font-family: "IBM Plex Mono", ui-monospace, monospace; }
 th.l, td.l { text-align: left; }
 tbody tr:last-child td { border-bottom: 0; }
-tbody tr:hover td { background: var(--accent-soft); }
-.num { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
-.rank { color: var(--muted); width: 2.5em; }
-.engine { white-space: normal; min-width: 240px; max-width: 380px; font-weight: 500; }
-.chip { display: inline-block; margin-top: 3px; font: 400 11.5px/1.4 "IBM Plex Mono", monospace; color: var(--muted); }
-.chip b { font-weight: 500; color: var(--accent); }
-.cer { min-width: 190px; }
-.barcell { display: flex; align-items: center; gap: 10px; justify-content: flex-end; }
-.track { flex: 1; min-width: 80px; height: 8px; background: var(--rule); border-radius: 2px; overflow: hidden; }
-.fill { height: 100%; width: 0; background: var(--bar); transition: width 900ms cubic-bezier(.2,.7,.2,1); }
-.heat td.cell { font-family: "IBM Plex Mono", monospace; font-variant-numeric: tabular-nums; }
-.heat td.ind { font-style: italic; }
-th small { display: block; text-transform: none; letter-spacing: 0; font-size: 10.5px; opacity: .8; margin-top: 2px; }
-.legend { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--muted); margin: 10px 0 0; }
-.ramp { width: 140px; height: 8px; border-radius: 2px; background: linear-gradient(to right, rgba(var(--heat), .04), rgba(var(--heat), .85)); }
-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; margin: 0; font-size: 14px; max-width: 86ch; }
-dt { font-family: "IBM Plex Mono", monospace; font-size: 13px; color: var(--accent); }
-dd { margin: 0; }
-footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
-.status { padding: 16px; color: var(--muted); }
+tbody tr:hover td { background: var(--hover); }
+td.engine { font: 600 14px/1.35 "Source Sans Pro", "Source Sans 3", sans-serif; white-space: normal; min-width: 220px; max-width: 360px; }
+.category { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+td.rank { color: var(--faint); width: 2.5em; }
+.best { font-weight: 600; }
+.indicative { color: var(--faint); }
+th small { display: block; font-weight: 400; color: var(--muted); }
+dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 20px; margin: 8px 0 12px; font-size: 15px; max-width: 90ch; }
+dt { font-weight: 600; }
+dd { margin: 0; color: var(--prose); }
+footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+.status { padding: 16px; color: var(--muted); text-align: left; }
 @media (max-width: 640px) {
-  main { padding-top: 32px; }
-  .engine { min-width: 160px; }
-  .cer { min-width: 130px; }
-  .track { min-width: 40px; }
+  td.engine { min-width: 160px; }
   dl { grid-template-columns: 1fr; }
   dd { margin-bottom: 8px; }
 }
-@media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
 </style>
 </head>
 <body>
 <main>
-  <header>
-    <p class="kicker">Benchmark leaderboard</p>
-    <h1>Kurrent Pages</h1>
-    <p class="lede">53 held-out pages of German handwriting and print, 1565 to 1948: Kurrent, Sütterlin, degraded Fraktur, early-modern hands, registers, and marginalia. An engine gets the raw page image and returns the page text.</p>
-    <ul class="links">
-      <li><a href="https://github.com/13fragments/kurrent-pages">Protocol and harness</a></li>
-      <li><a href="https://github.com/13fragments/kurrent-pages/blob/main/SUBMITTING.md">Submit an engine</a></li>
-      <li><a href="https://huggingface.co/datasets/13fragments/kurrent-pages-v1">Page images (gated)</a></li>
-      <li><a href="https://doi.org/10.5281/zenodo.24015417">Cite (Zenodo)</a></li>
-    </ul>
-  </header>
+  <h1>Kurrent Pages Leaderboard</h1>
+  <p>Results of the Kurrent Pages Benchmark v1.0. The benchmark has 53 held-out pages of German handwriting and print from 1565 to 1948. Each engine reads the page image and returns the page text. We score that text against a private ground truth.</p>
+  <ul class="links">
+    <li><a href="https://github.com/13fragments/kurrent-pages">GitHub</a></li>
+    <li><a href="https://github.com/13fragments/kurrent-pages/blob/main/SUBMITTING.md">How to submit</a></li>
+    <li><a href="https://huggingface.co/datasets/13fragments/kurrent-pages-v1">Page images</a></li>
+    <li><a href="https://doi.org/10.5281/zenodo.24015417">Citation</a></li>
+  </ul>
 
-  <section>
-    <h2>Overall</h2>
-    <p class="note" id="meta">Lower <code>cer_norm</code> is better. Sorted by median.</p>
-    <div class="scroll"><table id="overall"><tbody><tr><td class="status l">Loading the leaderboard…</td></tr></tbody></table></div>
-  </section>
+  <h2>Overall</h2>
+  <p class="note" id="meta">Lower CER is better. The best value in each column is bold.</p>
+  <div class="frame"><table id="overall"><tbody><tr><td class="status">Loading the results.</td></tr></tbody></table></div>
 
-  <section>
-    <h2>Median <code>cer_norm</code> per stratum</h2>
-    <p class="note">Pages per stratum in brackets. Strata with three pages or fewer are indicative only and set in italics.</p>
-    <div class="scroll"><table id="strata" class="heat"><tbody><tr><td class="status l">Loading…</td></tr></tbody></table></div>
-    <div class="legend"><span>0</span><span class="ramp" aria-hidden="true"></span><span>1.0 or more</span></div>
-  </section>
+  <h2>By stratum</h2>
+  <p class="note">Median CER for each stratum. Page counts are in brackets. Strata with three pages or fewer are in gray. Treat them as indicative.</p>
+  <div class="frame"><table id="strata"><tbody><tr><td class="status">Loading the results.</td></tr></tbody></table></div>
 
-  <section>
-    <h2>Metrics</h2>
-    <dl>
-      <dt>cer_norm</dt><dd>Normalized character error rate against the private, double-keyed ground truth. Lower is better.</dd>
-      <dt>entity recall</dt><dd>Share of gold persons, places, and dates found in the output.</dd>
-      <dt>seg-fail</dt><dd>Share of pages with <code>cer_norm</code> above 0.75 or an empty output.</dd>
-      <dt>hard strata</dt><dd>The 33 pages in the hard strata.</dd>
-      <dt>fabrication proxy</dt><dd>Pages where long insertions exceed 10% of the text. Unadjudicated: an automatic signal, not a verdict.</dd>
-    </dl>
-    <p class="note" style="margin-top:14px">Only aggregates are published. No page scores, outputs, or ground truth leave the evaluator. The full definitions are in the benchmark protocol.</p>
-  </section>
+  <h2>Metrics</h2>
+  <dl>
+    <dt>CER</dt><dd>Normalized character error rate. Lower is better.</dd>
+    <dt>Entity recall</dt><dd>Share of the persons, places, and dates in the ground truth that appear in the output.</dd>
+    <dt>Seg-fail</dt><dd>Share of pages with a CER above 0.75 or an empty output.</dd>
+    <dt>Hard strata</dt><dd>The 33 pages in the hard strata.</dd>
+    <dt>Fabrication flags</dt><dd>Pages where long insertions are more than 10% of the text. A script sets this flag. Nobody has reviewed the flagged pages.</dd>
+  </dl>
+  <p class="note">We publish aggregates only. Page scores, engine outputs, and the ground truth stay private. The benchmark protocol on GitHub has the full definitions.</p>
 
   <footer>
-    Kurrent Pages Benchmark · 13fragments · Leaderboard data CC BY 4.0 ·
-    <a id="source" href="https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/leaderboard.json">source data</a>
+    13fragments maintains the Kurrent Pages Benchmark. The leaderboard data uses the CC BY 4.0 licence.
+    <a href="https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/leaderboard.json">Download the source data</a>.
   </footer>
 </main>
 <script>
+const theme = new URLSearchParams(location.search).get("__theme");
+if (theme === "dark" || theme === "light") document.documentElement.dataset.theme = theme;
+
 const DATA_URL = "https://raw.githubusercontent.com/13fragments/kurrent-pages/main/leaderboard/leaderboard.json";
 const STRATA = [
   ["suetterlin", "Sütterlin"],
@@ -166,61 +150,56 @@ const STRATA = [
 
 const el = (tag, attrs = {}, ...kids) => {
   const node = document.createElement(tag);
-  for (const [key, value] of Object.entries(attrs)) {
-    if (key === "style") node.style.cssText = value; else node.setAttribute(key, value);
-  }
+  for (const [key, value] of Object.entries(attrs)) node.setAttribute(key, value);
   for (const kid of kids) node.append(kid instanceof Node ? kid : document.createTextNode(kid));
   return node;
 };
 const fix3 = (x) => (x == null ? "–" : x.toFixed(3));
 const pct = (x) => (x == null ? "–" : Math.round(x * 100) + "%");
 
-function engineCell(row) {
-  return el("td", { class: "l engine" }, row.engine, el("br"),
-    el("span", { class: "chip" }, el("b", {}, row.access), " · " + row.category));
+// A column is [header, value getter, formatter, "min", "max", or null for the best value].
+function bestOf(rows, get, dir) {
+  if (!dir) return undefined;
+  const values = rows.map(get).filter((v) => v != null);
+  return dir === "min" ? Math.min(...values) : Math.max(...values);
 }
 
 function renderOverall(rows) {
-  const head = el("tr", {},
-    el("th", { class: "l" }, "#"), el("th", { class: "l" }, "Engine"),
-    el("th", {}, "cer_norm median"), el("th", {}, "mean"),
-    el("th", {}, "Entity recall"), el("th", {}, "Seg-fail"),
-    el("th", {}, "Hard strata", el("small", {}, "cer_norm median")),
-    el("th", {}, "Fabrication proxy", el("small", {}, "pages > 0.10")));
-  const body = rows.map((row, i) => {
-    const o = row.overall;
-    const fill = el("div", { class: "fill", "data-w": Math.min(o.cer_norm_median, 1) * 100 });
-    return el("tr", {},
-      el("td", { class: "l num rank" }, String(i + 1)),
-      engineCell(row),
-      el("td", { class: "cer" }, el("div", { class: "barcell" },
-        el("div", { class: "track" }, fill), el("strong", { class: "num" }, fix3(o.cer_norm_median)))),
-      el("td", { class: "num" }, fix3(o.cer_norm_mean)),
-      el("td", { class: "num" }, fix3(o.entity_recall_median)),
-      el("td", { class: "num" }, pct(o.seg_fail_rate)),
-      el("td", { class: "num" }, fix3(row.hard_strata?.cer_norm_median)),
-      el("td", { class: "num" }, String(row.fabrication_proxy_unadjudicated?.["pages_above_0.10"] ?? "–")));
-  });
+  const cols = [
+    ["CER median", (r) => r.overall.cer_norm_median, fix3, "min"],
+    ["CER mean", (r) => r.overall.cer_norm_mean, fix3, "min"],
+    ["Entity recall", (r) => r.overall.entity_recall_median, fix3, "max"],
+    ["Seg-fail", (r) => r.overall.seg_fail_rate, pct, "min"],
+    ["Hard strata CER", (r) => r.hard_strata?.cer_norm_median, fix3, "min"],
+    // No best value: zero flags can also mean an engine wrote almost nothing.
+    ["Fabrication flags", (r) => r.fabrication_proxy_unadjudicated?.["pages_above_0.10"], String, null],
+  ];
+  const best = cols.map(([, get, , dir]) => bestOf(rows, get, dir));
+  const head = el("tr", {}, el("th", { class: "l" }, "#"), el("th", { class: "l" }, "Engine"),
+    ...cols.map(([label]) => el("th", {}, label)));
+  const body = rows.map((row, i) => el("tr", {},
+    el("td", { class: "l rank" }, String(i + 1)),
+    el("td", { class: "l engine" }, row.engine, el("span", { class: "category" }, row.category)),
+    ...cols.map(([, get, fmt], c) => {
+      const v = get(row);
+      return el("td", { class: v === best[c] ? "best" : "" }, v == null ? "–" : fmt(v));
+    })));
   document.getElementById("overall").replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    document.querySelectorAll(".fill").forEach((f) => { f.style.width = f.dataset.w + "%"; });
-  }));
 }
 
 function renderStrata(rows) {
-  const counts = Object.fromEntries(STRATA.map(([id]) => [id, rows[0]?.per_stratum?.[id]?.n ?? 0]));
+  const n = (id) => rows[0]?.per_stratum?.[id]?.n ?? 0;
+  const get = (id) => (r) => r.per_stratum?.[id]?.cer_norm_median;
+  const best = STRATA.map(([id]) => bestOf(rows, get(id), "min"));
   const head = el("tr", {}, el("th", { class: "l" }, "Engine"),
-    ...STRATA.map(([id, label]) => el("th", { title: id }, label, el("small", {}, `(${counts[id]})`))));
+    ...STRATA.map(([id, label]) => el("th", { title: id, class: n(id) <= 3 ? "indicative" : "" },
+      label, el("small", {}, `(${n(id)})`))));
   const body = rows.map((row) => el("tr", {},
     el("td", { class: "l engine" }, row.engine),
-    ...STRATA.map(([id]) => {
-      const value = row.per_stratum?.[id]?.cer_norm_median;
-      const alpha = value == null ? 0 : 0.04 + Math.min(value, 1) * 0.81;
-      const dark = alpha > 0.5;
-      return el("td", {
-        class: "cell" + (counts[id] <= 3 ? " ind" : ""),
-        style: `background: rgba(var(--heat), ${alpha.toFixed(3)});` + (dark ? "color: var(--paper);" : ""),
-      }, fix3(value));
+    ...STRATA.map(([id], c) => {
+      const v = get(id)(row);
+      const cls = [n(id) <= 3 ? "indicative" : "", v === best[c] ? "best" : ""].join(" ").trim();
+      return el("td", { class: cls }, fix3(v));
     })));
   document.getElementById("strata").replaceChildren(el("thead", {}, head), el("tbody", {}, ...body));
 }
@@ -232,12 +211,12 @@ async function main() {
     const data = await response.json();
     const rows = [...data.rows].sort((a, b) => a.overall.cer_norm_median - b.overall.cer_norm_median);
     document.getElementById("meta").textContent =
-      `${data.benchmark} · harness ${data.harness_tag} · ${rows.length} engines · lower cer_norm is better · sorted by median.`;
+      `${data.benchmark}, harness ${data.harness_tag}, ${rows.length} engines. Sorted by median CER. Lower CER is better. The best value in each column is bold.`;
     renderOverall(rows);
     renderStrata(rows);
   } catch (error) {
-    const msg = el("td", { class: "status l" }, "The leaderboard data did not load (" + error.message + "). ",
-      el("a", { href: "https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md" }, "Read it on GitHub."));
+    const msg = el("td", { class: "status" }, `The results did not load (${error.message}). `,
+      el("a", { href: "https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md" }, "Read them on GitHub."));
     document.getElementById("overall").replaceChildren(el("tbody", {}, el("tr", {}, msg)));
     document.getElementById("strata").replaceChildren();
   }
