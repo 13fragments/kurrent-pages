@@ -9,7 +9,8 @@ abstract: >-
   page text. The 53 scored pages are scored offline against a private,
   double-keyed transcription; only aggregates are published. The archive holds
   the preregistered protocol, the evaluation harness, the page manifest with
-  source links and hashes, and the leaderboard.
+  source links and hashes, and the leaderboard. Code: Apache-2.0; protocol,
+  documentation, and leaderboard: CC BY 4.0.
 authors:
   - name: "13fragments"
 version: "1.0.1"
@@ -21,9 +22,7 @@ identifiers:
     description: "Kurrent Pages Benchmark v1.0.0"
 repository-code: "https://github.com/13fragments/kurrent-pages"
 url: "https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md"
-license:
-  - Apache-2.0
-  - CC-BY-4.0
+license: Apache-2.0
 keywords:
   - benchmark
   - handwritten text recognition
