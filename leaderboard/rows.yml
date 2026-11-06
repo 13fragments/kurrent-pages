@@ -1,0 +1,54 @@
+# Leaderboard rows for the Kurrent Pages Benchmark v1.0. Each row names one public aggregates file
+# (`harness report --aggregates-only`, release harness) by <run id>__<engine>.
+# scripts/build_leaderboard.py writes leaderboard.json and LEADERBOARD.md from these rows.
+version: "Kurrent Pages Benchmark v1.0"
+harness_tag: v1.0.0-rc1
+rows:
+  - aggregates: 20260924-112302_sealed__transkribus_german_genius
+    engine: Transkribus German Genius (Super Model, model ID 265149)
+    category: commercial reference, run 2026-09-24
+    access: commercial service
+  - aggregates: 20260924-112302_sealed__transkribus_text_titan_ii
+    engine: Transkribus Text Titan II (model ID 579509)
+    category: commercial reference, run 2026-09-24
+    access: commercial service
+  - aggregates: 20260924-112302_sealed__churro
+    engine: CHURRO 3B (stanford-oval/churro-3B)
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__olmocr2_7b
+    engine: olmOCR-2-7B-1025 (BF16)
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__qwen35_4b
+    engine: Qwen3.5-4B
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__qwen35_4b_hint
+    engine: Qwen3.5-4B, script-hint prompt
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__qwen3vl_4b
+    engine: Qwen3-VL-4B-Instruct
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__qwen3vl_4b_hint
+    engine: Qwen3-VL-4B-Instruct, script-hint prompt
+    category: open VLM, zero-shot
+    access: open weights
+  - aggregates: 20260924-112302_sealed__kraken_kurrent
+    engine: Kraken 7.0, rec_bohemica model (Zenodo 11673242)
+    category: open CRNN pipeline
+    access: open source
+  - aggregates: 20260924-112302_sealed__tesseract_fraktur
+    engine: Tesseract 5.5.2, deu_latf (tessdata_best)
+    category: open CRNN pipeline
+    access: open source
+  - aggregates: 20260924-112302_sealed__calamari_fraktur
+    engine: Calamari 2.3.1, fraktur_historical
+    category: open CRNN pipeline
+    access: open source
+  - aggregates: 20261025-065703_gate1_run11_sealed__gate1_run11_s800
+    engine: 13fragments 9B research preview (Qwen3.5-9B + LoRA, Run 11 step 800)
+    category: research preview, not released
+    access: not released

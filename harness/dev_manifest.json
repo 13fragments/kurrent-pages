@@ -1,0 +1,175 @@
+{
+ "purpose": "Silver dev set for harness development ONLY. Transcripts are model-generated (Fable, 2026-07-07). These pages are permanently disqualified from any gold set; no evaluation claim may cite them. Files live gitignored under data/dev_silver/ (images + GT); this manifest records identity + hashes.",
+ "quarantine": "disjoint from all gold picks, alternates, and fallbacks in gold/selection.yml",
+ "page_count": 24,
+ "pages": {
+  "dev_brugger_0085": {
+   "stratum": "nineteenth_c_civilian",
+   "confidence": "med",
+   "image_sha256": "1d740d621e963e32530acde8599ca9f5b7ba867085cfb2fdf3ffcbbb0a0711c3",
+   "gt_sha256": "4f45d68b0f4ea64bf9a1c698f9c98fdb5e91e548c72595970567b893e3fda531",
+   "meta_sha256": "5f60654bd4b34570bf66d74b82caa8c93d79f5774e7e18c0f24c8c0c806aad09"
+  },
+  "dev_cpg555_015r": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "d6279b54b08ed321727050178a111307ed914b4fe1fa95aadb8af224cb9a0841",
+   "gt_sha256": "ae1ce5d6b7fdbcc03b9a75773441e6a60bf41223ec22f61706e2974aeb075b47",
+   "meta_sha256": "0bef4a8ca5d47230960fea713fe439511cefac8b954039f5bdbf005d1ed496d3"
+  },
+  "dev_cpg555_060r": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "cc5135ee2cc78c531f595026e6a3b6c9e73212531b4140964843508617a0a900",
+   "gt_sha256": "e910a81cb292f0e5bb0f100ac5aa3d2ad484b8cbbf2da8588737eab9d6773ba9",
+   "meta_sha256": "c2a37715bb24589dca5a53fb6f06c39cc5048d2b10629f9c99047443d508b5a5"
+  },
+  "dev_freiberg_0016": {
+   "stratum": "tidy_kurrent",
+   "confidence": "med",
+   "image_sha256": "76f7a1b2f62688e7a7244aac245855e19342f0697af91845b6e5752d7dc8e915",
+   "gt_sha256": "fb666dbf43d98186efaabe34e9e7d9c737ab89895ac8374d11ecc9c36fc42770",
+   "meta_sha256": "63f6b996fb1a5d3292297b84769e20de2d96bd2571ee0a26f431c0b5fd36208d"
+  },
+  "dev_freiberg_0024": {
+   "stratum": "tidy_kurrent",
+   "confidence": "med",
+   "image_sha256": "a375ae2dc16defcedd9ee67f7d314a9023b188126cd76cacfba1b2173aba2395",
+   "gt_sha256": "aafc4fcc2601aa59e2c1650001abede843ab40f5655c2e8398b24d71f587a933",
+   "meta_sha256": "be2abeb0dce451e71d6523ee3b1da4399e621851be156ec9d8fe1be672811bfd"
+  },
+  "dev_freiburg_010r": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "d09164812c61975d896e413477c64cb1b40ddef94138b2812436e5e7c1c080aa",
+   "gt_sha256": "6ac8dbe152bc210765e23854ad1a3ebf12ab8e2098a023276662afd3c12ce19e",
+   "meta_sha256": "6544c7d1b28c7394e3ec1f00fa79f85840e7cb476923b14c95c819c7d79ea6bf"
+  },
+  "dev_freiburg_100v": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "d92cfc6bd30ad409d764b6455882c54ad8a5035b0fa0fe6e441480936d8ffc29",
+   "gt_sha256": "8434aec50d36a26eb04b0690cb34f287096112f6af2a4c2afbb8d8bd7923d9aa",
+   "meta_sha256": "ff680ee0210905f3544b0c7fa50f084340a0057746e29dcac37ac93019ac42ea"
+  },
+  "dev_giessen_0030": {
+   "stratum": "ugly_kurrent",
+   "confidence": "low",
+   "image_sha256": "6ba6d21772647dff1a2c03edc90eed3c4bb99d7a9da4dd573d87808d82ceecc0",
+   "gt_sha256": "042cbc2a310b7f971f40a0c437fc668b4dab8d610d51e45ec5c6c8960e89b59d",
+   "meta_sha256": "5756e7cb15eaf41b11c6b50a03866330f32cb8f43e77af5e81c48dbf76a40999"
+  },
+  "dev_giessen_0060": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "63cbbd98af1f7d163d2065654f1bec9ef010f656d04d37cc2c2c65683248ea8c",
+   "gt_sha256": "2e3d90e1fd4cc0723603c18ce71e650f774d38bf07b06c7eff059ce777c4868a",
+   "meta_sha256": "bae7865e0f634e2a6b641eeb51c43a6085a829e7705c66aa123ae440930cd16f"
+  },
+  "dev_hainc_0030": {
+   "stratum": "suetterlin",
+   "confidence": "med",
+   "image_sha256": "ef1e058e53a87a7e7eec642a43c665e0206a1f8ebebb49dd7864951e674ef2a0",
+   "gt_sha256": "2af2105f02c5ce3b4d288c884532b1016b13d26e31632ada56b90a1cf7af7817",
+   "meta_sha256": "4094ad85191e96e4e0858b62c34cc14c1a824ef6f8a592d90c04eace3cac63bd"
+  },
+  "dev_kch058_060": {
+   "stratum": "suetterlin",
+   "confidence": "med",
+   "image_sha256": "ce19d80cdf3e9c8307ccd1d262a701098cb1c864fa8bec62be418fc026ac43ce",
+   "gt_sha256": "e582bc2539b799affd29eb40ada342e9c63e96fcc6d1020fa8621bedb54a8dbb",
+   "meta_sha256": "c40654df6fd79bc5c951486b6288c6851609ab50e6c65cffd20e35a4458d5b23"
+  },
+  "dev_kch058_150": {
+   "stratum": "suetterlin",
+   "confidence": "high",
+   "image_sha256": "4e699577d3effb26430f7575de7777918c04bc3710a85174c6fe5f30bbf56eee",
+   "gt_sha256": "587508a8268b1853f707c2b0eb760b3d40251917df0e789946009f1e8825c434",
+   "meta_sha256": "30121e190eaf7627a57134627dc13e26e6da12f60016757697bc8bd2e164b41e"
+  },
+  "dev_kch058_300": {
+   "stratum": "suetterlin",
+   "confidence": "med",
+   "image_sha256": "6576c1e94e7c4278fc76bf2a06a597466ef8e1799ab35bc6f1cc5fbcb3acbf6c",
+   "gt_sha256": "2748edfff95be188c2bfb82415fcacd932a4488023a11615b6935ac8624a24e2",
+   "meta_sha256": "8850f76ff27fedd1376b43f34543320cc2d2c7764b6904e5beddc3e4a2f359da"
+  },
+  "dev_kch060_180": {
+   "stratum": "degraded_fraktur",
+   "confidence": "high",
+   "image_sha256": "625a08e6d5b3ebfc6f0feb7d1371b37902fb15301ad1852e5cacc1d7d5acbbc3",
+   "gt_sha256": "c960e1767627153bd9168364ac674838b4adaef29f50b74c4d04530da9784415",
+   "meta_sha256": "1b1df2b4ddad8e983345ef45bd8de8965a16dbddd8a87edda7e4062a75ae8fd6"
+  },
+  "dev_kch060_615": {
+   "stratum": "degraded_fraktur",
+   "confidence": "high",
+   "image_sha256": "98ceedc14773ea7f1234091718d2e395376bc0b31b691f2c1621e94a56b0491d",
+   "gt_sha256": "1c6c52e47ccb53982d9357ade212baa2adac363e2afdaae2d0c5a228f4e8ab6f",
+   "meta_sha256": "b71ac43212fc5a79109869d4e7a44f07dd5eeebb47a5e3bb44f6292fcf545dfb"
+  },
+  "dev_kch060_865": {
+   "stratum": "degraded_fraktur",
+   "confidence": "high",
+   "image_sha256": "ddb401e49d33b27ea7b57770fd0ca407637a4bb9eaa14aa478275233b319f9f0",
+   "gt_sha256": "f8b68cd31455b47162d300eb9f3c7bfb1e5b0f07f4e6f2e4e60bec2ac8f186ab",
+   "meta_sha256": "ee453dc533c550016efd5cfb6a0bf2f6ae0530dabf390db9cddd58c7980a53ab"
+  },
+  "dev_merian_0600": {
+   "stratum": "table_registry",
+   "confidence": "med",
+   "image_sha256": "a80bebb3cbdcf6ad6c1e0708f6272b6cd0dadcdd140382a46ee0419e046a871e",
+   "gt_sha256": "48ad4dd58cc153422999091319f97007e146dc9c3d2bedca86162a41618e2c5e",
+   "meta_sha256": "a9a2c6499b84b09c15568ba7401cc4564ae22c34f9d58234a13c5d5d4accef2f"
+  },
+  "dev_nimlau_0040": {
+   "stratum": "twentieth_century_kurrent",
+   "confidence": "high",
+   "image_sha256": "4509ccff27a26534fcf1f5ec4c868dc80d517ba00201975baa430ac89f1d023f",
+   "gt_sha256": "f1b0bc536169f51b2ba9c0bbd09671e068fd345c28cd6325b7bfd081e2461875",
+   "meta_sha256": "4f8cc6b7a09d8c5fba99c92fa7a8380962b78c766679af9300b62aad2f1d2d96"
+  },
+  "dev_petri_0060": {
+   "stratum": "twentieth_century_kurrent",
+   "confidence": "med",
+   "image_sha256": "57b5ff16cb616231449c5099481428d403e95d2b6c162e1226a5dce02f187445",
+   "gt_sha256": "6d14bc56dcf3bdfe636ab2b5bba5ecec6abefd38bb6c71fbf1098db6be8e6bf9",
+   "meta_sha256": "3306a80e4857accefe3a7e1fa3beb035284fc5a103b8265e840270187f08e529"
+  },
+  "dev_reiss_511700": {
+   "stratum": "twentieth_century_kurrent",
+   "confidence": "med",
+   "image_sha256": "492effb9929474c04efe4ef398edf52d43c0818b3df91698ce7232ee04e9e171",
+   "gt_sha256": "207130dfc7359f242d730ad0936365378091a74256b3caf1f29331001c303c82",
+   "meta_sha256": "3c4d3ff995607d8b8380940326bc25793bb7d1cb220030fa84a8107043c1b81b"
+  },
+  "dev_reiss_511860": {
+   "stratum": "twentieth_century_kurrent",
+   "confidence": "med",
+   "image_sha256": "2920b61bdcd7311851f024c5269123e5c82301e70198cfcbbaf048dbdffe602b",
+   "gt_sha256": "a03ba66a4286bf79c7cd2c0550468aec01313adaaafe9498957d26893cb07815",
+   "meta_sha256": "7d14034fcfbd9742818b41c8899912c2875a7aebd07c5974b141c6b8e90a5283"
+  },
+  "dev_slub_0200": {
+   "stratum": "ugly_kurrent",
+   "confidence": "med",
+   "image_sha256": "bf08a64fdbbc0e4f69ad011b9d3ccc78999b1dd1cc155125398ee597c5be822d",
+   "gt_sha256": "42d2e495f520fcf00ed2306a7b1b2a9029e0eb515bbace48b032120920d058eb",
+   "meta_sha256": "9d963fa18f54e4b65de2ae645d010a39472b5e22087e102517d02680b16a4fe3"
+  },
+  "dev_wanderbuch_0021": {
+   "stratum": "mixed_print_handwriting",
+   "confidence": "med",
+   "image_sha256": "8f234cc66bf039b9bb180874367ca07bdd9c15b2277a278993cdf0227dd03fe2",
+   "gt_sha256": "3e77a6d70b7077da9e9853ac1819ad8159a0cc5fd364d2696cf3cd79f636411d",
+   "meta_sha256": "0f3f1c57f8337f1a3678b42fbd82d98aa6c1936941d18d08dc3a097c4f3a500f"
+  },
+  "dev_wanderbuch_0023": {
+   "stratum": "mixed_print_handwriting",
+   "confidence": "med",
+   "image_sha256": "723fb94999bf0943e690db8ea807086ee2bbd6ddf9bc0d91be250df1deae9892",
+   "gt_sha256": "47e8bd656f15a7ab65f27214646c8ddd7c5e5cd65bc4be23bf22ad0fee0886c7",
+   "meta_sha256": "2ecf0cd353a00b0c8d7bbea672e3afafd8677016000b6778cef8931dc8b87f67"
+  }
+ }
+}

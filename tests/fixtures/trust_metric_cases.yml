@@ -1,0 +1,110 @@
+cases:
+  - id: exact
+    kind: benign
+    gold: "eins zwei drei vier fünf sechs sieben acht"
+    hyp: "eins zwei drei vier fünf sechs sieben acht"
+    candidate: false
+
+  - id: one_character_typo
+    kind: benign
+    gold: "eins zwei drei vier fünf sechs sieben acht"
+    hyp: "eins zwei drei vier funf sechs sieben acht"
+    candidate: false
+
+  - id: line_wrap_only
+    kind: benign
+    gold: |-
+      eins zwei drei vier
+      fünf sechs sieben acht
+    hyp: "eins zwei drei vier fünf sechs sieben acht"
+    candidate: false
+
+  - id: compound_split
+    kind: benign
+    gold: "Weihnachtsmannkostümverleih und Schluss"
+    hyp: "Weih nachts mann kostüm ver leih und Schluss"
+    candidate: false
+
+  - id: short_insertion_three_words
+    kind: benign
+    gold: "eins zwei drei vier fünf"
+    hyp: "eins zwei drei kurz neu hier vier fünf"
+    candidate: false
+
+  - id: truncation
+    kind: benign
+    gold: "eins zwei drei vier fünf sechs sieben acht neun zehn"
+    hyp: "eins zwei drei"
+    candidate: false
+    omission_min: 0.50
+
+  - id: empty_output
+    kind: benign
+    gold: "eins zwei drei vier fünf"
+    hyp: ""
+    candidate: false
+    omission_min: 1.0
+
+  - id: reordered_blocks
+    kind: known_false_positive
+    gold: "alpha beta gamma delta epsilon zeta eta theta iota kappa"
+    hyp: "zeta eta theta iota kappa alpha beta gamma delta epsilon"
+
+  - id: appended_five_words
+    kind: fabrication
+    gold: "eins zwei drei vier"
+    hyp: "eins zwei drei vier fremder inhalt steht ohne bild"
+    injected: "fremder inhalt steht ohne bild"
+    candidate: true
+    long_insertion: true
+
+  - id: prefixed_five_words
+    kind: fabrication
+    gold: "eins zwei drei vier"
+    hyp: "fremder inhalt steht ohne bild eins zwei drei vier"
+    injected: "fremder inhalt steht ohne bild"
+    candidate: true
+
+  - id: equal_length_replacement
+    kind: fabrication
+    gold: "alpha beta gamma delta epsilon zeta eta theta iota kappa"
+    hyp: "alpha beta fremder inhalt steht sicher ohne bild kappa"
+    injected: "fremder inhalt steht sicher ohne bild"
+    candidate: true
+    long_insertion: false
+
+  - id: shorter_replacement
+    kind: fabrication
+    gold: "alpha beta eins zwei drei vier fünf sechs sieben acht neun zehn omega"
+    hyp: "alpha beta fremder inhalt ganz ohne bild omega"
+    injected: "fremder inhalt ganz ohne bild"
+    candidate: true
+    long_insertion: false
+
+  - id: common_bridge_words
+    kind: fabrication
+    gold: "alpha beta eins zwei drei vier fünf sechs sieben acht omega"
+    hyp: "alpha beta fremder und inhalt die bleibt ohne bild omega"
+    injected: "fremder und inhalt die bleibt ohne bild"
+    candidate: true
+
+  - id: long_middle_replacement
+    kind: fabrication
+    gold: "anfang eins zwei drei vier fünf sechs sieben acht neun zehn elf zwölf dreizehn vierzehn fünfzehn sechzehn siebzehn achtzehn neunzehn zwanzig einundzwanzig zweiundzwanzig dreiundzwanzig vierundzwanzig fünfundzwanzig ende"
+    hyp: "anfang fremdwort01 fremdwort02 fremdwort03 fremdwort04 fremdwort05 fremdwort06 fremdwort07 fremdwort08 fremdwort09 fremdwort10 fremdwort11 fremdwort12 fremdwort13 fremdwort14 fremdwort15 fremdwort16 fremdwort17 fremdwort18 fremdwort19 fremdwort20 fremdwort21 fremdwort22 fremdwort23 fremdwort24 fremdwort25 ende"
+    injected: "fremdwort01 fremdwort02 fremdwort03 fremdwort04 fremdwort05 fremdwort06 fremdwort07 fremdwort08 fremdwort09 fremdwort10 fremdwort11 fremdwort12 fremdwort13 fremdwort14 fremdwort15 fremdwort16 fremdwort17 fremdwort18 fremdwort19 fremdwort20 fremdwort21 fremdwort22 fremdwort23 fremdwort24 fremdwort25"
+    candidate: true
+
+  - id: short_high_risk_claims
+    kind: fabrication_short_entity
+    gold: "eins zwei drei vier"
+    hyp: "eins zwei Hans 25RM 18.12.1924 drei vier"
+    candidate: false
+    entity_texts: ["Hans", "25RM", "18.12.1924"]
+
+  - id: repetition_loop
+    kind: pathology
+    gold: "eins zwei drei vier"
+    hyp: "eins zwei drei vier rote blaue grüne gelbe rote blaue grüne gelbe"
+    candidate: true
+    repeat_min: 0.25

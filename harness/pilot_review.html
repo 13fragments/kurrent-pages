@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Text des Programms prüfen</title>
+  <style>
+__STYLE__
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-title">Prüfen Sie den Text mit dem Scan links</div>
+    <div class="topbar-progress" id="progress">Aufgabe 1 von 1 · fertig: 0 von 1</div>
+    <div class="topbar-save" id="save-status" hidden></div>
+    <div class="topbar-nav">
+      <button id="nav-prev" type="button">‹ Vorherige Aufgabe</button>
+      <button id="nav-next" type="button">Nächste Aufgabe ›</button>
+    </div>
+  </header>
+
+  <details class="intro" id="intro" open>
+    <summary>So geht es</summary>
+    <p class="purpose"><strong>Ihre Aufgabe:</strong> Lesen Sie rechts den Text des Programms. Vergleichen Sie ihn mit dem Scan links. Klicken Sie die Antworten an. Sie müssen nichts abschreiben oder verbessern.</p>
+    <ol>
+      <li><strong>Gelbe Stellen:</strong> Vergleichen Sie jede gelbe Stelle mit dem Scan links. Klicken Sie auf „Ja“, „Nein“, „Teils“ oder „Weiß nicht“. Bei „Nein“ wählen Sie einen Grund. „Teils“ heißt: Ein Teil steht so im Scan, ein anderer Teil nicht.</li>
+      <li><strong>Namen, Orte, Daten, Beträge:</strong> Das Programm hält viele Wörter für Namen. Jedes Wort in der Liste bekommt eine Antwort. Steht der Name, der Ort, das Datum oder der Betrag an dieser Stelle im Scan links? Ist das Wort gar kein Name, klicken Sie auf „Kein Name, nur ein Wort“.</li>
+      <li><strong>Der Rest des Textes:</strong> Vergleichen Sie den Text, den Sie noch nicht geprüft haben, mit dem Scan links. Prüfen Sie auch, ob in Schritt 2 eine Angabe fehlt. Klicken Sie unten eine Antwort an.</li>
+    </ol>
+    <p class="rule">Das Hilfsprogramm hat die gelben Stellen ausgewählt. Sie können richtig oder falsch sein. Auch Sätze wie „Hier ist die Abschrift …“ stammen vom Programm. Prüfen Sie diese Sätze mit. <strong>Wenn Sie unsicher sind, klicken Sie auf „Weiß nicht“.</strong></p>
+    <details class="examples">
+      <summary>Beispiele ansehen</summary>
+      <ul>
+        <li><strong>Lesefehler oder erfunden?</strong> Schauen Sie an die Stelle im Scan links. Stehen dort Buchstaben, die ähnlich aussehen? Dann ist es ein Lesefehler. Steht dort nichts? Oder passt der Text gar nicht zu den Buchstaben? Dann ist es erfunden.</li>
+        <li><strong>Lesefehler:</strong> Im Scan links steht „der Schmied Johann Kranz“. Das Programm schreibt „der Schmid Johanna Kranich“. Sie erkennen, welche Stelle im Scan links gemeint ist. Die Buchstaben sehen ähnlich aus. Das Programm hat sie falsch gelesen. Antwort: „Nein“, Grund „Lesefehler“. Das gilt auch, wenn fast jedes Wort falsch ist. Die Zahl der Wörter muss nicht stimmen: Auch getrennte oder zusammengezogene Wörter sind ein Lesefehler.</li>
+        <li><strong>Erfunden:</strong> Im Scan links endet die Seite mit „gegeben zu Freiberg“. Das Programm schreibt danach noch „im Beisein der ehrbaren Zeugen und des Herrn Pfarrers“. Im Scan links steht dort nichts. Antwort: „Nein“, Grund „Erfunden“. Auch eigene Sätze des Programms wie „Hier ist die Abschrift …“ zählen als „Erfunden“.</li>
+        <li><strong>Namen, Orte, Daten, Beträge:</strong> „Haus“ ist kein Name. Klicken Sie auf „Kein Name, nur ein Wort“. Auch ein Bruchstück eines gewöhnlichen Wortes oder zwei zusammengezogene gewöhnliche Wörter sind kein Name, selbst wenn die Buchstaben stimmen. Den Lesefehler tragen Sie in Schritt 1 oder Schritt 3 ein. „Anna“ ist ein Name. Steht „Anna“ an dieser Stelle im Scan links? Dann klicken Sie auf „Steht so im Scan“. Steht dort ein anderer Name oder gar keiner? Dann „Steht nicht im Scan“. Bei Namen zählt jeder Buchstabe: Steht im Scan „Anne“, ist die Antwort ebenfalls „Steht nicht im Scan“.</li>
+        <li><strong>Teils:</strong> Die gelbe Stelle beginnt mit „Hier ist die Abschrift …“. Das steht nicht im Scan. Der Rest der Stelle steht aber im Scan. Klicken Sie auf „Teils“. Sie können dazuschreiben, welcher Teil nicht stimmt. Wählen Sie nicht „Erfunden“ für die ganze Stelle.</li>
+        <li><strong>Weiß nicht:</strong> Ist die Stelle unleserlich? Sind Sie unsicher? Klicken Sie auf „Weiß nicht“.</li>
+      </ul>
+    </details>
+  </details>
+
+  <section class="setup">
+    <p id="reviewer-row"><label>Tragen Sie Ihr Kürzel ein (zum Beispiel die Anfangsbuchstaben Ihres Namens): <input id="reviewer" required autocomplete="off"></label></p>
+    <p id="notice" class="notice-line" role="status"></p>
+    <p id="error" class="error-line" role="alert"></p>
+  </section>
+
+  <main id="units"></main>
+
+  <footer class="finish">
+    <h2>Abgabe</h2>
+    <p id="finish-help">Wenn alle Aufgaben fertig sind, klicken Sie auf „Datei für die Abgabe speichern“. Sie finden die Datei im Ordner „Downloads“. Schicken Sie uns die Datei per E-Mail.</p>
+    <p><button id="export" class="primary" type="button">Datei für die Abgabe speichern</button></p>
+    <details class="advanced" id="advanced">
+      <summary>An einem anderen Computer weiterarbeiten</summary>
+      <p class="filebar">
+        <button id="save-draft" type="button">Zwischenstand speichern</button>
+        <button id="load" type="button">Gespeicherten Zwischenstand öffnen</button>
+        <input id="load-file" type="file" accept="application/json" hidden>
+      </p>
+    </details>
+  </footer>
+
+  <script type="application/json" id="packet-data">__PACKET_JSON__</script>
+  <script type="application/json" id="ui-config">__UI_JSON__</script>
+  <script type="application/json" id="site-config">__SITE_JSON__</script>
+  <script>
+__CORE_SCRIPT__
+  </script>
+  <script>
+__SCRIPT__
+  </script>
+</body>
+</html>

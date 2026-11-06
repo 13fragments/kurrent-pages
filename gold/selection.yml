@@ -1,0 +1,200 @@
+generated_at: "2026-07-04"
+updated_at: "2026-07-05 (pre-freeze checklist worked down; count corrected 52->53; G31 swapped; clean-Fraktur token dropped)"
+purpose: >
+  Gold v1 page selection - the whittled-down transcription list. 53 scored primary pages
+  (+2 unscored fabrication-probe annex candidates; the optional clean-Fraktur token was
+  DROPPED 2026-07-05 after the contamination check - see pre_freeze_checklist), selected
+  from the permissive non-BArch pool in gold/candidates.yml. Every page below was
+  VISUALLY VERIFIED on the local on-disk image (13 parallel triage passes, 2026-07-04):
+  script family, density, hand identity, and layout checked per page; typescript/blank/
+  Antiqua/graphics-only pages rejected at source. Alternates are ranked drop-in swaps
+  verified to the same standard.
+  TRANSCRIPTION-READY IMAGES: private evaluator data/benchmark_gold/v1_pages/{GID}.jpg
+  - spreads split
+  to the designated scored side, facing-page slivers cropped, low-res sources re-pulled
+  at native resolution. See processed_pages below.
+  FROZEN 2026-07-05: SHA-256 of all 55 images in gold/v1_pages.sha256; transcription
+  conventions, scoring, and the Gate 0 kill criterion pre-registered in
+  BENCHMARK_PROTOCOL.md v0.1-freeze. Page swaps after this point = logged protocol
+  amendment, only from the alternates below.
+
+method: >
+  One triage pass per source over private source_material/external images (sampled every N pages, then
+  zoomed into promising runs). Picks favor dense, transcribable-but-hard pages; distinct
+  hands maximized within writer_cap. File paths are relative to data/raw/external/.
+
+# --- Constraint audit (freeze_constraints in candidates.yml) ------------------
+constraint_audit:
+  total_scored_primary: 53   # corrected 2026-07-05: original header said 52 but the itemized list is 53 (G46, the 4th KCH-061 hand, was promoted when KCH-059's mixed-print slot came up empty and missed the header count)
+  writer_cap_max4: "PASS - max pages per hand: 3 (Petri, Merian); NB Raimund Daut appears in 2 sources (004 school-Suetterlin 2pp + 016 Normalschrift 2pp) = 4pp total, exactly at cap."
+  distinct_hands: "PASS - ~36 distinct Kurrent/Suetterlin-family hands conservatively counted (KCH-058: 4 senders, KCH-061: 4 senders, Hainspach: 7 across a/b/c, Brugger: 4 contributors, Wanderbuch: >=5 officials per-page-verified, Nimlau: 2 of 6 mapped teacher hands, plus single-hand sources)."
+  military_cap_40pct: "PASS - 8/53 (~15%) military-adjacent, all civilian-hand Feldpost (KCH-058/061)."
+  single_archive_cap: "PASS - BArch 0%. Largest institution: Stadtarchiv Solingen 13/53 (~25%); 4 different newsletters/printers within KCH-060 picks after the G31 swap."
+  license_permissive: "PASS - all CC0/PDM except BLB Reiss (CC BY 4.0, accepted) and gda.bayern.de items (CC0 at DDB record level per candidates.yml precedent). Record per-page license at GT time."
+  zero_public_text: "PASS (resolved 2026-07-05) - national-brochure contamination check done: G31 (OKW 'Kriegsgefangene') SWAPPED OUT (exact page = free 300dpi public image download at WLB Stuttgart; no OCR today but unfalsifiable tomorrow - same logic as the SBB exclusion); G32 ('Was tue ich im Ernstfall?') KEPT (no digitization of the booklet exists; only slogan-level exile-press quotes, verified non-identical to page body); clean-Fraktur token DROPPED ('Spione, Verraeter, Saboteure' had a former Kindle edition = public machine-readable text). All remaining 53 pages are one-off/local/private items with no known public text layer."
+  bestaende: "PASS - 14 distinct Bestaende/fonds across 13 institutions; ~12 document ecologies (school exercise book, teen diary, Feldpost, club newsletter, print ephemera, sodality chronicle, women's diary, teacher diary, school chronicle, household/recipe books, court book, Stammbuch, Wanderbuch, mining report, household ledger)."
+  period_buckets: "PASS - 16th c. (cpg555 1565, Freiburg ~1600), 17th (Giessen 1610-41), 18th (SLUB ~1780), 19th (Brugger, Wanderbuch, Nimlau, Merian, Freiberg), 20th (rest). Pre-1850 pages: 17/53 (~32%)."
+  non_professional_hands: "PASS - child (Daut 004), teenager (Daut 016), ordinary soldiers (7pp), young women/sodality officers (7pp), household cooks (7pp), Stammbuch friends (4pp)."
+  women_hands: "13 pages: Hainspach a/b/c (7), Reiss (2), Merian (3), Brugger Spitzenberger (1)."
+  graphics_protocol: "Pasted photos/postcards/sketches on Daut 016 + Hainspach picks = unscored <graphic/> regions. 2 pure-graphics annex candidates listed (unscored fabrication probes)."
+
+strata_totals:   # primary stratum per page (secondary tags noted per page)
+  suetterlin: 13          # KCH-058 x4, KCH-061 x3, Daut004 x2, Hainspach c x2 / b x2
+  ugly_kurrent: 12        # Freiburg x3, Giessen x2, cpg555 x1, SLUB x2, Hainspach a x2, Brugger 0064, Petri 0010
+  degraded_fraktur: 5     # KCH-060 x4 (incl. G31 swap-in), KCH-059 x1 (G32, contamination-checked)
+  tidy_kurrent: 2         # Freiberg x2 (thin; Matricula swap-in pending rights review)
+  table_registry: 3       # Merian x2, Wanderbuch form page (+ inline-table bonuses on Freiberg 0012)
+  marginalia: 2           # cpg555 005r, Giessen 0095 (+ secondary tags on Hainspach a, Petri margin column, Brugger 0064)
+  mixed_print_handwriting: 3  # Wanderbuch x2, Hainspach c 0073 (+ KCH-058 card sides, Reiss printed headers as secondary)
+  twentieth_century_kurrent: 6  # Petri x3, Reiss x2, Nimlau 0030
+  nineteenth_c_civilian: 5      # Brugger x3, Nimlau 0012, Merian 0792
+  latin_cursive_1940s: 2        # Daut016 x2
+  clean_fraktur_token: 0        # DROPPED 2026-07-05 - 'Spione' failed contamination certification; v1 ships 7 strata (see BENCHMARK_PROTOCOL.md)
+
+# --- Pre-freeze checklist - WORKED DOWN 2026-07-05 ---------------------------
+pre_freeze_checklist:
+  - "[DONE 2026-07-05] CONTAMINATION CHECK on 3 national-brochure titles. Outcomes: 'Kriegsgefangene' (OKW) = WARN, exact page publicly downloadable as image at WLB Stuttgart (purl bsz407610952; METS/PDF/in-work search triple-verified NO text layer today) -> G31 SWAPPED to KCH-060_059 for max safety. 'Was tue ich im Ernstfall?' = KEPT as G32 (no digitization of booklet anywhere; only slogan-level quotes in exile press - DNB Sozialistische Warte 02.05.1940 pp.282-283 - verified non-identical to S.24 body; page-level phrase probes vs 34.8M-page Zeitungsportal OCR = 0 hits). 'Spione, Verraeter, Saboteure' = DROPPED (former Kindle edition ASIN B01M1CKDC4 = public machine-readable text existed; + unverifiable CLADE.net digitization). Alternate KCH-059_480 dies with it."
+  - "[DONE 2026-07-05] Full-res re-downloads into <source>/fullres/: SLUB App.3395 via METS ORIGINAL filegroup (2194x2745 vs 1000px), gda.bayern.de Hainspach+Nimlau via IIIF full/full (5000px wide vs 1200), e-manuscripta Merian via i3f v21 full/full (3407-4620px vs 1000). All primaries AND alternates pulled. Giessen originals were already full-res on disk."
+  - "[DONE 2026-07-05] Spreads split (4% gutter overlap) + scored side designated per page by a visual verification pass (all required features confirmed on the scored side: Natalia signature G12-R, teacher red ink G09-R, Dienstboten header G36-L, donation-amount margin column G25-R, handwritten-not-print side G40-L). Facing-page slivers cropped on G14/G16-G21 with per-page measured fractions (cpg555 G17 'wilt auss' margin note verified safe at 4% crop; Giessen G20 own margin notes start ~17%, crop 7%). G15/160v needed no crop. Final images: private evaluator data/benchmark_gold/v1_pages/{GID}.jpg (55 files = 53 scored + 2 annex)."
+  - "[PRE-CHECKED 2026-07-05, confirm at transcription] Hainspach attribution: all picked chronicle pages show member/female-hand evidence (all-female officer slates incl. Schriftfuehrerin Marie Dittrich 1936; clergy consistently deferential 3rd person incl. 'wir feierten das Namensfest des hochw. Herrn Praeses'; 1932 1st-person passage is the Leiterin's voice). NO priest-hand suspected. Nuance: some hands may be the female Leiterin/Schwester rather than a lay member - still women's hands. Verify proper-name readings at transcription."
+  - "[AT TRANSCRIPTION] Record final folio labels + per-page license string."
+  - "[DONE 2026-07-05] Cohort-precision + protocol notes recorded in BENCHMARK_PROTOCOL.md (stub created)."
+
+# ==============================================================================
+# THE 52 SCORED PRIMARY PAGES (paths relative to data/raw/external/)
+# ==============================================================================
+selection:
+
+  # --- suetterlin (13) --------------------------------------------------------
+  - {id: G01, file: "solingen_kch_058/KCH-058_330.jpg", primary: suetterlin, strata: [ugly_kurrent, suetterlin], hand: "Erich Wagener (sig on _331)", period: 1940, license: CC0, note: "~35 lines faint dense pencil, Hochdeutsch - hardest Feldpost pick"}
+  - {id: G02, file: "solingen_kch_058/KCH-058_030.jpg", primary: suetterlin, strata: [suetterlin, mixed_print_handwriting], hand: "unknown sender, postcard Narvik? 27.7.40", period: 1940, license: CC0, note: "~20 lines edge-to-edge dark ink, PLATTDEUTSCH, punch holes"}
+  - {id: G03, file: "solingen_kch_058/KCH-058_090.jpg", strata: [suetterlin], hand: "Robert Gross, Bromberg 29.7.40", period: 1940, license: CC0, note: "~20 lines pencil + PS, Solingen Platt"}
+  - {id: G04, file: "solingen_kch_058/KCH-058_210.jpg", strata: [suetterlin], hand: "Karl Mombauer, im Felde 7.8.40", period: 1940, license: CC0, note: "~13 lines blue fountain pen, open spacing - easiest Feldpost pick"}
+  - {id: G05, file: "solingen_kch_061/KCH-061_460.jpg", strata: [suetterlin], hand: "Uffz. Langenberg, FP 22808", period: 1942, license: CC0, note: "Russland 23.III.1942, ~30 lines very dense regular Suetterlin-schooled Kurrent on squared paper"}
+  - {id: G06, file: "solingen_kch_061/KCH-061_405.jpg", primary: suetterlin, strata: [ugly_kurrent, suetterlin], hand: "Otto Schroeder, Hauptlehrer", period: 1942, license: CC0, note: "~20 long angular lines, fluent adult hand"}
+  - {id: G07, file: "solingen_kch_061/KCH-061_475.jpg", primary: suetterlin, strata: [suetterlin, ugly_kurrent], hand: "Hans R. (sig on _476), Metz Lazarett", period: 1942, license: CC0, note: "~28 lines loose pale Kurrent w/ Latin mixing, 1 crossed-out word"}
+  - {id: G08, file: "muenster_nl_daut_004/NL Daut_004_017.jpg", strata: [suetterlin], hand: "Raimund Daut (b.1926, child)", hand_cluster: raimund_daut, period: "1935/36", license: CC0, note: "Sagen texts, ~20 lines/page full spread, red drop cap"}
+  - {id: G09, file: "muenster_nl_daut_004/NL Daut_004_008.jpg", strata: [suetterlin], hand: "Raimund Daut + teacher red ink", hand_cluster: raimund_daut, period: "1935/36", license: CC0, note: "grammar exercise + narrative, teacher grades 'sehr gut!/gut!' = second hand"}
+  - {id: G10, file: "gda_hainspach_1647c/page_0016.jpg", strata: [suetterlin], hand: "Schriftfuehrerin hand 1 (woman)", period: 1932, license: "CC0 (DDB record)", note: "Grabrede Weihbischof Frind, neat upright, both pages full"}
+  - {id: G11, file: "gda_hainspach_1647c/page_0048.jpg", strata: [suetterlin], hand: "Schriftfuehrerin hand 2 (woman)", period: 1936, license: "CC0 (DDB record)", note: "Ratssitzung/Hauptversammlung 1936, slanted thinner strokes, very dense"}
+  - {id: G12, file: "gda_hainspach_1647b/page_0040.jpg", strata: [suetterlin], hand: "Sr. M. Natalia (SIGNED, woman)", period: 1924, license: "CC0 (DDB record)", note: "pasted letter Eger 18.12.1924, ~45 lines squared paper; name-attributed female hand (adult nun, not school cohort)"}
+  - {id: G13, file: "gda_hainspach_1647b/page_0090.jpg", strata: [suetterlin], hand: "chronicle hand late 1920s (woman)", period: 1929, license: "CC0 (DDB record)", note: "Faschingsfeier/Generalversammlung 1929, very dense both pages"}
+
+  # --- ugly_kurrent (14) ------------------------------------------------------
+  - {id: G14, file: "freiburg_stp_sk_18/040v.jpg", strata: [ugly_kurrent], hand: "St. Peter remedy-book hand", hand_cluster: st_peter_remedy_book, period: "~1600", license: PDM, note: "~35 cramped lines, heaviest ink spread - hard ceiling, legibility 2/5"}
+  - {id: G15, file: "freiburg_stp_sk_18/160v.jpg", strata: [ugly_kurrent], hand: "same hand", hand_cluster: st_peter_remedy_book, period: "~1600", license: PDM, note: "aqua-fortis recipe, strikethrough + blot corrections"}
+  - {id: G16, file: "freiburg_stp_sk_18/070r.jpg", strata: [ugly_kurrent], hand: "same hand", hand_cluster: st_peter_remedy_book, period: "~1600", license: PDM, note: "plaster recipes, ink pooling, one blotted word"}
+  - {id: G17, file: "heidelberg_cpg555/005r.jpg", primary: marginalia, strata: [ugly_kurrent, marginalia], hand: "1565 main hand + margin annotator", hand_cluster: cpg555_main_hand, period: 1565, license: PDM, note: "second-hand margin note 'wilt auss' keyed to text line; ~24 long lines; oldest page in set"}
+  - {id: G18, file: "heidelberg_cpg555/040r.jpg", strata: [ugly_kurrent], hand: "1565 main hand", hand_cluster: cpg555_main_hand, period: 1565, license: PDM, note: "~30 lines, 4 recipes + headings; crop neighbor-folio edge"}
+  - {id: G19, file: "giessen_hs_1064h/page_0015.jpg", strata: [ugly_kurrent], hand: "court scribe A (1610s)", hand_cluster: giessen_court_scribe_a, period: "1610s", license: PDM, note: "~40 lines full page, water stain + tape patch"}
+  - {id: G20, file: "giessen_hs_1064h/page_0095.jpg", primary: marginalia, strata: [ugly_kurrent, marginalia], hand: "court scribe B (1630s)", period: "1630s", license: PDM, note: "fol 45r, ~30 lines + margin keyword notes, large water stain"}
+  - {id: G21, file: "giessen_hs_1064h/page_0045.jpg", strata: [ugly_kurrent], hand: "court scribe A", hand_cluster: giessen_court_scribe_a, period: "1610s-20s", license: PDM, note: "fol 21r, HEAVY water stain through center - the damage case, transcribable"}
+  - {id: G22, file: "slub_dresden_app_3395/page_0050.jpg", strata: [ugly_kurrent], hand: "household scribe 1", period: "~1780", license: PDM, note: "p.46, ~22 lines recipe text, ruled double border"}
+  - {id: G23, file: "slub_dresden_app_3395/page_0700.jpg", strata: [ugly_kurrent], hand: "later addition hand 2", period: "~1780-1800", license: PDM, note: "'Rohr Krapfeln', spiky cramped, heavy bleed-through"}
+  - {id: G24, file: "gda_hainspach_1647a/page_0008.jpg", primary: ugly_kurrent, strata: [ugly_kurrent, marginalia], hand: "founding-era hand (woman)", period: "1896-98", license: "CC0 (DDB record)", note: "cramped faded, interlinear corrections + insertion marks"}
+  - {id: G25, file: "gda_hainspach_1647a/page_0072.jpg", primary: ugly_kurrent, strata: [ugly_kurrent, marginalia], hand: "WWI-era hand (woman)", period: 1917, license: "CC0 (DDB record)", note: "margin donation-amount column (50/20/10/25 K)"}
+  - {id: G26, file: "heidelberg_stammbuch_brugger/page_0064.jpg", primary: ugly_kurrent, strata: [ugly_kurrent, marginalia], hand: "anonymous Stammbuch contributor", period: "1821-23", license: PDM, note: "fol 167v satirical poem, heavy ink blots + 8 vertical marginal lines - prime ugly specimen"}
+  - {id: G27, file: "bielefeld_petri_008/StArchBI_200_119_008_0010.jpg", primary: ugly_kurrent, strata: [ugly_kurrent, twentieth_century_kurrent, marginalia], hand: "Hermann Petri (b.1868)", hand_cluster: hermann_petri, period: "1939-48", license: CC0, note: "10-year calendar diary 16./17. Jan - entries 1939-48 stacked per page, marginalia column, small tight script"}
+
+  # --- degraded_fraktur (5) ---------------------------------------------------
+  - {id: G28, file: "solingen_kch_060/KCH-060_170.jpg", strata: [degraded_fraktur], hand: "print (Turnerbund Soldatenpost, Jan 1944)", period: 1944, license: CC0, note: "~50 full-width Fraktur lines, browned pinkish stock, worn type, name-dense"}
+  - {id: G29, file: "solingen_kch_060/KCH-060_620.jpg", strata: [degraded_fraktur], hand: "print (Die Freiheit Graefrath, Dez 1943)", period: 1943, license: CC0, note: "2 cols x ~55 lines, mounted on ledger grid, squashed type, small results table"}
+  - {id: G30, file: "solingen_kch_060/KCH-060_860.jpg", strata: [degraded_fraktur], hand: "print (Bruecke zur Heimat Ohligs, Jul/Aug 1943)", period: 1943, license: CC0, note: "2 cols x ~60-65 lines extremely dense, heavy browning + ink squash"}
+  - {id: G31, file: "solingen_kch_060/KCH-060_059.jpg", strata: [degraded_fraktur], hand: "print (WMTV Vereinszeitung, Weihnachten 1944)", period: 1944, license: CC0, note: "SWAPPED IN 2026-07-05 (replaced OKW 'Kriegsgefangene' - exact page publicly downloadable at WLB). ~48 lines + 4 bold Fraktur headings, late-war rough paper, patchy impression; 4th distinct KCH-060 printer"}
+  - {id: G32, file: "solingen_kch_059/KCH-059_400.jpg", strata: [degraded_fraktur], hand: "print ('Was tue ich im Ernstfall?' S.24)", period: "~1940", license: CC0, note: "CONTAMINATION-CHECKED 2026-07-05, kept: no digitization of booklet exists; only slogan-level exile-press quotes (non-identical to page body); foxing + punch hole"}
+
+  # --- tidy_kurrent (2) -------------------------------------------------------
+  - {id: G33, file: "tu_freiberg_specimina/page_0012.jpg", primary: tidy_kurrent, strata: [tidy_kurrent, table_registry], hand: "G.A. Heine (student, 1888)", hand_cluster: ga_heine, period: 1888, license: PDM, note: "~35 lines + INLINE TABLE (mine names, kg/Ctr cols) + Latin-script mine names"}
+  - {id: G34, file: "tu_freiberg_specimina/page_0036.jpg", strata: [tidy_kurrent], hand: "same hand", hand_cluster: ga_heine, period: 1888, license: PDM, note: "~30 lines, heavy Latin-script insertions (Hanrez & Co, Couffinhal...)"}
+
+  # --- table_registry (3) -----------------------------------------------------
+  - {id: G35, file: "emanuscripta_merian_haushaltungsbuecher/page_1075.jpg", strata: [table_registry], hand: "Sophie Merian-Burckhardt (woman)", hand_cluster: sophie_merian_burckhardt, period: 1914, license: PDM, note: "4-col red-ruled expense ledger, ~50 filled rows, Transport rows + sums - cleanest densest ledger"}
+  - {id: G36, file: "emanuscripta_merian_haushaltungsbuecher/page_0949.jpg", strata: [table_registry], hand: "same hand", hand_cluster: sophie_merian_burckhardt, period: "1901-05", license: PDM, note: "Dienstbotenverzeichnis (servants' register) + Nov 1901 ledger - register-prose + table in one spread"}
+  - {id: G37, file: "slub_grimma_wanderbuecher/page_0007.jpg", primary: table_registry, strata: [table_registry, mixed_print_handwriting], hand: "issuing clerk", period: 1811, license: PDM, note: "printed Fraktur form (Geburtsort/Alter/Statur/Haare) + Kurrent fills"}
+
+  # --- mixed_print_handwriting (3) ---------------------------------------------
+  - {id: G38, file: "slub_grimma_wanderbuecher/page_0028.jpg", primary: mixed_print_handwriting, strata: [mixed_print_handwriting, nineteenth_c_civilian], hand: "~5-6 official hands (Chemnitz/Gera/Eisenberg...)", period: "1811-13", license: PDM, note: "overlapping visa entries + guild stamp, ink-color variation"}
+  - {id: G39, file: "slub_grimma_wanderbuecher/page_0026.jpg", primary: mixed_print_handwriting, strata: [mixed_print_handwriting, nineteenth_c_civilian], hand: "~4 official hands (Torgau/Meissen/Dresden...)", period: "1811-13", license: PDM, note: "2 ink stamps overlap text (POLIZEY BUREAU TORGAU)"}
+  - {id: G40, file: "gda_hainspach_1647c/page_0073.jpg", primary: mixed_print_handwriting, strata: [suetterlin, mixed_print_handwriting], hand: "Schriftfuehrerin hand 3 (woman)", period: "1942-43", license: "CC0 (DDB record)", note: "spiky wartime hand + pasted typed Programm right page = unscored print region"}
+
+  # --- twentieth_century_kurrent (6) --------------------------------------------
+  - {id: G41, file: "blb_karlsruhe_reiss_k3228_1/511890.jpg", strata: [twentieth_century_kurrent], hand: "Elisabeth Reiss (woman)", hand_cluster: elisabeth_reiss, period: 1916, license: "CC BY 4.0", note: "18. Sept 1916, ~22 full lines ink, legibility 4/5"}
+  - {id: G42, file: "blb_karlsruhe_reiss_k3228_1/511920.jpg", strata: [twentieth_century_kurrent], hand: "same hand", hand_cluster: elisabeth_reiss, period: 1916, license: "CC BY 4.0", note: "18. Okt 1916, ~23 lines dark ink"}
+  - {id: G43, file: "bielefeld_petri_008/StArchBI_200_119_008_0110.jpg", strata: [twentieth_century_kurrent], hand: "Hermann Petri", hand_cluster: hermann_petri, period: "1939-47", license: CC0, note: "1./2. Aug, later-year entries hastier"}
+  - {id: G44, file: "bielefeld_petri_008/StArchBI_200_119_008_0185.jpg", strata: [twentieth_century_kurrent], hand: "Hermann Petri", hand_cluster: hermann_petri, period: "1939-47", license: CC0, note: "15./16. Dez, ~75% filled, gutter tape"}
+  - {id: G45, file: "gda_bayern_schulchronik_nimlau/page_0030.jpg", strata: [twentieth_century_kurrent], hand: "teacher hand C", period: "1911/12", license: "CC0 (DDB record)", note: "bold upright, keyword marginalia (Ernennung/Krankenurlaub...)"}
+  - {id: G46, file: "solingen_kch_061/KCH-061_051.jpg", primary: twentieth_century_kurrent, strata: [suetterlin, twentieth_century_kurrent], hand: "Eugen Rau, FP 05791", period: 1940, license: CC0, note: "~28 lines fine-nib; typescript bleed-through from verso - degradation case; 4th distinct KCH-061 hand"}
+
+  # --- nineteenth_c_civilian (5) ------------------------------------------------
+  - {id: G47, file: "heidelberg_stammbuch_brugger/page_0209.jpg", primary: nineteenth_c_civilian, strata: [nineteenth_c_civilian, ugly_kurrent], hand: "Auguste Spitzenberger (woman)", period: 1824, license: PDM, note: "~20 lines dense prose, difficult hand, faint ink"}
+  - {id: G48, file: "heidelberg_stammbuch_brugger/page_0145.jpg", strata: [nineteenth_c_civilian], hand: "'v. Gass' of Rastatt", period: 1824, license: PDM, note: "~24 lines, ROTATED 90deg layout, Q&A dialogue format - reading-order stress"}
+  - {id: G49, file: "heidelberg_stammbuch_brugger/page_0091.jpg", strata: [nineteenth_c_civilian], hand: "Fr. Xav. Jetz/Hetz?, stud. jur.", period: 1823, license: PDM, note: "~13 lines, blue paper"}
+  - {id: G50, file: "gda_bayern_schulchronik_nimlau/page_0012.jpg", strata: [nineteenth_c_civilian], hand: "teacher hand B", period: "1894/95", license: "CC0 (DDB record)", note: "~30 lines/page both pages full, margin date fractions"}
+  - {id: G51, file: "emanuscripta_merian_haushaltungsbuecher/page_0792.jpg", primary: nineteenth_c_civilian, strata: [nineteenth_c_civilian, table_registry], hand: "Sophie Merian-Burckhardt", hand_cluster: sophie_merian_burckhardt, period: 1896, license: PDM, note: "servants'-register prose w/ interlinear insertions + Jan 1896 ledger"}
+
+  # --- latin_cursive_1940s (2 - contrast stratum) ---------------------------------
+  - {id: G52a, file: "muenster_nl_daut_016/NL Daut_016_070.jpg", strata: [latin_cursive_1940s], hand: "Raimund Daut (age 16)", hand_cluster: raimund_daut, period: 1942, license: CC0, note: "cycling diary ~30 lines/page Normalschrift, 2 pasted photos = unscored graphics"}
+  - {id: G52b, file: "muenster_nl_daut_016/NL Daut_016_075.jpg", strata: [latin_cursive_1940s], hand: "Raimund Daut", hand_cluster: raimund_daut, period: 1942, license: CC0, note: "left ~35 lines full; pasted postcard + ink sketch = unscored regions"}
+  # NB: G52a+G52b keep Raimund Daut at exactly 4 total pages incl. G08/G09 (writer_cap boundary).
+
+# --- clean-Fraktur token: DROPPED 2026-07-05 ----------------------------------
+clean_fraktur_token:
+  - "DROPPED: 'Spione, Verraeter, Sabateure' (KCH-059_500/_480) failed contamination certification - a Kindle e-book edition existed (ASIN B01M1CKDC4, since delisted) = public machine-readable text of the content; plus an unverifiable digitization at CLADE.net (bibliotheques-numeriques.defense.gouv.fr, host down at check time). v1 ships 7 strata with the clean_fraktur omission noted in BENCHMARK_PROTOCOL.md; comparability via public GT4HistOCR / Reichsanzeiger-GT. Revival path: re-check CLADE when reachable AND find a zero-text clean-Fraktur page elsewhere."
+
+# --- UNSCORED fabrication-probe annex (graphics_protocol pt.3; correct output ~= abstention)
+unscored_annex_candidates:
+  - {file: "solingen_kch_059/KCH-059_020.jpg", note: "illustrated booklet page, image-dominant, sparse text"}
+  - {file: "muenster_nl_daut_016/NL Daut_016_010.jpg", note: "photo-album spread, photos only"}
+
+# ==============================================================================
+# RANKED ALTERNATES (drop-in swaps, same-standard visual verification)
+# ==============================================================================
+alternates:
+  solingen_kch_058: ["KCH-058_180.jpg (unknown, Koenigsberg, heavy dark ink, Platt)", "KCH-058_270.jpg (faded purple copy-pencil - HARDEST medium, consider as extra degradation case)", "KCH-058_435.jpg (Ernst Eisel)", "KCH-058_240.jpg (August Kau/Mau?)"]
+  solingen_kch_061: ["KCH-061_185.jpg (Karl B., broad-stroke)", "KCH-061_150.jpg (Zahlmeister Kemmerling, calligraphic - clean not ugly)"]
+  solingen_kch_060: ["KCH-060_538.jpg (OG Aufderhoehe, Druck Carl Vieth)", "KCH-060_700.jpg (Hoehscheider Heimatpost, Druck B. Boll)"]  # KCH-060_059 promoted to G31 2026-07-05; 2 further DIFFERENT printers remain
+  solingen_kch_059: ["KCH-059_280.jpg (NSDAP Kreis Niederberg Weihnachtsheft - LOCAL, safest remaining KCH-059 swap)", "KCH-059_420.jpg (Ernstfall S.44 - same title as G32, same WARN profile)"]  # KCH-059_480 dead (Spione title failed check)
+  muenster_nl_daut_004: ["NL Daut_004_020.jpg", "NL Daut_004_018.jpg (teacher red ink + drawing)"]
+  muenster_nl_daut_016: ["NL Daut_016_005.jpg (neat opening 1943)", "NL Daut_016_090.jpg (hastier, strikethroughs)"]
+  gda_hainspach_1647c: ["page_0064.jpg (~1938)", "page_0070.jpg (1941 jubilee print + hw = mixed_print)"]
+  gda_hainspach_1647b: ["page_0085.jpg (densest spread)", "page_0108.jpg (1931, latest cohort)"]
+  gda_hainspach_1647a: ["page_0092.jpg (1919, Roman-numeral margin marks)", "page_0024.jpg (1906, faded + foxing)"]
+  blb_karlsruhe_reiss: ["511950.jpg (17. Nov)", "511680.jpg (20. Feb, grayer ink)"]
+  bielefeld_petri_008: ["StArchBI_200_119_008_0035.jpg", "StArchBI_200_119_008_0135.jpg"]
+  gda_nimlau: ["page_0005.jpg (hand A, 1861-76 retrospective)", "page_0050.jpg (hand D 1923-24 + enrollment tables)", "page_0090.jpg (hand E 1936-37)"]
+  heidelberg_cpg555: ["161v.jpg (margin '+ schael' + insertion caret - swap for G17 if gutter fold hurts)", "028r.jpg (clean dense)"]
+  freiburg_stp_sk_18: ["145v.jpg (red-touched initials)", "130r.jpg (rubricated, easier)"]
+  giessen_hs_1064h: ["page_0014.jpg (dated 1613, cleanest)", "page_0090.jpg (TWO hands on one page)"]
+  slub_dresden_app_3395: ["page_0500.jpg (strikethrough correction)", "page_0725.jpg (hand 3?, very faded)"]
+  heidelberg_stammbuch_brugger: ["page_0105.jpg (v. Schach, loose scrawl)", "page_0149.jpg (D.K. Stiel?)", "page_0065.jpg (Sophie Sauter, woman, short)"]
+  slub_grimma_wanderbuecher: ["page_0024.jpg (~4-5 hands)", "page_0017.jpg (3 large police stamps over text)"]
+  tu_freiberg_specimina: ["page_0008.jpg (numbered list)", "page_0020.jpg (temperature readings)"]
+  emanuscripta_merian: ["page_0395.jpg (1882 ledger, foxing)", "page_0471.jpg (1880s register prose, verso blank)"]
+
+# ==============================================================================
+# PROCESSED TRANSCRIPTION-READY PAGES (private evaluator data/benchmark_gold/v1_pages/{GID}.jpg)
+# ==============================================================================
+processed_pages:
+  spread_split_scored_side:   # split from fullres source at 4% gutter overlap; halves kept in v1_pages/spread_halves/
+    {G08: L, G09: R, G10: R, G11: R, G12: R, G13: R, G24: R, G25: R, G27: R,
+     G35: R, G36: L, G40: L, G43: R, G44: R, G45: R, G50: R, G51: L, G52a: L, G52b: L}
+  edge_cropped:   # facing-page sliver removed; fractions measured per page by visual verification
+    {G14: "right 4%", G16: "left 8%", G17: "left 4% ('wilt auss' margin note at ~8% verified safe)",
+     G18: "left 9%", G19: "left 10%", G20: "left 7% (own margin notes at ~17% safe)", G21: "left 12%"}
+  fullres_sources:   # native-resolution re-downloads used for processing (also cover all alternates)
+    - "slub_dresden_app_3395/fullres/ (METS ORIGINAL filegroup, 2194x2745)"
+    - "gda_hainspach_1647{a,b,c}/fullres/ + gda_bayern_schulchronik_nimlau/fullres/ (IIIF full/full, 5000px wide)"
+    - "emanuscripta_merian_haushaltungsbuecher/fullres/ (i3f v21 full/full, 3407-4620px wide)"
+  straight_copies: "all remaining GIDs copied verbatim from data/raw/external/ sources (already native res)"
+  verification: "every scored side/crop visually verified 2026-07-05: full text column present, required features confirmed (G12 signature, G09 red ink, G36 register header, G25 amount column, G40 handwritten side); only artifact = loose bookmark ribbon in G44 gutter overlap, scored text untouched"
+
+# --- Triage discoveries worth keeping (beyond candidates.yml) -----------------
+triage_notes:
+  - "KCH-059 has NO mixed print+handwriting pages (pristine printed scrapbook, typescript index only) - stratum reallocated to Wanderbuch/Hainspach. Its dense-Fraktur booklets are NATIONAL titles (see checklist), unlike KCH-060's local newsletters."
+  - "KCH-060 primaries span 3 different newsletters; alternates add 3 more = 6 identified printers within one CC0 volume."
+  - "Nimlau hand map: 6 distinct teacher hands (A 1861-94, B 1894-1910, C 1911+, D 1920s, E 1930s, F 1940-45) - spare hand inventory for future set expansion."
+  - "Petri 008 is a 10-YEAR CALENDAR diary: each page stacks entries 1939-48 for one calendar date - built-in intra-page year diversity."
+  - "cpg555 full margin sweep: worded second-hand marginalia only on 005r + 161v; '+' cross cluster at 097v-103v."
+  - "Reiss: avoid pencil months (511740, 511800) and mixed ink/purple-indelible pages (511770, 511830)."
+  - "Brugger fol 209r (G48) is rotated 90deg - genuine reading-order/orientation stress case."
+  - "Merian IIIF manifest gives exact Dienstboten section locations: 0331/0471/0645/0791-2/0949."

@@ -1,0 +1,1364 @@
+generated_at: "2026-07-03"
+purpose: >
+  Page-level gold-set candidates for the German historical HTR benchmark (VISION section 11).
+  Primary source WAS Bundesarchiv Invenio, deliberately extended beyond BArch to break the
+  institution / genre / period / writer-demographic monoculture of the confirmed pool.
+  UPDATE 2026-07-03: BArch is EXCLUDED from gold v1 (reuse permission unresolved - see
+  decisions_log.barch_exclusion); gold v1 freezes from the non-BArch permissive pool only.
+
+# --- How to read this file --------------------------------------------------
+framing:
+  strata_are: >
+    script x layout ONLY (the 8 canonical VISION section 11 categories). A 30-50 page gold set
+    cannot stratify on script x layout x period x institution x demographic without pretending to
+    support per-cell statistics. So period, institution, and writer-demographic are enforced as
+    freeze CONSTRAINTS below, not as strata dimensions.
+  canonical_strata:
+    - clean_fraktur   # DOWNGRADED to optional 2026-07-03 - see decisions_log.clean_fraktur_downgrade
+    - degraded_fraktur
+    - tidy_kurrent
+    - ugly_kurrent
+    - suetterlin
+    - table_registry
+    - marginalia
+    - mixed_print_handwriting
+  sourcing_constraint: >
+    Already-digitized sources ONLY - no scanning resources available. Any target without an
+    existing online Digitalisat is deferred by construction, regardless of how well it fits.
+
+# --- Freeze constraints (auditable; gold set cannot freeze until all pass) ---
+freeze_constraints:
+  writer_cap: "<= 4 final gold pages per distinct writer/hand."
+  distinct_hands: >
+    >= 15-20 distinct Kurrent/Suetterlin hands, diverse across period + provenance + training
+    (NOT 15 WWI army clerks: count is not the goal, writing-culture diversity is).
+  military_cap: "PH/RM/RW military command records <= ~40% of final gold pages."
+  single_archive_cap: "Bundesarchiv <= ~60% of final gold pages (guard against single-institution monoculture)."
+  license_permissive: >
+    Every gold page must carry a permissive rights statement (CC0 / PD / rights-cleared). REJECT
+    CC BY-NC-ND, watermarked, and InC (Urheberrechtsschutz) items - the 2026-07-02 sweep showed
+    museum portals (DHM/MEK) fail this while city-archive Neustart-Kultur digitizations
+    (archive.nrw METS) are CC0. Record license per page. NB: BArch Lesesaal-only material
+    (data/restricted/) fails this until access + reuse terms are granted. Internet-viewable BArch
+    Invenio scans are access-cleared, not reuse-cleared, unless an item/page carries an explicit
+    permissive rights statement or BArch grants written reuse clearance.
+  zero_public_text: >
+    DECIDED 2026-07-03 (decisions_log.zero_public_text): a gold page must have NO publicly
+    crawlable text layer of ANY quality (ALTO/hOCR/plain text) covering that page, and no known
+    edition/transcription of its content. Garbage-grade OCR is NOT exempt - what pretraining
+    crawlers did with it is unfalsifiable, and the set's "contamination-proof in both directions"
+    claim needs a binary, auditable per-page answer. Consequence: SBB Feldzeitungen (uncorrected
+    ALTO) are OUT of gold - demoted to Tier 4 self-training / documented-caveat extension eval.
+  bestaende: ">= 6 Bestaende and >= 5 document ecologies in the frozen set."
+  period_buckets: >
+    >= 2 period buckets represented, and at least some pre-1850 material. Kurrent runs back to the
+    16th c. and the genealogy use case is heavily 17th-19th c.; a Kurrent set that is all post-1870
+    cannot support claims about older material.
+  non_professional_hands: >
+    >= a meaningful minimum of hands from non-professional writers (rural priests, semi-literate
+    writers, women's hands, elderly hands). The "long tail of unseen hands" in VISION is mostly NOT
+    trained chancery scribes.
+  graphics_protocol: >
+    DECIDED 2026-07-03 (decisions_log.graphics_protocol): (1) pure map/sketch/photo pages are
+    EXCLUDED from the scored gold set - reading order is undefined there, so alignment-based
+    page-level scoring has no well-formed ground truth; (2) mixed pages with embedded graphics
+    are IN - transcribe the running text, mark graphic regions as unscored <graphic/> regions;
+    (3) keep 2-3 pure map/image pages as an UNSCORED fabrication-probe annex (correct output
+    ~= abstention), outside the headline benchmark. NB: current map candidates are all BArch
+    (PH 10-II) = excluded with BArch; if the annex is wanted for v1, source image-dominant pages
+    from the permissive pool (e.g. KCH-059 illustrated booklets).
+
+# --- Decisions log (written BEFORE any benchmark run, per VISION section 11) --
+decisions_log:
+  - id: zero_public_text
+    date: "2026-07-03"
+    decision: >
+      Public uncorrected OCR (SBB ALTO) COUNTS as contamination. Gold requires zero publicly
+      crawlable text of any quality per page, plus no known edition/transcription.
+    rationale: >
+      The gold set's core claim is contamination-proof in both directions. "The OCR is garbage-
+      grade" is an unfalsifiable defense - nobody can prove what pretraining crawlers did with
+      it, and image+text pairs of those exact pages sit on a public server. A skeptical OCR-D
+      reviewer asks one question: "was there public text for these pages?" The only clean answer
+      is a binary NO for every page. Set is 30-50pp; purity is affordable.
+    consequence: >
+      SBB Kriegszeitung Borkum + Der feldgraue Bauer excluded from gold; retained on disk as
+      Tier 4 self-training material and documented-caveat extension eval. degraded_fraktur gold
+      rests on Solingen KCH-060/059 (one institution - mitigate by selecting across DIFFERENT
+      club newsletters/printers within the volumes) + Matricula microfilm register pages as the
+      second-institution hedge (rights review pending).
+  - id: graphics_protocol
+    date: "2026-07-03"
+    decision: >
+      Pure-graphics pages OUT of scored gold; embedded graphics allowed as unscored regions
+      within text pages; 2-3 pure map/image pages kept as an UNSCORED fabrication-probe annex.
+    rationale: >
+      Maps break the METHODOLOGY, not just the engines: no defined reading order = no well-formed
+      alignment ground truth for page-level CER. Bespoke scoring rules for 2-3 pages would
+      undermine protocol credibility. The fabrication-trap value survives in the unscored annex -
+      a map is the perfect hallucination probe (correct output ~= abstention, a headline metric)
+      and costs near-zero transcription time.
+  - id: barch_exclusion
+    date: "2026-07-03"
+    decision: "ALL Bundesarchiv material excluded from gold v1 - reuse permission unclear."
+    rationale: >
+      Invenio exposes no license/rights field anywhere (verified across all 23 local pulls,
+      2026-07-03); official BArch Nachnutzung guidance puts reuse risk on the user. Access-
+      cleared != reuse-cleared. A permissive benchmark cannot anchor on pages that cannot be
+      legally cleared for reuse.
+    consequence: >
+      Gold v1 is 100% non-BArch. single_archive_cap and military_cap become trivially satisfied
+      (only military-adjacent material left is civilian-hand Feldpost). Stratum losses and their
+      covers: N 239/28 twentieth_century_kurrent flagship -> Petri 008 / Reiss / Nimlau late
+      pages; PH table-registry forms -> Matricula + Merian ledgers; R 1001/R 43 marginalia ->
+      cpg555 + Giessen Hs 1064h + Hainspach 1647/a. REVIVAL PATH: written BArch clearance or
+      per-item PD determination; entries stay in candidates: as inventory, marked not eligible.
+  - id: clean_fraktur_downgrade
+    date: "2026-07-03"
+    decision: "clean_fraktur DOWNGRADED from required stratum to optional; gold v1 may freeze without it."
+    rationale: >
+      Triple squeeze: R 150/280 failed the typeface check (Antiqua body), R 43/2404 fell with
+      barch_exclusion, and zero_public_text makes replacement hard (most digitized clean Fraktur
+      ships OCR by construction). VISION sections 5-6 already concede clean print to Calamari/
+      OCR-D (<1% CER territory) - the stratum mostly measures a solved problem; the benchmark's
+      differentiation lives in handwriting + layout-hostile strata. Not worth delaying freeze.
+    consequence: >
+      If cheap token coverage appears (2-3 zero-OCR clean-Fraktur pages, e.g. cleaner program/
+      booklet prints inside KCH-059), take it; otherwise ship v1 with 7 strata and note the
+      omission in BENCHMARK_PROTOCOL.md. Clean-Fraktur comparability is retained via the public
+      GT4HistOCR / Reichsanzeiger-GT sets (VISION section 11 already includes them).
+
+# --- What currently blocks the freeze ---------------------------------------
+freeze_blocking_gaps:
+  - id: barch_license_unresolved
+    severity: resolved_by_decision  # 2026-07-03: excluded from gold v1 rather than waiting - see decisions_log.barch_exclusion
+    note: >
+      CHECKED 2026-07-03: BArch Invenio liXe viewer HTML/JSON and saved metadata for all 23 local
+      public/restricted pulls expose no license/rights/accessCondition field. Official BArch
+      Nachnutzung guidance says online publication does not automatically permit third-party reuse;
+      users must check copyright/related rights themselves and bear reuse risk. Therefore BArch
+      entries below now carry an explicit UNRESOLVED license field and are NOT freeze-eligible as
+      permissive gold until written BArch clearance or item/page-level PD/legal determination exists.
+  - id: suetterlin_empty
+    severity: resolved_downloaded
+    women_hand_update: >
+      RESIDUAL WOMEN'S-HAND GAP CLOSED 2026-07-02 (evening/hedge sweep). Flagship: BayHStA
+      Sudetendeutsches Archiv "Chronik der Marienkinder Hainspach" 1647/c (1932-1943) + 1647/b
+      (1921-1931) - a girls'/young-women's Marian sodality whose successive Schriftfuehrerinnen
+      (born ~1905-1925 = the Suetterlin cohort) kept the book in VISUALLY-VERIFIED Suetterlin-
+      family Kurrent (spiky verticalized forms, two-stroke 'e', long s - NOT Latin cursive; hand
+      changes visible 1933->1936). CC0, IIIF, multi-hand, served on the proven gda.bayern.de vein.
+      1647/b even has a pasted letter signed "Sr. M. Natalia" = a name-attributed female Kurrent
+      hand. Bonuses (adjacent cohort, women's-Kurrent diversity not strict Suetterlin): 1647/a
+      (1892-1920) and BLB Karlsruhe Elisabeth Reiss WWI diary 1916 (CC BY 4.0). See
+      external_confirmed_candidates. RESIDUAL RISK to check at transcription: the chronicle hand
+      is not per-page name-attributed, so confirm from ductus/content it is a member's hand, not
+      the male Praeses's; and 1647/b's early-1920s hands are borderline-early for strict 1905-33.
+    note: >
+      RESOLVED 2026-07-02 via non-BArch DDB sweep (BArch itself is a dead end - see below).
+      Three image-verified CC0 candidates found (see external_confirmed_candidates): NL Daut 004
+      (Stadtarchiv Muenster, textbook school-Suetterlin schoolbook, writer b.1926) + Solingen
+      KCH-058 and KCH-061 (Feldpost, dozens of ordinary adult hands, 1940). ~60 usable pages,
+      2 institutions, all CC0 + watermark-free. Downloads complete 2026-07-02 (direct METS/JPG URLs,
+      not Invenio). Earlier residual gap was women's home-front hands in TRUE Suetterlin; the later
+      Hainspach/BLB sweep materially closed that demographic gap (see women_hand_update).
+      BArch history for the record: MSG 2 class 1.2 EXHAUSTED - 6462/1133 no Digitalisat; the 5
+      digitized items (5408/5005/6907/4164/6349) all Lesesaal-only ("nicht zur Anzeige im Internet
+      freigegeben"). LESSON: Invenio Digitalisat flag != internet viewability. N 62/1b is NOT
+      school-Suetterlin.
+  - id: fraktur_single_source
+    severity: resolved_by_decision  # 2026-07-03: degraded = Solingen + Matricula hedge; clean = downgraded to optional
+    note: >
+      clean_fraktur and degraded_fraktur relied entirely on R 43/2404 ("high contamination, use
+      sparingly"). FAILED de-risk 2026-07-03: R 150/280 (1896 printed jurisdiction order, Druck)
+      is clean print but body text is Antiqua/roman; blackletter is display headings only. It does
+      NOT count as clean_fraktur and does NOTHING for degraded_fraktur. clean_fraktur still needs a
+      second verified body-Fraktur source (R 101 parliamentary print etc.).
+      UPDATE 2026-07-02 (evening sweep): LARGELY DE-RISKED; downloads complete; one policy call remains.
+      Two SBB Berlin WWI Feldzeitungen verified PDM 1.0 + IIIF + visually degraded Fraktur
+      (Festung Borkum ~1265pp, Der feldgraue Bauer 297pp - see external_confirmed_candidates).
+      CAVEAT to decide before freeze: SBB exposes its own UNCORRECTED machine OCR (ALTO) per
+      page - garbage-grade on Fraktur, not ground truth, but publicly crawlable text. Decide
+      whether low-quality public OCR counts as contamination. NB: UB Heidelberg Feldzeitungen
+      (Liller Kriegszeitung etc.) are blanket InC - rejected wholesale.
+      UPDATE 2 (2026-07-02, hedge sweep): non-SBB ZERO-OCR hedge CONFIRMED - Solingen KCH-060
+      Heimatbriefe (999pp, CC0, no ALTO anywhere, worn wartime Fraktur club newsletters) +
+      KCH-059 Druckschriften (605pp, same server). Stratum now has 3 sources across 2
+      institutions and survives EITHER outcome of the SBB-OCR policy call. Residual note:
+      KCH-060/059 count against the same Solingen institution budget as KCH-058/061.
+      UPDATE 3 (2026-07-03, decisions - CLOSES THIS GAP): zero_public_text excludes the SBB
+      volumes from gold; barch_exclusion removes R 43/2404 and R 150/280; clean_fraktur is
+      DOWNGRADED to optional (decisions_log.clean_fraktur_downgrade). Net: degraded_fraktur
+      gold = Solingen KCH-060/059 (select across different club newsletters/printers) +
+      Matricula microfilm hedge (rights pending); clean_fraktur = optional token pages only.
+      No longer freeze-blocking.
+  - id: contamination_vs_diversity
+    severity: resolved_downloaded
+    note: >
+      WAS structural-blocking: the only non-military variety in the BArch pool came from the most
+      contaminated sources (R 1001, R 43, N 62). RESOLVED 2026-07-02 by landing clean non-BArch:
+      4 Public-Domain civilian household/court books (SLUB App.3395, Heidelberg cpg555, Gießen
+      Hs 1064h, Freiburg StP SK 18) + 3 CC0 Suetterlin sets (Muenster Daut, Solingen x2). All
+      LOW-contamination, all non-military. The 40% military cap is now meetable from clean pages.
+      Downloads complete 2026-07-02. (Watch the inverse trap the sweep exposed: perfect-genre MUSEUM items
+      are mostly NC-ND/InC - see external_rejected_from_sweep.)
+  - id: monoculture
+    severity: resolved_downloaded
+    note: >
+      WAS: every candidate Reich-level state/military, ~1870-1945, trained adult-male chancery hands.
+      Now materially broken by the 2026-07-02 sweeps. Downloaded 2026-07-02: pre-1800 civilian
+      household recipe/remedy books (16th-18th c., non-professional/women's hands), a village court
+      book (1610-1641, village scribe), school-Suetterlin schoolbook (child, 1935), and ordinary
+      adult Feldpost (dozens of hands, 1940). Period reaches back to 1565; demographics now include
+      children, ordinary soldiers, household/women's hands. STILL genuinely missing: parish registers
+      + civil-registry duplicates (see non_bundesarchiv_targets - Matricula/NRW), and women's hands in
+      TRUE Suetterlin specifically.
+
+# --- On-disk download inventory (machine truth; separate from aspirational lists) ---
+# Reconciled against data/raw/invenio/ on 2026-07-02. "downloaded" = images present
+# locally with per-page manifest + sha256. Full page_count sets are marked complete;
+# partial sets are probe/selection downloads to be topped up before freeze.
+# MSG 2/* is NOT here - moved to data/restricted/ (Lesesaal-only, access pending).
+download_status:
+  complete:   # all pages present on disk; TRIAGED 2026-07-02 (contact-sheet + std stats)
+    - {sig: "PH 10-II/81",  pages: 17,  triage: "MOSTLY TYPESCRIPT + maps (p14-16); hand only in signatures p3, 1 hw table p12, marginalia. Weak for ugly_kurrent."}
+    - {sig: "PH 10-II/160", pages: 9,   triage: "TYPESCRIPT + handwritten signatures only. Weak for handwriting; mixed_print at most."}
+    - {sig: "PH 10-II/192", pages: 10,  triage: "2 pages genuine handwritten Kurrent Meldung (p3-4) + rest typescript. Those 2pp are the value."}
+    - {sig: "PH 10-II/550", pages: 5,   triage: "ALL TYPESCRIPT (Abschrift). No handwriting. REJECT for gold."}
+    - {sig: "PH 10-II/586", pages: 28,  triage: "Layout-diverse: trench MAPS (p2,3,5,7), printed forms+tables (p6,7), 1 hw Kurrent letter (p8), grid paper, typescript. Value = maps/forms/mixed."}
+    - {sig: "N 239/28",     pages: 118, triage: "GENUINE handwritten Kurrent service diary, single consistent hand, left-margin index column (real marginalia). STRONG - best of the batch."}
+    - {sig: "N 951/2",      pages: 384, triage: "ALL TYPESCRIPT (typed memoir, faint carbon copies). 'Tagebuch' title misleading - digitized object is a transcript. REJECT (manuscript-vs-transcript trap). Low-std stats were the tell."}
+    - {sig: "R 150/280",    pages: 2,   triage: "TYPEFACE FAIL 2026-07-03: clean printed 1896 gazette; BODY is Antiqua/roman, blackletter only in display headings. Do NOT count as clean_fraktur. Has a printed table. Only 2pp."}
+  partial:    # probe/selection only; top up selected_pages before freeze
+    - {sig: "N 62/1b",      pages: 96,  on_disk: 9}
+    - {sig: "PH 10-II/98",  pages: 51,  on_disk: 6}
+    - {sig: "PH 10-II/725", pages: 29,  on_disk: 7}
+    - {sig: "PH 10-II/787", pages: 148, on_disk: 7}
+    - {sig: "PH 11-II/49",  pages: 106, on_disk: 11}
+    - {sig: "PH 12-II/7",   pages: 51,  on_disk: 11}
+    - {sig: "PH 13-II/76",  pages: 117, on_disk: 13}
+    - {sig: "R 1001/2111",  pages: 497, on_disk: 8}
+    - {sig: "R 43/2404",    pages: 441, on_disk: 16}
+    - {sig: "RM 92/3151",   pages: 8,   on_disk: 2}
+  triage_done: >
+    VISUAL TRIAGE COMPLETE 2026-07-02. Headline correction: the 5 new PH 10-II "field report"
+    files are predominantly TYPESCRIPT, not Kurrent handwriting - my earlier ugly_kurrent tagging
+    was wrong. Genuine handwritten pages across the whole PH group total ~5 (PH 10-II/192 p3-4,
+    586 p8, 81 p12). Their real value is mixed_print_handwriting + maps/forms, strata already
+    well-supplied; they do NOT help ugly_kurrent or the distinct-hands count, and still count
+    against military_cap + single_archive_cap.
+    ONE REAL WIN: N 239/28 = genuine 118pp single-hand 20th-c Kurrent diary with marginalia
+    (confirmed candidate). ONE REAL LOSS: N 951/2 (384pp, the biggest download) is entirely
+    typescript - useless for handwriting strata. Lesson reinforced: title says "Tagebuch" but the
+    digitized object can be a typed transcript; low pixel-std flags it before you open it.
+  quarantined:  # data/restricted/, excluded from gold pool, access request pending
+    - {sig: "MSG 2/6907", note: "Lesesaal-only; access requested 2026-07-02"}
+    - {sig: "MSG 2/5005", note: "Lesesaal-only; access requested 2026-07-02"}
+    - {sig: "MSG 2/5408", note: "Lesesaal-only; postwar fair-copy risk (1992)"}
+    - {sig: "MSG 2/4164", note: "Lesesaal-only; postwar rewrite risk (1967)"}
+    - {sig: "MSG 2/6349", note: "Lesesaal-only AND typescript"}
+
+# --- Strata coverage snapshot (CONFIRMED candidates only) --------------------
+# NB 2026-07-03: entries marked "--BArch inventory only" are NOT freeze-eligible
+# (decisions_log.barch_exclusion); SBB entries excluded by zero_public_text.
+strata_coverage:
+  clean_fraktur:            []   # DOWNGRADED to optional 2026-07-03 (decisions_log.clean_fraktur_downgrade): R 150/280 typeface-failed, R 43/2404 BArch-excluded, zero_public_text makes resourcing hard; take token pages from cleaner KCH-059 prints if found, else ship without
+  degraded_fraktur:         ["Solingen KCH-060 Heimatbriefe (downloaded, ZERO-OCR, CC0)", "Solingen KCH-059 Druckschriften (downloaded, mixed-script, CC0)", "Matricula microfilm register pages (probe downloaded, rights-review)"]  # SBB Borkum + Feldgrauer Bauer EXCLUDED (zero_public_text; demoted Tier 4); R 43/2404 BArch-excluded
+  tidy_kurrent:             ["TU Freiberg Bergmaennische Specimina (downloaded probed item, 2819-item pool)", "Matricula Augsburg registers (probe, rights-review)", "--BArch inventory only: PH 12-II/7, R 1001/2111"]
+  ugly_kurrent:             ["--CIVILIAN (eligible, downloaded): SLUB App.3395 cookbook ~1780, Heidelberg cpg555 1565, Gießen Hs 1064h court book 1610-41, Freiburg StP SK 18 ~1600, Solingen KCH-058/061 Feldpost, Bielefeld Petri 008", "--BArch inventory only: N 62/1b, PH 10-II/98, /787, PH 11-II/49, PH 13-II/76"]  # civilian pool alone carries the stratum
+  twentieth_century_kurrent: ["Bielefeld Petri 008 (b.1868 teacher diary 1939-47, downloaded)", "BLB Reiss diary 1916 (CC BY, downloaded)", "GDA Nimlau late entries (downloaded)", "--BArch inventory only: N 239/28 (was flagship; revive on clearance)"]     # N 951/2 REJECTED - typescript
+  suetterlin:               ["Muenster NL Daut 004 (schoolbook, 1 boy hand)", "Solingen KCH-058 (many hands, mostly male)", "Solingen KCH-061 (many hands, mostly male)", "Hainspach Marienkinder 1647/c 1932-43 (WOMEN's hands, multi, downloaded)", "Hainspach Marienkinder 1647/b 1921-31 (WOMEN's hands + Sr. Natalia letter, downloaded)"]  # RESOLVED incl. female-writer demographic; all CC0. See external_confirmed_candidates
+  women_kurrent_bonus:      ["Hainspach Marienkinder 1647/a 1892-1920 (women, pre-Suetterlin cohort)", "BLB Karlsruhe Elisabeth Reiss diary 1916 (CC BY, adult female Kurrent, b.~<=1885)"]  # adjacent-cohort female-hand diversity, not strict Suetterlin
+  older_kurrent_nonmilitary: ["Bielefeld Petri 008 (teacher's diary, b.1868, civilian)"]              # BONUS from sweep - fills non-military ugly_kurrent AND a pre-1900 hand
+  nineteenth_c_civilian:    ["SLUB/Grimma Wanderbuecher (downloaded probed item, many official hands ~1810-70)", "Heidelberg Stammbuch Brugger 1821-23 (downloaded, 50+ hands)", "GDA Bayern Schulchronik Nimlau 1861-1945 (downloaded, teacher hands)", "TU Freiberg Bergmaennische Specimina (downloaded probed item, 2819-item pool)", "e-manuscripta Merian Haushaltungsbuecher 1855-1917 (downloaded, woman's hand, Swiss)"]  # gap closed 2026-07-02 evening sweep
+  latin_cursive_1940s:       ["Muenster NL Daut 016 (Normalschrift, post-1941 reform, 110 images)"]    # BONUS - the script that REPLACED Suetterlin; useful contrast stratum
+  table_registry:           ["Matricula Augsburg baptism-register probe (local, rights-review)", "e-manuscripta Merian Haushaltungsbuecher (ledger/servants-register tables, downloaded)", "--BArch inventory only: PH 10-II/98, /725, PH 12-II/7, PH 13-II/76"]
+  handwritten_field_pages:  ["--BArch inventory only: PH 10-II/192 p3-4, 586 p8, 81 p12"]             # only ~5 genuine hw pages in the whole PH group; rest is typescript
+  marginalia:               ["Heidelberg cpg555 (margin annotator, downloaded)", "Gießen Hs 1064h (court margins, downloaded)", "Hainspach 1647/a (downloaded)", "--BArch inventory only: R 1001/2111, R 43/2404, RM 92/3151, N 239/28"]
+  mixed_print_handwriting:  ["Solingen KCH-059 (print ephemera, downloaded)", "Solingen KCH-058 (Feldpost cards: printed + hw sides, downloaded)", "SLUB/Grimma Wanderbuecher (pre-print + hw visa entries, downloaded)", "Hainspach 1647/c (pasted jubilee print + hw, downloaded)", "--BArch inventory only: PH 10-II/725, /787, PH 13-II/76, R 1001/2111, R 43/2404, RM 92/3151"]
+
+notes:
+  - "Invenio 'Digitalisat vorhanden' does NOT imply internet viewability - many digitizates are Lesesaal-only ('nicht zur Anzeige im Internet freigegeben'). Always verify the liXe viewer actually opens page images before listing a candidate."
+  - "Use page numbers as liXe/Invenio image order, not archival folio numbers."
+  - "Record final folio labels during manual transcription if visible on the scan."
+  - "max_gold_pages caps per candidate; assign selected pages to DISTINCT hands so no single hand exceeds writer_cap."
+  - "Prefer PH and minor N/RM files for contamination-critical handwriting strata (within BArch). [Inventory-only guidance while barch_exclusion stands.]"
+
+# ============================================================================
+# BARCH POOL SUSPENDED 2026-07-03 (decisions_log.barch_exclusion): reuse
+# permission unresolved. Entries below are RETAINED as inventory + revival
+# candidates if BArch grants written clearance, but contribute ZERO gold-v1
+# pages. Per-item license fields record the evidence.
+# ============================================================================
+candidates:
+  - signature: "BArch N 62/1b"
+    title: "Tagebuchaehnliche Aufzeichnungen Rabenaus nach der Gestapo-Haft in Berlin: Bd. 3"
+    strata:
+      - twentieth_century_kurrent
+      - ugly_kurrent
+    period: "~1938-1943 (20th c.)"
+    writer_class: "educated individual (general/author); trained hand"
+    page_count: 96
+    max_gold_pages: 3
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/e5039c19-95b4-43ce-b468-3c34684321f4"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/49cdd1ac-dc18-4c96-a542-c80b5d56dac2/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [3, 88]
+    pages_suggested: [3, 16, 24, 40, 51, 64, 72, 88, 96]
+    hand_count_estimate: 1
+    layout_notes: "Dense private handwritten pages; 20th-century individual Kurrent hand, not true school-Suetterlin."
+    damage_notes: "Faint pencil/ink, yellowed paper, variable contrast."
+    contamination_flag: "medium-high: Rabenau was published; use only private diary/letter pages after checking they are not drafts of published prose."
+
+  - signature: "BArch PH 10-II/98"
+    title: "2. Hannoversches Infanterie-Regiment Nr. 77, Kriegstagebuecher, Bd. 1"
+    strata:
+      - ugly_kurrent
+      - table_registry
+    period: "WWI ~1914-1918"
+    writer_class: "military clerks/officers; trained chancery hands"
+    page_count: 51
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/1c8c206d-622a-4656-8710-9609e25990ae"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/6b2383b3-da7c-40f0-90a6-b81ec83596a0/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [35, 38]
+    pages_suggested: [3, 10, 29, 35, 38, 40]
+    hand_count_estimate: "2-4"
+    layout_notes: "Small original notebook/field-form pages plus loose handwritten inserts; prefer these over any tidy postwar KTB fair-copy pages."
+    damage_notes: "Mostly clean monochrome scans; some small inserts on large carrier sheets."
+    contamination_flag: "low: obscure regimental file, likely not in public transcription data."
+
+  - signature: "BArch PH 10-II/725"
+    title: "Infanterie-Regiment Nr. 400, Kriegsbesoldungsrapport des II. Bataillons"
+    strata:
+      - table_registry
+      - mixed_print_handwriting
+    period: "WWI ~1917-1918"
+    writer_class: "military paymasters/clerks; trained hands"
+    page_count: 29
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/c2d7bb69-9d00-4563-a0fd-3b44c0265272"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/67bdec65-654a-417b-a52f-161508595f04/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [4, 22]
+    pages_suggested: [4, 18, 21, 22, 23, 26, 29]
+    hand_count_estimate: "2-5"
+    layout_notes: "Dense pre-printed pay-register grids filled by hand; strong table/cell reading-order target. Add a hand-ruled table elsewhere if found."
+    damage_notes: "Clean scans, but dense ruled cells and small handwriting."
+    contamination_flag: "low: obscure regimental administrative file."
+
+  - signature: "BArch PH 10-II/787"
+    title: "Infanterie-Regiment Nr. 186, verschiedene Unterlagen"
+    strata:
+      - ugly_kurrent
+      - mixed_print_handwriting
+      - maps_forms
+    period: "WWI ~1914-1918"
+    writer_class: "military clerks/officers; trained hands"
+    page_count: 148
+    max_gold_pages: 5
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/f2185066-a0f8-4273-bc69-7831ab20942b"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/302cf7c7-a8c3-4745-b8ff-b3d4c2a336c1/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [50, 84]
+    pages_suggested: [42, 50, 84, 88, 121, 128, 141]
+    hand_count_estimate: "3-6"
+    layout_notes: "Mixed reports, loose handwritten pages, sketches, and maps; good whole-page layout stress. Maps subject to graphics_protocol."
+    damage_notes: "Many small inserts on large carrier sheets; map pages can be visually dense."
+    contamination_flag: "low: obscure regimental file."
+
+  - signature: "BArch PH 11-II/49"
+    title: "Tagebuch der 4. Kavallerie Division"
+    strata:
+      - ugly_kurrent
+      - field_diary
+    period: "1914 mobilization"
+    writer_class: "military; trained hands"
+    page_count: 106
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/97eec78d-e101-4c27-8a45-0f071d9476aa"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/c18ba28c-37e2-4137-84fb-d85a3b1f6d7e/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: []
+    pages_suggested: [15, 17, 45, 46, 47, 50, 57, 58, 75, 87, 96]
+    hand_count_estimate: "1-2"
+    layout_notes: "Mobilization-period cavalry diary; small notebook pages on carrier sheets, mostly original handwritten field entries. NB: only 1-2 hands vs 11 suggested pages - respect writer_cap."
+    damage_notes: "Light scans and small page area; some bleed/faint writing."
+    contamination_flag: "low: obscure cavalry diary, no obvious public transcription target."
+
+  - signature: "BArch PH 12-II/7"
+    title: "1. Batterie/Feldartillerie-Regiment 7: Kriegstagebuch"
+    strata:
+      - tidy_kurrent
+      - table_registry
+    period: "~1866-1871 (oldest confirmed candidate; still post-1850)"
+    writer_class: "military; trained hands"
+    page_count: 51
+    max_gold_pages: 5
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/a998f210-3a0b-4eeb-8594-8f5c400f5c3b"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/a6ba2855-48c3-483a-bc91-0ecb8dfb76dc/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: []
+    pages_suggested: [7, 8, 10, 12, 21, 24, 31, 37, 43, 44, 45]
+    hand_count_estimate: "2-4"
+    layout_notes: "Older 1866-1871 artillery diary pages with neat Kurrent and later tabular/register material."
+    damage_notes: "Variable contrast, small bound pages on carrier sheets."
+    contamination_flag: "low: obscure artillery KTB outside known public HTR/transcription corpora."
+
+  - signature: "BArch PH 13-II/76"
+    title: "Kriegstagebuch des Fussartillerie-Regiments von Dieskau (Schlesisches) Nr. 6"
+    strata:
+      - ugly_kurrent
+      - table_registry
+      - mixed_print_handwriting
+    period: "WWI ~1914-1918"
+    writer_class: "military; trained hands"
+    page_count: 117
+    max_gold_pages: 6
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/2a8a0330-a65e-4caf-b862-8cc3cf5e22a6"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/4a92768f-c3fb-4730-912b-af9721d06680/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: []
+    pages_suggested: [15, 17, 20, 28, 35, 43, 50, 57, 65, 74, 85, 96, 112]
+    hand_count_estimate: "2-5"
+    layout_notes: "Dense pre-printed KTB ruled forms with handwritten entries, date columns, notes, and alternating filled/blank form pages."
+    damage_notes: "Clean monochrome scans; heavy ruling and dense small handwriting are the main difficulty."
+    contamination_flag: "low: obscure artillery regimental file."
+
+  - signature: "BArch R 1001/2111"
+    title: "Reichskolonialamt file with Swakopmund-area telegram/forms material"
+    strata:
+      - mixed_print_handwriting
+      - marginalia
+      - tidy_kurrent
+    period: "~1900-1904"
+    writer_class: "colonial-administration clerks; trained hands"
+    page_count: 497
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/909a20aa-eccc-4bd3-bf1a-c9c046a03dc7"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/33a2438b-9c7f-4062-9f92-b285ac241608/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [1, 10, 350]
+    pages_suggested: [10, 20, 40, 50, 250, 350, 450]
+    hand_count_estimate: "3-8"
+    layout_notes: "Telegram forms, stamps, routing marks, and dense Randverfuegungen."
+    damage_notes: "Variable color scans; some pages with aging, folds, and low contrast."
+    contamination_flag: "very high: R 1001 has Bundesarchiv full-text work and famous Herero-uprising folios; avoid fol. 9 / 14 Jan. 1904 Swakopmund telegram and other reproduced pages."
+
+  - signature: "BArch R 43/2404"
+    title: "Kurland: Bd. 1"
+    strata:
+      - marginalia
+      - clean_fraktur
+      - degraded_fraktur
+      - mixed_print_handwriting
+    period: "~1915-1920s (WWI-Weimar)"
+    writer_class: "Reichskanzlei clerks; trained hands"
+    page_count: 441
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/d959ac7e-81a7-4229-b9ff-757965d6d862"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/102cfb2c-21b4-4693-b700-33a3bfbcd54f/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: []
+    pages_suggested: [94, 102, 153, 156, 158, 162, 170, 237, 260, 340, 361, 387, 389, 394, 402, 423]
+    hand_count_estimate: "4-8"
+    layout_notes: "Reichskanzlei file with typed pages plus routing notes, handwritten letters, newspaper/Fraktur inserts, and registry-like tables."
+    damage_notes: "Mostly clean carrier scans; newspaper inserts and carbon/typed copies provide degraded-print cases."
+    contamination_flag: "high: R 43 full-text recognition project; use sparingly for marginalia/print morphology only. SOLE fraktur source today - de-risk before freeze."
+
+  - signature: "BArch RM 92/3151"
+    title: "RM 92 digitized file with typed pages and handwritten notes"
+    strata:
+      - mixed_print_handwriting
+      - marginalia
+    period: "20th c."
+    writer_class: "naval-administration clerks; trained hands"
+    page_count: 8
+    max_gold_pages: 2
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/7577d3e2-3a93-4ec0-a7d9-14d2322d126b"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/5b28604b-b6ca-4be8-87c7-ab23340f6256/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    downloaded_probe_pages: [5]
+    pages_suggested: [5, 6]
+    hand_count_estimate: "2-4"
+    layout_notes: "Not the desired logbook form, but useful typed-plus-handwritten annotations."
+    damage_notes: "Clean color scans."
+    contamination_flag: "low-medium: digitized RM item, but not an obvious public HTR corpus."
+
+  # --- Downloaded + visually triaged 2026-07-02 ---
+  - signature: "BArch N 239/28"
+    title: "Dienstliches Tagebuch des Chefs der Marinestation der Ostsee (Levetzow, ~Kapp-Luettwitz 1920)"
+    strata:
+      - twentieth_century_kurrent
+      - marginalia
+    period: "~1920"
+    writer_class: "naval officer / staff diarist; trained individual hand"
+    page_count: 118
+    max_gold_pages: 4
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/f2e57c9f-ada3-4543-85a6-ad31a6f6c67e"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/9c1609cd-18dd-4feb-9106-cb30b2817946/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    download_status: "complete (118/118 on disk)"
+    visual_triage: "CONFIRMED handwritten - genuine dense single-hand 20th-c Kurrent diary throughout; best of the 8-item batch."
+    hand_count_estimate: "1 (single diarist)"
+    layout_notes: "Two-column ledger: narrow left index/marginal-note column + wide right diary entries = built-in marginalia stratum. Some blank ledger left-sides early (skip)."
+    damage_notes: "Low-contrast toned paper (pixel-std 14-38); legible but faint - a genuine degradation case, not a defect."
+    contamination_flag: "medium-high: politically prominent Nachlass (Levetzow, Kapp-Luettwitz); use only non-famous routine-entry pages. Single hand -> writer_cap 4."
+
+  - signature: "BArch R 150/280"
+    title: "Gerichtsbarkeit ueber Eingeborene: printed Reichskanzler jurisdiction order, 22 Apr. 1896 (Druck)"
+    strata: []
+    period: "1896"
+    writer_class: "n/a (printed)"
+    page_count: 2
+    max_gold_pages: 0
+    viewer_url: "https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/1a27530b-c646-455b-a132-fb26cdf97bb8"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/16f1992f-8b8b-490b-9be6-110d2239c3a9/"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scan; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    download_status: "complete (2/2 on disk; excluded from clean_fraktur after typeface check)"
+    visual_triage: "TYPEFACE FAIL 2026-07-03 - clean print, but body text is Antiqua/roman. Blackletter appears only in display headings; no body-Fraktur pages. Has a printed table (Strafsachen, p2)."
+    hand_count_estimate: "0 (print)"
+    layout_notes: "Printed legal gazette; bold blackletter section headings, Antiqua/roman body, one ruled table. Only 2pp; exclude from Fraktur strata."
+    damage_notes: "Clean, high-contrast print scan (std ~69)."
+    contamination_flag: "low-medium: 1896 colonial-law print may exist in legal/gazette corpora; check before relying on it."
+
+  - signature: "BArch PH 10-II/81, /160, /192, /550, /586 (WWI field-report group)"
+    title: "Regimental Gefechtsberichte / Meldungen / Regimentsbefehle, mostly 1914-1918"
+    strata:
+      - mixed_print_handwriting
+      - maps_forms
+    period: "WWI ~1914-1918"
+    writer_class: "military; trained hands"
+    page_count: "69 total (17/9/10/5/28)"
+    max_gold_pages: 4
+    download_status: "complete (all 5 fully on disk)"
+    visual_triage: >
+      DONE - correction: these are PREDOMINANTLY TYPESCRIPT, not Kurrent handwriting.
+      /81 = typed Gefechtsbericht + trench maps (p14-16), hw only in signatures/marginalia + 1 hw
+      table (p12). /160 = typed + hw signatures only. /192 = 2pp genuine hw Kurrent Meldung
+      (p3-4) + rest typed. /550 = all typescript (Abschrift), REJECT. /586 = layout-diverse:
+      trench maps (p2,3,5,7), printed forms+tables (p6,7), 1 hw Kurrent letter (p8), grid paper,
+      typescript. Usable gold = the handful of hw pages + maps/forms, NOT the typed bulk.
+    usable_pages: "PH 10-II/192 p3-4 (hw Meldung); 586 p8 (hw letter), p2-3 (maps), p6-7 (forms); 81 p12 (hw table), p14-16 (maps)"
+    viewer_urls:
+      - "PH 10-II/81:  https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/38953ab0-847f-46b2-9fb6-d2bec5d9342f"
+      - "PH 10-II/160: https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/06fd7e10-0af4-41de-81e9-a7d55c8093cf"
+      - "PH 10-II/192: https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/228e1f60-406f-41cc-93e7-6e56ccb4b34a"
+      - "PH 10-II/550: https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/5ea5822b-7512-4aad-a6bb-6a760a333a30"
+      - "PH 10-II/586: https://invenio.bundesarchiv.de/invenio/invenio-viewer/lixe/view/f8138909-8f1d-414f-8115-ae2dcc74c087"
+    license: "UNRESOLVED / NOT FREEZE-ELIGIBLE: BArch Invenio online-access scans; no item/page license in saved liXe viewer/metadata (checked 2026-07-03). BArch Nachnutzung guidance requires user-side rights check; get written clearance or page-level PD/legal determination before gold."
+    contamination_flag: "low: obscure regimental field reports, preferred over formal KTB fair copies."
+    cap_note: "STILL MILITARY - counts against military_cap and single_archive_cap; enriches layout variety within BArch only, NOT handwriting diversity."
+
+# ============================================================================
+# EXTERNAL CONFIRMED CANDIDATES (non-BArch, image-verified 2026-07-02 DDB sweep)
+# All page-image-verified via probe screenshots; downloaded 2026-07-02. These are on
+# city-archive DFG-Viewer/METS servers - download via direct JPG URLs (NOT invenio
+# downloader). All CC0 + watermark-free = ideal for a permissive benchmark.
+# SYSTEMIC LESSON: Neustart-Kultur city-archive digitizations (archive.nrw METS) are
+# CC0/clean; museum items (DHM/MEK) are NC-ND, watermarked, or image-less. Target
+# archive.nrw-style METS servers, avoid museum portals for permissive gold.
+# ============================================================================
+external_confirmed_candidates:
+  - id: "Muenster NL Daut 004"
+    institution: "Stadtarchiv Muenster - Familienarchiv Daut"
+    title: "Schulheft aus der 4. Klasse (Raimund Daut, geb. 1926 Muenster)"
+    strata: [suetterlin]
+    role: "FLAGSHIP suetterlin - textbook-pure school-Suetterlin, exactly the b.1926 cohort"
+    period: "~1935/36"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/6UYH6WYWGWAXRZQT3AOWCOJY6NV4AB7E"
+    mets_url: "https://www.stadt-muenster.de/archiv-nrw/Nachlaesse/NL%20Daut_004/mets.xml"
+    image_url_pattern: "https://www.stadt-muenster.de/archiv-nrw/Nachlaesse/NL%20Daut_004/NL%20Daut_004_001..023.jpg"
+    page_count: "23 images (~40+ written pages)"
+    hand_count_estimate: "1 child hand + teacher red-ink marks"
+    max_gold_pages: 4   # single hand -> writer_cap even though many pages usable
+    license: "CC0 1.0 (in METS)"
+    contamination_flag: "LOW - no fulltext layer, schoolbook publication implausible, finding aid new (2024)."
+    probe_images: "data/raw/probe/muenster_daut004_{003,008,015}.jpg, dfgviewer_daut004_p8.jpeg"
+    download_status: "complete (23/23 on disk: data/raw/external/muenster_nl_daut_004)"
+
+  - id: "Solingen KCH-058"
+    institution: "Stadtarchiv Solingen - Kriegschronik 1939-1945, class 2.5"
+    title: "Feldpostbriefe an die Fa. Gebr. Hillers, Schokoladenfabrik, von ihren Mitarbeitern"
+    strata: [suetterlin, ugly_kurrent, mixed_print_handwriting]
+    role: "HAND DIVERSITY - dozens of ordinary employees/soldiers, 1940; big win for distinct_hands + non-professional writers"
+    period: "1940"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/NUCYGLLU5SOVDG6MLF27MC3EFBCZZBKU"
+    mets_url: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-058/mets.xml"
+    image_url_pattern: "https://archiv-sg.solingen.de/.../KCH-058/KCH-058_001..452.jpg"
+    page_count: "452 images"
+    hand_count_estimate: "many (dozens of distinct senders)"
+    max_gold_pages: 8   # pick message sides across DISTINCT senders; skip printed address sides
+    license: "CC0 (METS; digitization funded by Neustart Kultur)"
+    contamination_flag: "LOW - no transcription in viewer/METS; no published edition found."
+    probe_images: "data/raw/probe/solingen_kch058_{001,004,010,020,035}.jpg, dfgviewer_kch058_p20.jpeg"
+    download_status: "complete (452/452 on disk: data/raw/external/solingen_kch_058)"
+
+  - id: "Solingen KCH-061"
+    institution: "Stadtarchiv Solingen - Kriegschronik 1939-1945, class 2.5"
+    title: "Briefe von Mitarbeitern im Militaereinsatz sowie Wehrmachtsstellen an die Stadt Solingen"
+    strata: [suetterlin, ugly_kurrent]
+    role: "Full-page letters (more text/page than KCH-058 cards); many hands 1940-44"
+    period: "1940-1944"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/DTOI3RY5RAQY7CY4ZGIIXJNKFRDZSOCO"
+    mets_url: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-061/mets.xml"
+    image_url_pattern: "https://archiv-sg.solingen.de/.../KCH-061/KCH-061_001..571.jpg"
+    page_count: "571 images"
+    hand_count_estimate: "many"
+    max_gold_pages: 6   # filter interleaved typescript (Wehrmachtsstellen)
+    license: "CC0 (METS)"
+    contamination_flag: "LOW (same as KCH-058)."
+    note: "SAME INSTITUTION as KCH-058 - count both Solingen files against ONE source-diversity budget."
+    probe_images: "data/raw/probe/solingen_kch061_{050,150,300}.jpg"
+    download_status: "complete (571/571 on disk: data/raw/external/solingen_kch_061)"
+
+  - id: "Bielefeld Petri 008 (BONUS - not suetterlin)"
+    institution: "Stadtarchiv Bielefeld - Nachlass Petri (200,119/NL 008)"
+    title: "Tagebuch des Hermann Petri (Ratsgymnasium teacher, geb. 1868)"
+    strata: [ugly_kurrent, twentieth_century_kurrent]
+    role: "NON-MILITARY older-Kurrent civilian hand - fills the non-military ugly_kurrent gap; b.1868 = older ductus, not Suetterlin"
+    period: "1939-1947"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/(Petri 008 via DDB Tagebuch search)"
+    mets_url: "https://anwendungen.bielefeld.de/Digitalisate//200_119/ArchiveNRW/008/mets.xml"
+    page_count: "201 pages"
+    hand_count_estimate: "1 (dense consistent hand)"
+    max_gold_pages: 4
+    license: "CC0 (METS)"
+    contamination_flag: "LOW - no transcription/edition found. Siblings 006/007 exist for more."
+    probe_images: "data/raw/probe/bielefeld_petri008_{005,050,120}.jpg"
+    download_status: "complete (201/201 on disk: data/raw/external/bielefeld_petri_008)"
+
+  - id: "Muenster NL Daut 016 (BONUS - not suetterlin)"
+    institution: "Stadtarchiv Muenster - Familienarchiv Daut"
+    title: "Tagebuch 'Taten und Tage' (Raimund Daut at 16)"
+    strata: [latin_cursive_1940s]
+    role: "Deutsche Normalschrift (Latin cursive) - the script that REPLACED Suetterlin after the 1941 reform; useful contrast/period stratum, NOT suetterlin"
+    period: "1943-1947"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/(NL Daut 016 via DDB)"
+    mets_url: "https://www.stadt-muenster.de/archiv-nrw/Nachlaesse/NL%20Daut_016/mets.xml"
+    page_count: "110 images (METS; record-level page estimate was 128)"
+    hand_count_estimate: "1"
+    max_gold_pages: 3
+    license: "CC0"
+    contamination_flag: "LOW - family papers, unpublished."
+    probe_images: "data/raw/probe/muenster_daut016_p*.jpg"
+    download_status: "complete (110/110 on disk: data/raw/external/muenster_nl_daut_016)"
+
+  # --- Pre-1800 civilian household/court books (non-military ugly_kurrent sweep, 2026-07-02) ---
+  # All Public Domain Mark, IIIF-served, image-verified. Attack the monoculture + period_buckets
+  # (pre-1850) + non_professional_hands + contamination_vs_diversity gaps simultaneously.
+  - id: "SLUB Dresden Mscr.Dresd.App.3395"
+    institution: "SLUB Dresden - Handschriftensammlung"
+    title: "Kochbuch (~1780)"
+    strata: [ugly_kurrent]
+    role: "18th-c private household recipe book; non-professional hand; period-bucket filler"
+    period: "~1780"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/OUHYZ3S3DYA7HWPKJSO5753VKR6XQ2EA"
+    viewer_url: "https://digital.slub-dresden.de/werkansicht/dlf/540899/1"
+    iiif_manifest: "https://iiif.slub-dresden.de/iiif/2/1784574422/manifest.json"
+    page_count: "647 pp / 735 IIIF canvases"
+    hand_count_estimate: "1-2 (confirm page-by-page; recipe books accrete later hands)"
+    max_gold_pages: 4
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW - no edition/transcription found; random App-series cookbook, not an entity-index target."
+    probe_images: "data/raw/probe/slub_kochms_3395_{00000060,00000120,00000200}.jpg"
+    download_status: "complete (735/735 on disk: data/raw/external/slub_dresden_app_3395)"
+
+  - id: "UB Heidelberg Cod. Pal. germ. 555"
+    institution: "UB Heidelberg - Codices Palatini germanici (Bibliotheca Palatina)"
+    title: "Kochbuch (Schwaben, 1565)"
+    strata: [ugly_kurrent, marginalia]
+    role: "16th-c transitional Kurrent + second-hand left-margin annotations = built-in marginalia; oldest civilian hand in the set"
+    period: "1565"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/2NZWDAA7EYTUUX3JOKJZ7XCYRNBRKEWJ"
+    viewer_url: "https://digi.ub.uni-heidelberg.de/diglit/cpg555"
+    iiif_manifest: "https://digi.ub.uni-heidelberg.de/diglit/iiif/cpg555/manifest.json"
+    page_count: "456 IIIF canvases (~226 folios)"
+    hand_count_estimate: "2+ (main text + marginal annotator)"
+    max_gold_pages: 4
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW-MEDIUM - Heidelberg publishes Strukturdaten NOT diplomatic transcription; Palatina is high-profile so note per-page, but cpg555 has no transcription surfaced."
+    probe_images: "data/raw/probe/heid_cpg555_{013r,088r,133v}.jpg"
+    download_status: "complete (456/456 on disk: data/raw/external/heidelberg_cpg555)"
+
+  - id: "UB Gießen Hs 1064h"
+    institution: "UB Gießen - Neuzeitliche Handschriften"
+    title: "Solmsisches Gerichtsbuch 1610-1641"
+    strata: [ugly_kurrent, marginalia]
+    role: "17th-c VILLAGE COURT BOOK - village-scribe hand (semi-professional local, non-military), margin notes, water-stain damage case; fills the 17th-c bucket"
+    period: "1610-1641"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/NRE3G4VHYF45CCYSLRBQUD37T3RILIS7"
+    viewer_url: "https://digisam.ub.uni-giessen.de/ubg-ihd-hn/id/5492753"
+    iiif_manifest: "https://digisam.ub.uni-giessen.de/i3f/v20/5492753/manifest"
+    page_count: "52 leaves / 119 images"
+    hand_count_estimate: "1-3 (court scribe + margins; possible scribe changes over 31 years)"
+    max_gold_pages: 4
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW - no edition found; Gießen digisam not a known HTR-corpus provider. (Contrast: Gießen's 'Historische Kochbücher' collection IS contaminated - see rejects.)"
+    probe_images: "data/raw/probe/solms_1064h_{5492792,5492822,5492852}.jpg"
+    download_status: "complete (119/119 on disk: data/raw/external/giessen_hs_1064h)"
+
+  - id: "UB Freiburg Frei 164: StP SK 18"
+    institution: "UB Freiburg - Virtuelle Bibliothek St. Peter im Schwarzwald"
+    title: "[Rezeptbuch] (~1600)"
+    strata: [ugly_kurrent]
+    role: "STRONGEST pure ugly_kurrent - cramped, heavily-inked, blotchy non-calligraphic remedy book; ink-spread is the reading difficulty"
+    period: "~1600-1700 (hand looks late-16th/early-17th)"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/CV4KUCNB2SBS3KQ76GUD6EYI5Y2DTHN2"
+    viewer_url: "https://dl.ub.uni-freiburg.de/diglit/rezeptbuch1600"
+    mets_url: "https://dl.ub.uni-freiburg.de/diglit/rezeptbuch1600/mets"
+    page_count: "412 images (~180+ text folios)"
+    hand_count_estimate: "1-2"
+    max_gold_pages: 4
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW - plain facsimile digitization, no edition/transcription found."
+    probe_images: "data/raw/probe/freiburg_stp_{081v,123r}.jpg"
+    download_status: "complete (412/412 on disk: data/raw/external/freiburg_stp_sk_18)"
+
+  # --- 2026-07-02 EVENING SWEEP (parallel research agents; targets: degraded_fraktur
+  # 2nd source, 19th-c civilian hands, women's Suetterlin). All entries below were
+  # agent-verified: METS/IIIF rights read + probe pages visually inspected. Probe images
+  # were copied out of the ephemeral session scratchpad into data/raw/probe/sweep_20260702/;
+  # do a full selected-pages re-download from the manifests at gold-freeze time.
+  # NEW SYSTEMIC LESSONS: (1) gda.bayern.de (Bayer. Staatsarchive) serves digitizates CC0
+  # with clean METS+IIIF = a second reliably-permissive vein besides archive.nrw city METS.
+  # (2) SBB Berlin WWI Feldzeitung project is PDM 1.0 but ships UNCORRECTED machine OCR
+  # (ALTO) per page - policy call needed on whether garbage-grade public OCR = contamination.
+  # (3) e-manuscripta: IIIF manifest otherContent annotation lists reveal whether the item
+  # was touched by their crowdsourced Transcription Tool - check per item.
+  # (4) UB Heidelberg diglit is PDM for old manuscripts but blanket InC for its WWI
+  # Feldzeitung collection - license is per-collection, not per-institution.
+  - id: "SBB Kriegszeitung der Festung Borkum"
+    institution: "Staatsbibliothek zu Berlin - Schuetzengraben- und Feldzeitungen des 1. Weltkriegs"
+    title: "Kriegszeitung der Festung Borkum, Bd. 2-4 (1916-1918)"
+    strata: [degraded_fraktur]
+    role: "2nd degraded_fraktur source - browned acidic wartime paper, low ink contrast, worn type, foxing; 100% Fraktur body"
+    period: "1916-1918"
+    ppns: "anchor PPN684567997; Bd 2.1916/17 PPN782300561 (589pp), Bd 3.1917/18 PPN782301266 (473pp), Bd 4.1918 PPN782301797 (203pp)"
+    viewer_url: "https://digital.staatsbibliothek-berlin.de/werkansicht?PPN=PPN782300561"
+    iiif_manifest: "https://content.staatsbibliothek-berlin.de/dc/PPN782300561/manifest"
+    mets_url: "https://content.staatsbibliothek-berlin.de/dc/PPN782300561.mets.xml"
+    image_url_pattern: "https://content.staatsbibliothek-berlin.de/dc/782300561-{NNNN}/full/full/0/default.jpg (image ids drop the PPN prefix)"
+    page_count: "~1265 across 3 volumes"
+    license: "Public Domain Mark 1.0 (METS mods:accessCondition + manifest 'Lizenz')"
+    contamination_flag: >
+      MEDIUM-LOW with a policy call: SBB serves its own uncorrected ALTO OCR per page
+      (has_fulltext: true) - garbage-grade on Fraktur, not ground truth, but publicly
+      crawlable. External checks CLEAN: not in ZEFYS/Deutsches Zeitungsportal, ANNO,
+      archive.org, Wikisource; 1917 print anthology exists in antiquarian trade only,
+      never digitized. Second image-only digitization at Lippische LB (no fulltext).
+    probe_images: "data/raw/probe/sweep_20260702/sbb_feldzeitung_PPN782300561_p{02,100,301}.jpg"
+    download_status: "complete (1265/1265 on disk: data/raw/external/sbb_kriegszeitung_borkum)"
+    gold_status: "EXCLUDED from gold 2026-07-03 (decisions_log.zero_public_text: public SBB ALTO OCR) - retained as Tier 4 self-training / documented-caveat extension eval."
+
+  - id: "SBB Der feldgraue Bauer"
+    institution: "Staatsbibliothek zu Berlin - Schuetzengraben- und Feldzeitungen des 1. Weltkriegs"
+    title: "Der feldgraue Bauer (landwirtschaftliche Feldzeitung der 3. Armee, besetztes Frankreich)"
+    strata: [degraded_fraktur, table_registry]
+    role: "3rd degraded_fraktur source, very obscure; dense agronomy TABLES in Fraktur = layout difficulty bonus"
+    period: "1917"
+    ppns: "anchor PPN684567237; Jg. 1917 PPN781090288"
+    viewer_url: "https://digital.staatsbibliothek-berlin.de/werkansicht?PPN=PPN781090288"
+    iiif_manifest: "https://content.staatsbibliothek-berlin.de/dc/PPN781090288/manifest"
+    image_url_pattern: "https://content.staatsbibliothek-berlin.de/dc/781090288-{NNNN}/full/full/0/default.jpg"
+    page_count: "297"
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "MEDIUM-LOW, same SBB-OCR policy call as Borkum; external checks clean, extremely obscure title."
+    probe_images: "data/raw/probe/sweep_20260702/sbb_feldgrauerbauer_p03.jpg"
+    download_status: "complete (297/297 on disk: data/raw/external/sbb_feldgraue_bauer)"
+    gold_status: "EXCLUDED from gold 2026-07-03 (decisions_log.zero_public_text: public SBB ALTO OCR) - retained as Tier 4 self-training / documented-caveat extension eval."
+
+  - id: "Solingen KCH-060"
+    institution: "Stadtarchiv Solingen - Kriegschronik 1939-1945 (same CC0 server as KCH-058/061)"
+    title: "Heimatbriefe Solinger Vereine und der NSDAP an ihre Mitglieder im Militaereinsatz (Turnerbund Soldatenpost, WMTV, Schwimmsport 02, Ortsgruppen-Heimatbriefe)"
+    strata: [degraded_fraktur]
+    role: "FLAGSHIP zero-OCR degraded_fraktur - the non-SBB hedge: tiny-edition member-only wartime prints, text never reprinted anywhere, no ALTO in METS"
+    period: "1940-1944"
+    viewer_url: "https://dfg-viewer.de/show?tx_dlf%5Bid%5D=https%3A%2F%2Farchiv-sg.solingen.de%2F04.%2520Archivische%2520Sammlungen%2F4.3.%2520Kriegschronik%2FKCH-060%2Fmets.xml"
+    mets_url: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-060/mets.xml"
+    image_url_pattern: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-060/KCH-060_{001..999}.jpg (300dpi)"
+    page_count: "999"
+    license: "CC0 (METS mods:accessCondition displayLabel='CC0-Lizenz'); owner Stadtarchiv Solingen; no watermarks"
+    degradation: "browned coarse acidic wartime paper, worn small Fraktur letterpress, ink squash/broken glyphs, show-through, binding-hole damage; dense 2-3-column layouts; Bergisch dialect poems + name-dense personalia as difficulty bonus"
+    script_mix_note: "~half the volume is Fraktur print; interleaved mimeograph typescript circulars (e.g. p400) and typescript+Fraktur-display pages (p250) - page-level selection across DIFFERENT club newsletters."
+    contamination_flag: >
+      VERY LOW - cleanest degraded_fraktur candidate to date: no ALTO/fulltext filegroups (grep-
+      verified), images-only server; Google/archive.org/Wikisource/DDB searches found zero
+      transcriptions or editions; not newspapers, so structurally outside
+      zeitpunkt.nrw/Zeitungsportal/ZEFYS/ANNO scope.
+    caveats: "Same institution as KCH-058/061 - counts against the Solingen source-diversity budget."
+    probe_images: "data/raw/probe/sweep_20260702/probe_KCH-060_p{100,150,250,400,600,800,950}.jpg"
+    download_status: "complete (999/999 on disk: data/raw/external/solingen_kch_060)"
+
+  - id: "Solingen KCH-059"
+    institution: "Stadtarchiv Solingen - Kriegschronik 1939-1945"
+    title: "Sammlung von Solinger Druckschriften"
+    strata: [degraded_fraktur, mixed_print_handwriting]
+    role: "Secondary zero-OCR degraded print - one-off local ephemera (concert/ceremony programs, illustrated booklets), unique prints by construction"
+    period: "1939-1945"
+    mets_url: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-059/mets.xml"
+    image_url_pattern: "https://archiv-sg.solingen.de/04.%20Archivische%20Sammlungen/4.3.%20Kriegschronik/KCH-059/KCH-059_{001..605}.jpg"
+    page_count: "605"
+    license: "CC0 (METS, identical element to KCH-060); no ALTO"
+    degradation: "coarse browned paper, heavy show-through (ceremony programs p350), bleed-through on illustrated booklets (p20); some clean Antiqua booklets to skip (p100)"
+    contamination_flag: "VERY LOW - same zero-fulltext construction as KCH-060; mixed-script, needs page-level curation."
+    caveats: "Same Solingen institution budget."
+    probe_images: "data/raw/probe/sweep_20260702/probe_KCH-059_p{020,100,200,350}.jpg"
+    download_status: "complete (605/605 on disk: data/raw/external/solingen_kch_059)"
+
+  - id: "BayHStA SdA Hainspach Marienkinder 1647/c"
+    institution: "Bayerisches Hauptstaatsarchiv - Sudetendeutsches Archiv (gda.bayern.de CC0 vein)"
+    title: "1647/c - Chronik der Marienkinder Hainspach, 1932-1943"
+    strata: [suetterlin, mixed_print_handwriting]
+    role: "FLAGSHIP women's-Suetterlin - successive Schriftfuehrerinnen (b.~1905-1925, exact cohort) of a girls'/young-women's Marian sodality; fills the female-writer demographic gap"
+    period: "1932-1943"
+    writer_class: "young unmarried women (sodality officers); ordinary non-professional hands"
+    viewer_url: "https://www.gda.bayern.de/show/ef8a8fa4-8862-4b16-8e2b-c3be088f42ae/1"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/PVVMQRITZHMYMBWSY2MFAC5KCCW344KR"
+    mets_url: "https://www.gda.bayern.de/mets/ef8a8fa4-8862-4b16-8e2b-c3be088f42ae"
+    image_url_pattern: "https://www.gda.bayern.de/digitalisat/iiif/ef8a8fa4-8862-4b16-8e2b-c3be088f42ae/{1..79}/full/1200,/0/default.jpg"
+    page_count: "79 scans (double-page openings ~150+ pp), ~25-30 lines/page"
+    hand_count_estimate: "2-4 distinct young-women hands (officer turnover 1932-43) + pasted 1941 jubilee print"
+    script_verification: "VISUALLY CONFIRMED Kurrent/Suetterlin-family - spiky verticalized forms, pointed two-stroke 'e', long s; NOT Latin cursive. Hand change visible 1933 (scan25) -> 1936 (scan50)."
+    gender_evidence: "women-only organization (Marienkinder); text names Praefektin Marie Riedel + member girls (Herta Riedel, Martha Schott, Waltraud Haeggert, Marianne Jung); clergy referenced in 3rd person -> writer is a member, not the priest."
+    license: "CC0 1.0 Universell (DDB record; NB gda METS carries no accessCondition tag - license evidence is portal-record level, same basis accepted for Schulchronik Nimlau)"
+    contamination_flag: "LOW - no edition/transcription found; gda viewer image-only, no fulltext; obscure sodality chronicle."
+    caveats: "Chronicle hand not per-page name-attributed - residual (small) risk the male Praeses kept it; verify from ductus/content at transcription. Sudeten (Hainspach/Lipova), not Germany proper."
+    probe_images: "data/raw/probe/sweep_20260702/hainc_p{25,50,70}.jpg"
+    download_status: "complete (79/79 on disk: data/raw/external/gda_hainspach_1647c)"
+
+  - id: "BayHStA SdA Hainspach Marienkinder 1647/b"
+    institution: "Bayerisches Hauptstaatsarchiv - Sudetendeutsches Archiv (gda.bayern.de)"
+    title: "1647/b - Chronik der Marienkinder Hainspach, 1921-1931"
+    strata: [suetterlin]
+    role: "Second women's-Suetterlin volume + BONUS name-attributed female hand (pasted letter signed 'Sr. M. Natalia', scan 40)"
+    period: "1921-1931"
+    writer_class: "young women (sodality Schriftfuehrerinnen), b.~1900-1910"
+    viewer_url: "https://www.gda.bayern.de/show/ddd1e446-4238-42ff-917a-0435bd487501/1"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/D34ZQVF45GYDX3KLUREVQNQQA766L77I"
+    mets_url: "https://www.gda.bayern.de/mets/ddd1e446-4238-42ff-917a-0435bd487501"
+    image_url_pattern: "https://www.gda.bayern.de/digitalisat/iiif/ddd1e446-4238-42ff-917a-0435bd487501/{1..116}/full/1200,/0/default.jpg"
+    page_count: "116 scans"
+    hand_count_estimate: "2-4 + Sr. Natalia letter"
+    script_verification: "visually verified Kurrent/Suetterlin-family (scans 20, 40)."
+    license: "CC0 1.0 Universell (DDB record)"
+    contamination_flag: "LOW (as 1647/c)."
+    caveats: "Early-1920s hands are borderline-early for the strict 1905-33 Suetterlin cohort - late-volume entries safest. Same attribution caveat as 1647/c."
+    probe_images: "data/raw/probe/sweep_20260702/hainb_p{5,20,40}.jpg"
+    download_status: "complete (116/116 on disk: data/raw/external/gda_hainspach_1647b)"
+
+  - id: "BayHStA SdA Hainspach Marienverein 1647/a (BONUS - pre-Suetterlin cohort)"
+    institution: "Bayerisches Hauptstaatsarchiv - Sudetendeutsches Archiv (gda.bayern.de)"
+    title: "1647/a - Chronik des Marienvereins bei den Schwestern vom heiligen Kreuze in Hainspach, 1892-1920"
+    strata: [ugly_kurrent, marginalia]
+    role: "Women's-Kurrent DIVERSITY (writers b.~1870-1900, NOT strict Suetterlin) - deepens the female-hand demographic across an earlier cohort"
+    period: "1892-1920"
+    viewer_url: "https://www.gda.bayern.de/show/9c196c81-52ea-4be6-b115-56653a97a622/1"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/PDFB4TWD4TIVW2CSK7QLBOUS5RALQHLL"
+    mets_url: "https://www.gda.bayern.de/mets/9c196c81-52ea-4be6-b115-56653a97a622"
+    image_url_pattern: "https://www.gda.bayern.de/digitalisat/iiif/9c196c81-52ea-4be6-b115-56653a97a622/{1..102}/full/1200,/0/default.jpg"
+    page_count: "102 scans"
+    license: "CC0 1.0 Universell (DDB record)"
+    contamination_flag: "LOW (same series as 1647/b,c)."
+    probe_images: "data/raw/probe/sweep_20260702/haina_p{12,55}.jpg"
+    download_status: "complete (102/102 on disk: data/raw/external/gda_hainspach_1647a)"
+
+  - id: "BLB Karlsruhe K 3228,1 Tagebuch Elisabeth Reiss (BONUS - adult female Kurrent)"
+    institution: "Badische Landesbibliothek Karlsruhe"
+    title: "K 3228,1 - Tagebuch ('Gedenkbuch') von Elisabeth Reiss, 1916 ([184] Bl.)"
+    strata: [ugly_kurrent, twentieth_century_kurrent]
+    role: "Female WWI home-front diary, dense fluent Kurrent - women's-hand diversity; COHORT FAIL for strict Suetterlin (she received a letter in 1890 -> b.<=~1885, adult Kurrent not school-Suetterlin)"
+    period: "1916"
+    writer_class: "adult woman (home front); individual hand"
+    viewer_url: "https://nbn-resolving.de/urn:nbn:de:bsz:31-20456/fragment/page=511624"
+    item_url: "https://www.europeana.eu/item/672/item_NNFE6BL3KN3UME56KINCJF2C42QNQWZI"
+    image_url_pattern: "https://digital.blb-karlsruhe.de/blbhs/i3f/v20/{511624..511999}/full/full/0/default.jpg"
+    page_count: "376 page images (~184 Bl.)"
+    hand_count_estimate: "1"
+    script_verification: "visually verified dense fluent Kurrent, definitively not Latin cursive."
+    license: "CC BY 4.0 (Europeana record)"
+    contamination_flag: "LOW - no edition found. Siblings K 3228,2-4 incl. her own 1916 letter to Karl Reiss, also CC BY 4.0."
+    probe_images: "data/raw/probe/sweep_20260702/reiss_{511650,511700}.jpg"
+    download_status: "complete (376/376 on disk: data/raw/external/blb_karlsruhe_reiss_k3228_1)"
+
+  - id: "SLUB/Grimma Wanderbuecher"
+    institution: "SLUB Dresden (Vorlage: Kreismuseum Grimma + private lenders, LDP Sachsen)"
+    title: "Historische Arbeitsbuecher und Wanderbuecher saechsischer Handwerksgesellen (33 items; probed: Wanderbuch Seilergeselle Johann Gottlob Nitzsche, Leisnig)"
+    strata: [nineteenth_c_civilian, mixed_print_handwriting, ugly_kurrent]
+    role: "BEST 19th-c find - each booklet = pre-print + visa entries by ~15-30 DIFFERENT town/police/guild hands + stamps; 33-item pool"
+    period: "~1810-1870 (probed entries 1811: Neustadt-Coburg-Bamberg-Esslingen-Stuttgart)"
+    collection_url: "https://sachsen.digital/sammlungen/historische-arbeitsbuecher-und-wanderbuecher-saechsischer-handwerksgesellen"
+    viewer_url: "https://sachsen.digital/werkansicht/307606/1"
+    iiif_manifest: "https://iiif.slub-dresden.de/iiif/2/1745561129/manifest.json"
+    image_url_pattern: "https://images.iiif.slub-dresden.de/iiif/2/data%2Fkitodo%2F{work}%2F{work}_tif%2Fjpegs%2F{NNNNNNNN}.tif.medium.jpg/full/full/0/default.jpg"
+    page_count: "38 images (probed item; collection has 33 items)"
+    hand_count_estimate: "~15-30 per booklet (officials en route)"
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW - no Transkribus/edition found; collection page itself notes genre 'in der Forschung bisher nur wenig genutzt'; no fulltext in viewer."
+    probe_images: "data/raw/probe/sweep_20260702/wanderbuch_grimma_p{10,20}.jpg"
+    download_status: "complete (38/38 probed item on disk: data/raw/external/slub_grimma_wanderbuecher)"
+
+  - id: "GDA Bayern Schulchronik Nimlau"
+    institution: "Bayerisches Hauptstaatsarchiv (gda.bayern.de)"
+    title: "Schulchronik von Nimlau 1861-1945 (handschriftliches Original, 212 S.)"
+    strata: [nineteenth_c_civilian, twentieth_century_kurrent]
+    role: "Village schoolteachers' successive hands across ~60 years; opens the CC0 gda.bayern.de vein"
+    period: "1861-1945 (19th-c section ~scans 1-19; early part possibly retrospective ~1890s)"
+    viewer_url: "https://www.gda.bayern.de/show/1b9452e2-0dc0-4c25-979f-81f713bc3dbe/1"
+    item_url: "https://www.deutsche-digitale-bibliothek.de/item/RYFWDAWBKJCXSZUXU7532MVOPSRYYYZK"
+    mets_url: "https://www.gda.bayern.de/mets/1b9452e2-0dc0-4c25-979f-81f713bc3dbe"
+    image_url_pattern: "https://www.gda.bayern.de/digitalisat/iiif/1b9452e2-0dc0-4c25-979f-81f713bc3dbe/{1..117}/full/1200,/0/default.jpg"
+    page_count: "117 openings (= 212 pp)"
+    hand_count_estimate: "several successive teacher hands"
+    license: "CC0 1.0 (DDB record)"
+    contamination_flag: "LOW - no edition/transcription found."
+    caveats: "Moravian (Sudeten) village school, not Germany proper; bulk of entries 1880s-1945."
+    probe_images: "data/raw/probe/sweep_20260702/nimlau_p{4,20}.jpg"
+    download_status: "complete (117/117 on disk: data/raw/external/gda_bayern_schulchronik_nimlau)"
+
+  - id: "UB Heidelberg Stammbuch Brugger (Heid. Hs. 2175)"
+    institution: "UB Heidelberg"
+    title: "Stammbuch Joseph Dominik Karl Brugger (Freiburg, 1821-1823)"
+    strata: [nineteenth_c_civilian, ugly_kurrent]
+    role: "50+ distinct private hands (friends, students, some women) in one item - massive distinct_hands lever for the 19th c."
+    period: "1821-1823"
+    viewer_url: "https://digi.ub.uni-heidelberg.de/diglit/heidhs2175"
+    iiif_manifest: "https://digi.ub.uni-heidelberg.de/diglit/iiif3/heidhs2175/manifest"
+    image_url_pattern: "https://digi.ub.uni-heidelberg.de/iiif/3/heidhs2175%3A{page}.jpg/full/max/0/default.jpg"
+    page_count: "281 canvases (entries + blanks)"
+    hand_count_estimate: "50+"
+    license: "Public Domain Mark 1.0 (manifest rights field)"
+    contamination_flag: "LOW - only the library finding-aid PDF; no edition. Mixed Kurrent/Latin per entry - tag per page."
+    probe_images: "data/raw/probe/sweep_20260702/brugger_{148r,186r}.jpg"
+    download_status: "complete (281/281 on disk: data/raw/external/heidelberg_stammbuch_brugger)"
+
+  - id: "TU Freiberg Bergmaennische Specimina"
+    institution: "UB 'Georgius Agricola' TU Bergakademie Freiberg via SLUB (LDP Sachsen)"
+    title: "Bergmaennische Specimina - 2819 handwritten student reports/travel diaries 1770-1907 (probed: G. A. Heine, Instructionsreise 1888)"
+    strata: [nineteenth_c_civilian, tidy_kurrent]
+    role: "Near-unlimited pool of distinct educated-civilian hands (one hand per report); technical German + Latin-script insertions = hard cases"
+    period: "1770-1907"
+    collection_url: "https://sachsen.digital/sammlungen/bergmaennische-specimina"
+    viewer_url: "https://sachsen.digital/werkansicht/15943/1"
+    iiif_manifest: "https://iiif.slub-dresden.de/iiif/2/514653140/manifest.json"
+    page_count: "44 images (probed item; collection has 2819 items)"
+    hand_count_estimate: "1 per report; thousands available"
+    license: "Public Domain Mark 1.0"
+    contamination_flag: "LOW - no transcription project found, no fulltext in viewer. Students are semi-elite (Bergakademie) - counts as civilian but NOT non_professional."
+    probe_images: "data/raw/probe/sweep_20260702/freiberg_p15.jpg"
+    download_status: "complete (44/44 probed item on disk: data/raw/external/tu_freiberg_specimina)"
+
+  - id: "e-manuscripta Merian Haushaltungsbuecher (SWA HS 203)"
+    institution: "Schweizerisches Wirtschaftsarchiv Basel via e-manuscripta.ch"
+    title: "Personenarchiv Merian-Burckhardt, Sophia - 9 Haushaltungsbuecher z.T. mit Dienstbotenverzeichnis"
+    strata: [nineteenth_c_civilian, table_registry]
+    role: "WOMAN's 19th-c hand (Sophie Merian-Burckhardt 1836-1917) - household expense ledgers + servants' register; also feeds table stratum"
+    period: "1855-1917"
+    viewer_url: "https://www.e-manuscripta.ch/swa/content/titleinfo/1907811"
+    iiif_manifest: "https://www.e-manuscripta.ch/i3f/v20/1907811/manifest"
+    image_url_pattern: "https://www.e-manuscripta.ch/download/webcache/1000/{canvasId}"
+    page_count: "1165"
+    hand_count_estimate: "1-2"
+    license: "Public Domain Mark (item page); DOI 10.7891/e-manuscripta-69162"
+    contamination_flag: "LOW - no edition; IIIF manifest has ZERO otherContent annotation lists = untouched by e-manuscripta's crowdsourced Transcription Tool (check this flag per item on this platform)."
+    caveats: "Swiss provenance (Basel) - flag in benchmark metadata; bourgeois hand, not non_professional."
+    probe_images: "data/raw/probe/sweep_20260702/merian_c{20,500}.jpg"
+    download_status: "complete (1165/1165 on disk: data/raw/external/emanuscripta_merian_haushaltungsbuecher)"
+
+  - id: "Matricula Augsburg baptism-register probe (Murnau/Winterrieden/Uffing)"
+    institution: "Matricula Online - Bistum Augsburg"
+    title: "19th-c. German-language Taufregister samples"
+    strata: [table_registry, tidy_kurrent, ugly_kurrent]
+    role: "Local probe for non-BArch parish-register table layouts, German Kurrent entries, and microfilm degradation; NOT rights-cleared gold yet."
+    period: "1807-1889 (sampled pages include 1840s, 1850s/60s, and 1875)"
+    register_urls:
+      - "https://data.matricula-online.eu/de/deutschland/augsburg/murnau/4-T/"
+      - "https://data.matricula-online.eu/de/deutschland/augsburg/winterrieden/3-T/"
+      - "https://data.matricula-online.eu/de/deutschland/augsburg/uffing/5-T/"
+    page_count: "15 images downloaded (5 per parish); source registers contain 249/82/60 images"
+    hand_count_estimate: "3+ parish clerk/priest hands; table-layout diversity more than distinct-sender diversity"
+    language_verification: "VISUALLY CONFIRMED 2026-07-03: German printed 'Geburts Register' headers and handwritten Kurrent entries; not Latin-only pages."
+    license: "Matricula Online hosted images - rights not marked CC0; local research/probe only, do not promote to permissive gold without rights review."
+    contamination_flag: "LOW at page level; keep FamilySearch/CompGen parish-index caveat from non_bundesarchiv_targets."
+    caveats: "Church-register hands are clerical/official, not ordinary non-professional hands. Augsburg scans are microfilm-derived grayscale images."
+    download_status: "complete (15/15 on disk: data/raw/external/matricula_augsburg_{murnau_4_t,winterrieden_3_t,uffing_5_t})"
+
+external_rejected_from_sweep:  # verified dead ends 2026-07-02 - do not re-probe
+  - "DHM Berlin items (Morgenstern 999-Feldpost, 'Suetterlin-Heft' 1935, Poesiealbum Hilde S.): true Suetterlin but CC BY-NC-ND + watermark band across page -> REJECT for permissive gold."
+  - "BLHA Nachlass Rosemarie von Quast (b.1926) 'Feldpostbriefe': faint pencil LATIN cursive, post-1941 Normalschrift generation - not Suetterlin."
+  - "UB Gießen Poesiealbum Rosa Windhab (Wien 1918-49, PD): Austrian LATIN cursive - not Suetterlin."
+  - "Museum Europaeischer Kulturen 'Konvolut Feldpostbriefe': NO images load (metadata only) - the Digitalisat-flag-lies lesson again."
+  - "LABW Freiburg W 307/1104 'Deutsche Feldpostbriefe': printed BLANK Feldpost stationery, no handwriting."
+  - "Stiftung Berliner Mauer Kraaß Feldpost 1944-45: viewable but InC (Urheberrechtsschutz) - reject for permissive."
+  - "Various: typescript Abschriften, printed books (Pieselmann), printed fold-blanks."
+  # non-military household-book sweep rejects:
+  - "UB Gießen Hs 615 'Receptir-buch' (18th c., PD): LATIN apothecary formulary in neat Latin cursive - not German, not Kurrent. Language-guard trap."
+  - "AVOID WHOLESALE: UB Gießen digisam 'Historische Kochbücher' collection (e.g. Emilie Wicke Kochbuch Lübeck 1831): In-Copyright AND tied to the Prof. Thomas Gloning transcription/edition project = high contamination."
+  - "LVR-Freilichtmuseum Kommern/Lindlar Rezeptbücher (1911 / 1950s): In Copyright (and 1950s is Sütterlin+ballpoint)."
+  - "DHM 'Ausgabenbuch von 1816': CC BY-NC-ND - reject for permissive."
+  - "Museum Europäischer Kulturen 'Anschreibebuch eines Landarztes' (1821-1836): CC BY-NC-SA - reject for permissive (perfect genre otherwise - the museum-license trap)."
+  # 2026-07-02 evening-sweep rejects:
+  - "UB Heidelberg WWI Feldzeitung collection (22 titles incl. Liller Kriegszeitung, Champagne-Kamerad, Zeitung der 10. Armee): BLANKET InC in every IIIF manifest checked (10+) - reject wholesale. Ironically image-only/no OCR. Heidelberg license is per-COLLECTION: old manuscripts PDM, WWI papers InC."
+  - "SBB antiqua traps (right license, wrong script - eastern-front/French-printshop Feldzeitungen are NOT Fraktur): Ostgalizische Feldzeitung PPN779456130, Evangelische Feldzeitung 215. ID PPN778732088, Kriegszeitung 14. Inf-Div PPN781618509 (Carvin printshop, umlauts set as ae/oe), Feldzeitung 5. Armee PPN782723977 (antiqua body/Fraktur display), Die Patrulle (antiqua, no license field)."
+  - "WLB Stuttgart/BfZ trench papers: gated behind ProQuest 'Trench Journals' (registered users) - no open images."
+  - "Numistral/BNU Strasbourg Feldzeitungen (Der Drahtverhau, Bayrischer Landwehrmann): Gallica infrastructure - BnF non-commercial reuse terms + Gallica OCR exposure."
+  - "DHM Wanderbuecher/Wanderpaesse (~20 items, the dominant DDB provider for the genre) + Haushaltsbuch Ehlers 1865-74: all CC BY-NC-ND - museum-license trap confirmed yet again."
+  - "Museum Europaeischer Kulturen Wanderbuch: CC BY-NC-SA. museum-digital RLP 'Poesiealbum um 1830': CC BY-NC-SA. Kreisarchiv Stormarn 'Wanderbuch neu': CC BY-NC-SA."
+  - "Saarlaendisches Schulmuseum (digiCULT) Schulchroniken/Schultagebuch: InC. Saechsisches Staatsarchiv journeyman Konzession: InC."
+  - "Clara Schumann/Friedrich Wieck 'Mein Tagebuch' 1827-34 (Robert-Schumann-Haus via SLUB): famous + published editions = heavy contamination, and CC BY-SA anyway."
+  # 2026-07-02 hedge-sweep rejects (Solingen KCH enumeration - collection is uniformly CC0, rejects are contamination/stratum-fit only):
+  - "Solingen newspaper-CLIPPING volumes (KCH-001..023, 047-049, 062-065, 119): visually the BEST degraded Fraktur in the pool (pasted, stamped, browned clippings) BUT all three source papers are on/entering zeitpunkt.nrw with rolling OCR (Solinger Tageblatt 1912-Apr 1945 LIVE; Ohligser Anzeiger 1876-May 1941 LIVE; Rheinische Landeszeitung/Volksparole ~end 2024) = public external OCR of the same article text. CONDITIONAL REVIVE: if policy relaxes to 'different image OK', these are instantly top picks - each clipping is stamped with source+date, filtering is mechanical."
+  - "Solingen KCH-001..006 (Wehrmachtsberichte clippings): doubly contaminated - OKW communique text fully published (1985 3-vol edition, widely online) on top of newspaper OCR."
+  - "Solingen KCH-069/070 (alliierte Flugblaetter): Allied leaflet texts systematically transcribed in psywar databases + mostly Antiqua - contaminated by construction."
+  - "Solingen KCH-047 Todesanzeigen / KCH-065 Frontberichte: content is newspaper clippings - same zeitpunkt.nrw problem."
+  - "Solingen KCH-050..056 (Henckels Heimatbriefe): photo-album pages with handwritten captions, not Fraktur print - wrong stratum here, but POTENTIAL mixed_print/photo-caption material later."
+  # 2026-07-02 women's-hand sweep rejects (do not re-probe):
+  - "Solingen Kriegschronik FULLY enumerated (KCH-001-110) for women's hands: NONE. KCH-036-046/100/103-110 'Informationen zu gefallenen Soldaten' = CC0 but archive-TYPESCRIPT dossiers; KCH-024-035 Lage-/Entwicklungsberichte = typescript (even the girls'-school report is typed); rest = clippings/ration-cards/printed Heimatbriefe/lists."
+  - "Bielefeld 200_119 METS enumerated 001-040: only 006/007/008 exist (Petri, male b.1868)."
+  - "Stadtarchiv Muenster Familienarchiv Daut: NO female-writer items (23 items, all Raimund/Franz Daut). Provider's other DDB images = council protocols."
+  - "DHM Berlin - STOP PROBING for this stratum (reconfirmed 6x, all CC BY-NC-ND): Inge Waldmann diary 1945, Hedwig Rosen 1919, Jungmaedel-Tagebuch Marianne Fiebrich, NS-Jungmaedel Hannelore Jochum 1940-45, BDM Gruppenbuch Zehlendorf, Suetterlin-Schoenschriftheft Irmgard Baumann 1935, Poesiealbum Emma Dittrich. Perfect-genre museum trap."
+  - "MEK Poesiealben (Ursula Heppner 1946-47, Ingeborg Stolzenberg): CC BY-NC-SA. Stormarnsches Dorfmuseum Poesiealbum 1933 (Gerda Koopmann): InC. Stadtarchiv Worms Poesiealbum Frieda Gebhard 1931-37: metadata-only, no Digitalisat. Deutsches Exilarchiv Poesiealbum Josefine Metschl: 'Rechte vorbehalten' - not permissive."
+  - "Wikimedia Commons 'Poesiealbum (1930 bis 32)': perfect content (schoolgirl Suetterlin) but CC BY-SA private self-scan, no institutional source -> fails both bars (SA-fallback only). 'Poesiealbum von Hedwig': CC BY 4.0 but 1901 + private upload."
+  - "Europeana open-reusability Poesiealben (23 hits) EXHAUSTED: LABW Eugenie/Stetten/Braun = 1852-64 (wrong century); Stadtarchiv Frankfurt-Oder Leo Nehab = PDM but single MALE hand 1896-1909; Roscheider Hof CC0 = 1884; rest Swiss/Danish or 1914-18-crowdsourced (BY-SA + volunteer-transcription contamination)."
+  - "Rezeptbuch/Kochbuch/Haushaltsbuch handschriftlich 1915-45 (DDB archive-sector + images): nothing. Europeana WWII Feldpost open = 1 postcard. Retry-lead 'b' is a confirmed dead end for the female-Suetterlin cohort."
+  - "Nimlau Schulchronik as a women's-hand candidate: 1943 entries NAME female teachers (Ilona Hafner; Else Tobias b.~1924) but the chronicle hand isn't attributable to them (male Leiter; end pages typescript) - keep only for teacher-hand strata."
+
+external_leads_unverified:  # digitized + on-genre but a blocker; retry later
+  - "MARCHIVUM Mannheim ordinary-household PROBATE inventories (Verlassenschaft Böckel/Eberhard/Bauder, ~1814, CC-BY 3.0 DE) = exact 19th-c probate target. BLOCKERS: (1) scope.mannheim.de viewer was hard-down at probe time (no image proof); (2) MARCHIVUM is Transkribus-ACTIVE (~12k estate files, runs HTR on Ratsprotokolle) = elevated contamination - confirm the specific file is not in a training set. Item: deutsche-digitale-bibliothek.de/item/4TIUBLTFEM2WDBK5C575KL3O5774HSZD"
+  - "Heidelberg cpg cookbook seam (all PD, IIIF, 16th c.): cpg236, cpg551 + siblings (Nürnberg 1550, Augsburg 1574, Rheinhessen ~1570) = ready vein for MORE distinct 16th-c household hands."
+  - "SLUB village/town court books (PD, IIIF): Gerichtsbuch Zischkewitz 1566, Kloster Seuselitz Mscr.Dresd.L.108 (1504-44), Görlitzer Gerichtsbuch 1595 - cheap 2nd court-hand follow-ups."
+  - "UB Kassel 4° Ms. chem. 82 'Alchemisch-medizinisches Hausbuch des Pfarrers Valentinus' (1529, PD): rural-PRIEST hand + very-early period, but trilingual+alchemical - verify German bulk first."
+  - "Untested hand-offs: Monasterium.net civilian account books; HAB Wolfenbüttel Hausbücher/Stammbücher; Kalliope Nachlass incoming letters; guild Zunftbücher/Bruderschaftsbücher (distinct from Wanderbücher)."
+  # 2026-07-02 evening-sweep leads:
+  - "SBB Schuetzengrabenzeitung PPN782828620: HECTOGRAPHED HANDWRITING (not print!) - degraded-reproduction-of-Kurrent curiosity, potential extra stratum; license field unchecked. Sibling: Scheuener Kriegszeitung PPN781828848 = hand-lettered lithograph."
+  - "LAV NRW Abt. Rheinland Schulchroniken (dozens digitized, 'Unterricht (Schulchronik ab 1810/1815/1831...)'): uniformly CC BY-SA 4.0 - fails strict CC0/PDM/CC-BY bar; FIRST FALLBACK if SA becomes acceptable. Example DDB item 76BV6MXC62B2ALFRFLQIGJNO4XGVUCI4."
+  - "DDB 'Poesiealbum': 228 digitized hits incl. 19th-c (Emma Dittrich 1888-91, Personenkonvolut Berlin 1888-92) - sweep blocked by DDB rate-limiting (Anubis bot-wall); the few checked were museum/NC. Sample id G6RXTRVZIQ2CG4H7XVIC2647C3RGJVOA. Needs browser session, filter to Stadtarchiv providers."
+  - "Stadtarchiv Duesseldorf Wanderbuch 1806- (DDB 6FRLWJDHJ3SSNLAMAJ2BVKMJWV2CLTYV): proves city-archive Wanderbuecher exist beyond museums, but DDB shows CNE (Copyright Not Evaluated) - needs METS-level rights check on the city server."
+  - "Arcinsys Niedersachsen, StadtA Lingen 'Slg. Schulchroniken': digitization status + license unchecked."
+  - "HMT Leipzig Stammbuecher on sachsen.digital (Friederike Cornelius etc., PDM, 203pp): probed pages were BLANK; musician provenance + English names = late-date/Latin-script risk; needs deeper page sampling."
+  - "gda.bayern.de SYSTEMATIC SWEEP pending: Bavarian State Archives serve CC0 METS+IIIF (proven via Schulchronik Nimlau) - hunt Schulchroniken, Impflisten, Briefprotokolle, Nachlaesse there."
+  - "TOOLING: e-manuscripta/archivportal-d/DDB block curl (Anubis JS-wall) - use browser or per-institution IIIF endpoints directly. archive.nrw portal is an Angular SPA - needs browser session to drive."
+  - "Women's-Suetterlin hunt RELAUNCHED fresh 2026-07-02 (killed agent's transcript was not resumable); inherited leads: MARCHIVUM Friedmann family items (Transkribus-active caution), Rezeptbuch retry, Wikimedia Commons Poesiealbum (trace to institutional license)."
+  - "BArch R 8034-II/III (Reichslandbund-Pressearchiv): STILL UNVERIFIED - Invenio is an Angular SPA, needs browser session to check per-item internet viewability. Caution even if viewable: clippings are from NATIONAL papers (Kreuzzeitung etc.), many OCRed in ZEFYS/Zeitungsportal - per-clipping source checks would be heavy."
+  - "Matricula Augsburg microfilm + Dilibri/THULB Amtsblaetter: unprobed for degraded_fraktur this pass (register Fraktur is headings-only; Amtsblatt route needs per-title OCR checks). Lower priority now that the stratum has 3 sources."
+  - "Full Solingen KCH METS series (all ~120 files, uniformly CC0) copied into repo at data/raw/external/solingen_kch_mets/ (+ kch_titles_index.txt)."
+  # 2026-07-02 women's-hand sweep leads:
+  - "MARCHIVUM Mannheim 25/2016_00021 'Schulhefte Lili, Martin und Herbert Friedmann' (1906-1938), CC BY 3.0 DE (DDB BH2WEYNYDYTSLM2LUCKVODU2D7UENLYN): BLOCKED - scope.mannheim.de hard down (ECONNREFUSED); DDB mirrors no binaries. Cohort caveat: Lili b.~1900 (married 1926) = likely pre-Suetterlin; Herbert's 1930s Hefte = true Suetterlin but BOY. Transkribus-contamination check still pending (MARCHIVUM is Transkribus-active). Retry when scope is back."
+  - "BayHStA SdA 878 Gedenkbuch Merkelsgruen (CC0, uuid c697160f-b514-4b96-bd0f-5e627d4aa78d, 129 scans): later 100+pp are ballpoint Kurrent by a Suetterlin-generation writer, catalog co-author Erna Schmidt (female) - BUT page-level Witschel-vs-Schmidt attribution unproven AND writing date 1973-87 is OUTSIDE period (policy call needed)."
+  - "Kommunalarchiv Minden Poesiealbum Irmgard Beckmann (1911/1920-21/1926), DDB SG4MCPLHD4PJ2FCI35MMONU4F5OASW57: 38 entries incl. 1920s girls = target genre/cohort, but DDB shows NO images; record on archive.nrw SPA - needs browser session to check for a Digitalisat + license."
+  - "TOOLING WINS: Europeana search API works with wskey=api2demo + reusability=open facet (pre-filters CC0/PD/CC-BY/BY-SA); DDB provider facets via facetValues[]=provider_fct=... . gda.bayern.de IIIF is iipsrv (full/1200, or full/full)."
+
+rejected_or_deferred:
+  - signature: "BArch N 951/2"
+    reason: >
+      REJECTED 2026-07-02 on visual triage: despite "Tagebuch" in the title, the digitized object
+      is ENTIRELY TYPESCRIPT - 384 pages of typed memoir (Boehm, Erinnerungen Teil 2), many faint
+      carbon copies. Zero handwriting; useless for the Kurrent/handwriting strata. Classic
+      manuscript-vs-transcript trap. The uniformly low pixel-std (11-47 vs 56-123 for the typed-
+      but-crisp PH files... actually low std here = faint carbon) flagged it before opening. Note:
+      still on disk (data/raw/invenio/N_951_2_4be4ad59, 384 imgs) - candidate for DELETION to
+      reclaim space, or keep as a degraded-typescript OCR sample (not a gold stratum we need).
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/530bc54a-3497-4247-908e-b4ab6963a854/"
+  - signature: "BArch PH 10-II/550"
+    reason: >
+      REJECTED 2026-07-02 on visual triage: 5pp, all TYPESCRIPT (Gefechtsbericht IR 394, explicit
+      Abschrift/later copy). No handwriting at all. Kept on disk within the PH field-report group
+      but contributes no gold pages.
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/6d36c606-f4be-4751-b9b0-18dcbaf6b0e3/"
+  - signature: "BArch RM 92/344"
+    reason: "DDB/Archivportal-D metadata confirms Niobe logbook Bd. 27, but Invenio showed no Digitalisat button during this pass."
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/UMNG5RPVD6QUS4XAAS2PAMEIA52KRSAN"
+  - signature: "BArch RM 92/2056"
+    reason: "DDB confirms Zaehringen logbook Bd. 8 with BArch signature and 1915-1916 date range, but the Invenio partner link did not expose a liXe viewer during this pass."
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/L3BFLAKND6CUUWQS3J6MZZYLDQBDU2AN"
+  - signature: "BArch N 112"
+    reason: "Ernst van den Bergh diaries are digitized and visually relevant, but the diary was published in a 1991 edition; high contamination risk for gold pages."
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/NUE6UMF3PHH5PQ55EDORQVN4W6NVZBQW"
+  - signature: "BArch MSG 2/6462"
+    reason: >
+      REJECTED 2026-07-02: NO Digitalisat exists - metadata-only record. Verified in a live
+      browser session with three-way cross-check (record detail panel shows no "Digitalisat
+      anzeigen"; excluded by the "Nur mit Digitalisat anzeigen" filter while sibling records like
+      MSG 2/5408 pass it; DDB confirms "no digitized object"). Physical item is Feldpost of a
+      writer born 1907 - almost certainly true Suetterlin - but there is nothing to download.
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/VQ5NHFZWXHJ2GKXOEHVC4ZRE3HTLBHPA"
+  - signature: "BArch MSG 2/1133"
+    reason: >
+      REJECTED 2026-07-02: NO Digitalisat exists - metadata-only record; same three-way
+      verification as MSG 2/6462. Diary of a writer born 1915, likely true Suetterlin, but not
+      digitized. Caveat: checked as unregistered user; a login-gated Digitalisat is theoretically
+      possible but DDB corroborates absence.
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/KXBNJVB5XBHJJB237FXBQ3ONKUNFXLCS"
+  - signature: "BArch MSG 2/5408, 2/5005, 2/6907, 2/4164, 2/6349"
+    reason: >
+      REJECTED 2026-07-02 (pass 2, LOGGED-IN session, per-item AJAX verification): all 5 carry a
+      Digitalisat object id in the system, but every "Digitalisat anzeigen" call returns "Das
+      Digitalisat ist nicht zur Anzeige im Internet freigegeben. Eine Anzeige im Lesesaal des
+      Bundesarchivs ist nur nach vorhergehender Berechtigungspruefung moeglich." - rights-blocked,
+      no liXe viewer reachable, zero page images inspectable. Item notes: 5005 (Cremer Feldpost,
+      El Alamein 1942) had the best content profile; 6907 writer born 1914 = true Suetterlin
+      generation; 5408 Laufzeit "(1941-1946) 1992" and 4164 Laufzeit 1967 = postwar fair-copy /
+      typescript risk regardless; 6349 explicitly "masch., Ablichtung" = typescript, useless for
+      HTR independent of access. AJAX evidence: data/raw/probe/msg2_*_digitalisat_blocked*.
+      This exhausts MSG 2 class 1.2 - do not re-probe without evidence BArch changed the rights
+      release.
+
+followup_targets:
+  - signature: "DDB Feldpost sweep"
+    title: "DDB facet search: Feldpostbriefe/Schulheft/Tagebuch + nur mit Digitalisat, ALL institutions"
+    status: "DONE 2026-07-02 - SUCCESS. Yielded NL Daut 004 + Solingen KCH-058/061 (all CC0). See external_confirmed_candidates."
+    strata:
+      - suetterlin
+    next_probes: >
+      Cheapest remaining leads for the residual WOMEN'S-HAND / true-Suetterlin gap: (1) the
+      Franz Daut (b.1897) section of the same Muenster Familienarchiv; (2) other Muenster/Bielefeld
+      Nachlaesse on the same METS servers (guess NL_<name>_NNN/mets.xml); (3) DDB queries
+      "Aufsatzheft", "Diktatheft", "Tagebuch einer Schuelerin", "Kochbuch handschriftlich" 1920-41;
+      (4) other Bundeslaender portals (bavarikon, Sachsen, Hessen HADIS) + Kalliope for born-1900+
+      Nachlass incoming letters.
+    lesson: >
+      Prefer archive.nrw-style city-archive METS servers (Neustart-Kultur digitizations = CC0,
+      watermark-free) over museum portals (DHM/MEK = NC-ND, watermarked, or image-less).
+
+  # NOTE: N 951/2, N 239/28, and the PH 10-II field-report group were downloaded 2026-07-02
+  # and promoted into `candidates:` above (visual triage pending). The generic
+  # "PH 10-II early-1914 Anlagen/Meldungen" placeholder is now realized by those 5 concrete files.
+
+# ============================================================================
+# NON-BUNDESARCHIV TARGETS
+# These exist to break the single-institution / single-genre / single-period /
+# single-demographic monoculture that BArch alone cannot fix. They directly
+# satisfy freeze_constraints that no BArch source can: single_archive_cap,
+# period_buckets, non_professional_hands, and several ecologies.
+# ============================================================================
+non_bundesarchiv_targets:
+  - source: "Matricula (matricula-online.eu)"
+    genre: "parish registers (Taufbuch / Traubuch / Sterbebuch)"
+    priority: "highest"
+    collections:
+      - "Bistum Augsburg - 900+ parishes online, free (practically local)"
+      - "Munich-Freising, Passau, Regensburg, Wuerzburg, Bamberg, Eichstaett"
+      - "Landesarchiv Baden-Wuerttemberg - 3,483 units"
+    target_strata:
+      - table_registry
+      - tidy_kurrent
+      - ugly_kurrent
+      - degraded_fraktur
+    fixes_constraints:
+      - period_buckets
+      - non_professional_hands
+      - single_archive_cap
+      - bestaende
+    reason: >
+      One fix for the period, demographic, and genre axes simultaneously. Registry-table layout;
+      a different priest's hand per parish per generation (enormous hand diversity per page
+      downloaded); coverage reaching back to the 16th c.; essentially zero contamination (nobody
+      publishes transcriptions of random Taufbuch pages). Bonus: the Augsburg digitizates are scans
+      of decades-old MICROFILMS, adding a bitonal microfilm-artifact degradation category that BArch
+      direct scans do not provide.
+    plan: >
+      2-3 parishes, a few pages each across DIFFERENT centuries (repairs period + demographic +
+      genre at once). LANGUAGE GUARD: Catholic registers before ~1800 are often formulaic LATIN,
+      not German - check language per parish/century before selection; prefer 19th-c. Catholic
+      registers or post-1808 civil duplicates (German by construction). Protestant registers
+      (usually German, older) live mostly on Archion = paywalled, not Matricula.
+    contamination_flag: >
+      very low at PAGE level (random parish pages are not published transcription targets), BUT
+      entity-level caveat: FamilySearch and CompGen/DES have INDEXED (names/dates/places) large
+      swaths of German parish registers, and entity recall/precision is a headline benchmark
+      metric. Risk of those indexes reaching model training page-aligned is low - note per item,
+      do not claim zero.
+
+  - source: "Own family papers (private)"
+    genre: "private correspondence / personal letters"
+    priority: "deferred: violates sourcing_constraint - not digitized, no scanning resources"
+    target_strata:
+      - ugly_kurrent
+      - suetterlin
+    fixes_constraints:
+      - non_professional_hands
+      - single_archive_cap
+    reason: >
+      The most direct match to the genealogist / local-historian persona (VISION section 4).
+      Rights held; zero contamination by construction; ordinary UNTRAINED hands; it literally IS
+      the target use case. Deferred ONLY because it requires scanning; revisit if digitization
+      becomes cheap (phone-camera pass). Digitized substitute below: Nachlass incoming
+      correspondence.
+    contamination_flag: "none by construction."
+    rejected_alternative:
+      source: "Europeana 1914-1918 crowdsourced collections"
+      reason: >
+        Many items carry volunteer transcriptions displayed right next to the scans online, so each
+        item needs an individual contamination check. Family papers need none.
+
+  - source: "Digitized Nachlaesse - INCOMING minor correspondence (state libraries, via Kalliope)"
+    genre: "private correspondence / personal letters"
+    priority: "high"
+    target_strata:
+      - ugly_kurrent
+      - suetterlin
+    fixes_constraints:
+      - non_professional_hands
+      - single_archive_cap
+      - bestaende
+    reason: >
+      Already-digitized substitute for family papers. Letters TO a semi-famous Nachlass holder
+      FROM ordinary people (farmers, wives, parishioners, petitioners) = untrained hands, women's
+      hands, elderly hands - and nobody publishes transcriptions of incoming minor correspondence.
+      Same "non-famous pages in famous files" trick already used within BArch, applied to the
+      demographic axis. Locate via Kalliope, then the holding library's digital collections.
+    contamination_flag: >
+      low, per-Nachlass check: verify no scholarly correspondence edition covers INCOMING letters
+      (editions usually print the famous person's outgoing side only).
+
+  - source: "Landesarchiv Baden-Wuerttemberg digitized holdings (beyond Matricula)"
+    genre: "probate inventories (Inventuren und Teilungen) / notarial-adjacent records"
+    priority: "high"
+    target_strata:
+      - ugly_kurrent
+      - tidy_kurrent
+      - table_registry
+    fixes_constraints:
+      - period_buckets
+      - non_professional_hands
+      - single_archive_cap
+      - bestaende
+    reason: >
+      The best pre-1850 non-parish genre: household-level notarial records (possessions, debts,
+      heirs), village scribes' hands, 16th-19th c., huge digitized volume, free online. Exactly
+      the notarial-record ecology named in the monoculture gap.
+    plan: "1-2 inventories from OBSCURE Amtsorte; per-item contamination check mandatory."
+    contamination_flag: >
+      medium, per-item: LABW has cooperated with Transkribus on serial sources, and Wuerttemberg
+      probate inventories carry research-project transcriptions (Tuebingen). Pick obscure
+      localities and verify no published transcription before gold selection.
+
+  - source: "Landesarchiv NRW digitized Personenstandsregister"
+    genre: "civil registry duplicates (post-1874)"
+    priority: "high"
+    target_strata:
+      - table_registry
+      - tidy_kurrent
+      - mixed_print_handwriting
+    fixes_constraints:
+      - non_professional_hands
+      - single_archive_cap
+      - bestaende
+    reason: >
+      The literal genealogist document (VISION section 4): pre-printed registry forms filled in by
+      local registrars' hands, German by construction, free online. Pick ~1874-1900 volumes for
+      Kurrent-era hands; small-town Standesaemter over cities for hand diversity.
+    contamination_flag: >
+      low-medium: partial CompGen/DES crowdsourced INDEXING exists (entity-level names/dates -
+      same caveat as Matricula); full page-level transcription unlikely. Note per register chosen.
+
+# ============================================================================
+# WITHIN-BARCH DIVERSIFICATION TARGETS
+# Still Bundesarchiv, so these do NOT relieve single_archive_cap - they widen
+# genre/provenance/ecology inside BArch. Use alongside, not instead of, the
+# non_bundesarchiv_targets above.
+# ============================================================================
+source_diversification_targets:
+  - bestand: "BArch MSG 2"
+    title: "Sachthematische und biographische Sammlung zur deutschen Militargeschichte"
+    source_record_url: "https://invenio.bundesarchiv.de/basys2-invenio/direktlink/4250ddd2-2f0d-460f-9617-623256255676/"
+    target_strata:
+      - suetterlin
+      - fieldpost
+      - rank_and_file_diaries
+    priority: "dead: class 1.2 exhausted 2026-07-02 (both verification passes)"
+    reason: >
+      WAS the top Suetterlin hope (ordinary soldiers, later-born writers). Both passes failed:
+      6462/1133 have no Digitalisat at all; the only 5 digitized items (5408, 5005, 6907, 4164,
+      6349) are all "nicht zur Anzeige im Internet freigegeben" (Lesesaal-only), one an explicit
+      typescript. Kept as record of the lesson: Invenio Digitalisat flag != internet viewability.
+      Do not re-probe without evidence BArch changed the rights release.
+    example_items:
+      - "All rejected - see rejected_or_deferred."
+
+  - bestand: "BArch R 67"
+    title: "Archiv fuer deutsche Kriegsgefangene des Frankfurter Vereins vom Roten Kreuz und fuer Kriegsgefangenenforschung"
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/GCKJQHLAII7AWFTU3KUT2QSXP5HOG3NX"
+    target_strata:
+      - mixed_print_handwriting
+      - field_letters
+      - forms
+      - multilingual_correspondence
+    priority: "high"
+    reason: "Civil society / prisoner-aid provenance with personal letters, reports, forms, lists, and international correspondence; different from army KTBs."
+    example_items:
+      - "BArch R 67/942 Ermittlungen von Vermissten, Apr. 1915-Apr. 1918"
+      - "BArch R 67/1728 foreign prisoner-aid forms"
+      - "BArch R 67/160 report on prisoner camps in Morocco"
+
+  - bestand: "BArch R 175-I"
+    title: "Gouvernement von Kamerun"
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/UYBRELHPAXTPSYSJPKAFVKJ7VF57SOY4"
+    target_strata:
+      - tidy_kurrent
+      - marginalia
+      - mixed_print_handwriting
+      - colonial_local_admin
+    priority: "high"
+    reason: "Local colonial administration gives similar visual value to R 1001 with less fame than Herero-uprising files."
+    example_items:
+      - "BArch R 175-I/480 botanical garden land exchange, 1904"
+      - "BArch R 175-I/533 land concessions, Deutsche Kautschuk-AG, 1903-1912"
+
+  - bestand: "BArch R 150"
+    title: "Deutsche Kolonialverwaltung in Togo"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/102f405f-1ca6-4a83-a74e-358a8007819d/"
+    target_strata:
+      - marginalia
+      - colonial_local_admin
+    priority: "medium (R 150/280 downloaded 2026-07-02; failed body-Fraktur typeface check 2026-07-03)"
+    reason: "Another colonial-administration pipeline outside R 1001; useful for boring administrative print, stamps, and annotations. Not currently a verified Fraktur vein: R 150/280 (1896 Druck) is on disk but body text is Antiqua/roman with blackletter display headings only."
+    example_items:
+      - "BArch R 150/280 printed 1896 jurisdiction order"
+      - "Togo governor/legal case files found via DDB search"
+
+  - bestand: "BArch R 8133"
+    title: "Neu-Guinea-Compagnie, Berlin"
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/IJQFINXFYP7Z4YAMYON2PTZ4GNW2T2HV"
+    target_strata:
+      - tidy_kurrent
+      - business_correspondence
+      - marginalia
+    priority: "medium-high"
+    reason: "Private/company correspondence and business records diversify away from state/military register language."
+
+  - bestand: "BArch R 101"
+    title: "Reichstag des Deutschen Reiches"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/8df99453-6149-4f6c-b596-7608e045a3cf/"
+    target_strata:
+      - clean_fraktur
+      - degraded_fraktur
+      - petitions
+    priority: "medium-high"
+    reason: "Parliamentary print/petition material is a non-military print ecology for Fraktur pages; a second fraktur source to de-risk R 43."
+    example_items:
+      - "BArch R 101/5136 Entwurf eines Allgemeinen Deutschen Strafgesetzbuchs, May 1927"
+
+  - bestand: "BArch R 1508"
+    title: "Deutsches Rotes Kreuz"
+    source_record_url: "https://invenio.bundesarchiv.de/invenio/direktlink/bb90bf43-0caa-47b8-aa90-ac1f24c20ee1/"
+    target_strata:
+      - mixed_print_handwriting
+      - forms
+      - civil_administration
+    priority: "medium"
+    reason: "DRK property/legal files introduce civil association paperwork, forms, signatures, and local place-name density."
+    example_items:
+      - "BArch R 1508/2436 Gross Piastenthal property file, 1941-1942"
+      - "BArch R 1508/1217 Wehlau property file, 1938-1941"
+
+  - bestand: "BArch R 131"
+    title: "Reichspatentamt"
+    source_record_url: "https://www.deutsche-digitale-bibliothek.de/item/ICYAPHWYYPFTD4DW5Q2WBD4ESJFZ5GB7"
+    target_strata:
+      - technical_forms
+      - mixed_print_handwriting
+      - diagrams
+    priority: "medium"
+    reason: "Patent files can add drawings, claims, numbered lists, and technical layout distinct from diaries, KTBs, and ministry files."

@@ -1,0 +1,16 @@
+[Unit]
+Description=EVO VLM OpenAI-compatible endpoint
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/evo-vlm
+ExecStart=%h/.local/share/evo-vlm/run-vllm.sh
+Restart=on-failure
+RestartSec=10
+TimeoutStartSec=0
+TimeoutStopSec=300
+KillSignal=SIGINT
+
+[Install]
+WantedBy=default.target

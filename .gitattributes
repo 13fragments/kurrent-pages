@@ -1,0 +1,10 @@
+# Owner-only release instructions: not part of a public export (git archive).
+docs/release/OWNER_STEPS.md export-ignore
+# Model-track dev tooling: private dev pages, schemas shared with the model repository.
+scripts/dev_ablations.py export-ignore
+scripts/dev_checkpoints.py export-ignore
+scripts/dev_loop_guard.py export-ignore
+scripts/page_dev_score.py export-ignore
+# Reviewer form for the fabrication review (deployed Worker; private operations).
+hosting/pilot-review/** export-ignore
+scripts/pilot_site.py export-ignore

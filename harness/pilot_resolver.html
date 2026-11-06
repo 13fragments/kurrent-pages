@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Uneinigkeiten auflösen</title>
+  <style>
+__STYLE__
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-title">Uneinigkeiten auflösen</div>
+    <nav class="unit-strip" id="unit-strip" aria-label="Seiten"></nav>
+    <div class="bar-save" id="save-status" role="status"></div>
+  </header>
+
+  <details class="howto" id="howto" open>
+    <summary>So geht es</summary>
+    <p>Zwei Prüfer haben jede Seite unabhängig geprüft. Hier sehen Sie nur die Stellen, an denen sie sich nicht einig sind. Für jede Stelle entscheiden Sie mit dem Scan links, wer recht hat.</p>
+    <ul>
+      <li>Klicken Sie auf die Antwort von A oder B. Stimmen beide nicht, wählen Sie „Etwas anderes entscheiden“.</li>
+      <li>Was beide gleich beantwortet haben, bleibt so. Das können Sie hier nicht ändern.</li>
+      <li>Haben Prüfer selbst Stellen eingetragen, wählen Sie zuerst die richtige Grenze und dann die Antwort.</li>
+      <li>Tasten: <kbd>A</kbd> oder <kbd>B</kbd> übernimmt die Antwort, <kbd>←</kbd> <kbd>→</kbd> blättert zwischen den Fragen.</li>
+    </ul>
+    <p>Wer A und wer B ist und welches Programm den Text geschrieben hat, sehen Sie nicht. Das ist Absicht.</p>
+  </details>
+
+  <main id="unit"></main>
+
+  <footer class="finish">
+    <p id="resolver-row"><label>Ihr Kürzel als Schiedsperson (nicht das Kürzel eines Prüfers): <input id="resolver" autocomplete="off"></label></p>
+    <p id="summary" class="summary"></p>
+    <p class="finish-actions"><button id="export" class="primary" type="button">Auflösung herunterladen</button>
+      <button id="load" type="button" class="quiet">Gespeicherte Auflösung öffnen</button>
+      <input id="load-file" type="file" accept="application/json" hidden></p>
+    <p id="notice" class="notice" role="status"></p>
+    <p id="error" class="error" role="alert"></p>
+  </footer>
+
+  <script type="application/json" id="bundle-data">__BUNDLE_JSON__</script>
+  <script type="application/json" id="ui-config">__UI_JSON__</script>
+  <script type="application/json" id="site-config">__SITE_JSON__</script>
+  <script>
+__CORE_SCRIPT__
+  </script>
+  <script>
+__SCRIPT__
+  </script>
+</body>
+</html>

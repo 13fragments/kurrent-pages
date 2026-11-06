@@ -1,0 +1,238 @@
+# Benchmark engine configurations (protocol §6). Every scored run logs the
+# exact engine version + this config into the run dir. The two VLM prompts are
+# pre-registered in BENCHMARK_PROTOCOL.md §6 and MUST NOT be edited after the
+# first scored run.
+#
+# Model files are large and live under data/raw/models/ (gitignored). Run
+# `bash scripts/setup_engines.sh` before using the open CRNN incumbents.
+
+engines:
+  # --- Frontier VLM (§6 optional, unrestricted pages; §10 amendment 2026-10-31) ----
+  gpt6_astra_max:                           # Codex CLI on the owner's ChatGPT subscription
+    type: codex_cli
+    model: gpt-6-astra
+    reasoning_effort: max
+    prompt_file: configs/prompts/vlm_default.txt
+    timeout: 3600
+    concurrency: 4                          # pages in parallel; about 15 min per page
+
+  fable51_max:                              # Claude Code CLI on the owner's Claude subscription
+    type: claude_cli
+    model: claude-fable-5-1
+    effort: max
+    prompt_file: configs/prompts/vlm_default.txt
+    timeout: 3600
+    concurrency: 4
+
+  # --- VLMs (one runner: any OpenAI-compatible chat-completions endpoint) ----
+  qwen3vl_4b:
+    type: vlm_openai
+    base_url: http://localhost:8080/v1     # llama.cpp / lmstudio / vLLM on the Strix Halo
+    model: qwen3-vl-4b-instruct
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+
+  qwen3vl_4b_hint:                          # pre-registered prompt variant (§6)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen3-vl-4b-instruct
+    prompt_file: configs/prompts/vlm_script_hint.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+
+  evo_qwen25vl_3b_awq:
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen2.5-vl-3b-awq
+    benchmark_role: silver_stand_in
+    gold_caveat: served model is Qwen2.5-VL-3B AWQ, not pre-registered §6 Qwen3-VL-4B; gold run needs Qwen3-VL-4B or a §6 amendment
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+
+  evo_qwen25vl_3b_awq_hint:                  # pre-registered prompt variant (§6)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen2.5-vl-3b-awq
+    benchmark_role: silver_stand_in
+    gold_caveat: served model is Qwen2.5-VL-3B AWQ, not pre-registered §6 Qwen3-VL-4B; gold run needs Qwen3-VL-4B or a §6 amendment
+    prompt_file: configs/prompts/vlm_script_hint.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+
+  qwen35_4b:                                # §10 amendment 2026-09-24; served alone on the EVO
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen3.5-4b
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  qwen35_4b_hint:
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen3.5-4b
+    prompt_file: configs/prompts/vlm_script_hint.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  # Gate 1 adapters (§10 2026-10-18): LoRA merged into Qwen3.5-4B at BF16, served alone
+  # on the EVO with the qwen35_4b settings. adapter_sha256 is the adapter file's hash.
+  gate1_run2_s1000:                         # Gate 1 adapter: Run 2, step 1000
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate1-run2-s1000
+    base_model: Qwen/Qwen3.5-4B
+    adapter_sha256: deaf6a0b0a50fb398c0afa700671e39ecae0ed6b63b6e870e198342f25733633
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  gate1_run3_s1200:                         # Run 3, step 1200 (no Stage A); VOID check only
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate1-run3-s1200
+    base_model: Qwen/Qwen3.5-4B
+    adapter_sha256: 8354267ed5a9db4006485d3fa6623b6b839f30fac8bdac732c9ebf5bf37c7b35
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  # Gate 1 9B (§10 2026-10-20): base zero-shot and LoRA merged into Qwen3.5-9B at BF16,
+  # each served alone on the EVO with the qwen35_4b settings.
+  qwen35_9b:                                # Qwen/Qwen3.5-9B@c202236235762e1c871ad0ccb60c8ee5ba337b9a
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen3.5-9b
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  gate1_run7_s800:                          # Gate 1 adapter on the 9B: Run 7, step 800
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate1-run7-s800
+    base_model: Qwen/Qwen3.5-9B
+    adapter_sha256: 57b96637683c49063ed89f55301cf9e7273212e6cd442ba1514b3a123a40bc8d
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  gate1_run11_s800:                         # Gate 1 release candidate: Run 11, step 800 (§10 2026-10-25)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate1-run11-s800
+    base_model: Qwen/Qwen3.5-9B
+    adapter_sha256: a7347b697edd9beecfeeadc357d701cd7216f2400077fcd769598d23633f0276
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+    chat_template_kwargs: {enable_thinking: false}   # instruct mode; transcription, not reasoning
+  gate2_p1_s2400:                           # Gate 2 Round 0: model-track P1, step 2400 (§10 2026-11-06)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate2-p1-s2400
+    base_model: lightonai/LightOnOCR-3-1B
+    adapter_sha256: 07fd8279f0a8e2bf2e850955f48939dbd41e0913a285fc23ee82231a36af60ac   # full trained weights
+    prompt_file: configs/prompts/vlm_default.txt   # hash recorded; not sent (image_only)
+    image_only: true                          # trained without a prompt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.0
+    vllm_xargs: {rep_penalty: 1.1, rep_window: 20}   # windowed penalty, the P1 dev profile
+  gate2_p1r_s2400:                          # Gate 2 Round 0: P1 replicate (seed 1702), step 2400 (§10 2026-11-06)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gate2-p1r-s2400
+    base_model: lightonai/LightOnOCR-3-1B
+    adapter_sha256: 627947b1a6f7fd5afcc9925589bdc8d883d8d40bbc49dc203194da110f691940   # full trained weights
+    prompt_file: configs/prompts/vlm_default.txt   # hash recorded; not sent (image_only)
+    image_only: true
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.0
+    vllm_xargs: {rep_penalty: 1.1, rep_window: 20}
+  olmocr2_7b:                              # §10 amendment 2026-09-24; allenai/olmOCR-2-7B-1025, BF16
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: olmocr-2-7b
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+  churro:                                   # vllm serve stanford-oval/churro-3B --port 8001
+    type: vlm_openai
+    base_url: http://localhost:8001/v1
+    model: stanford-oval/churro-3B
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.1                   # §10 amendment 2026-09-24
+
+  # frontier example (unrestricted pages only, protocol §6); needs OPENAI_API_KEY
+  # frontier_gpt:
+  #   type: vlm_openai
+  #   base_url: https://api.openai.com/v1
+  #   model: gpt-5.2
+  #   prompt_file: configs/prompts/vlm_default.txt
+  #   api_key_env: OPENAI_API_KEY
+
+  # --- open CRNN incumbents (kill-criterion candidates, §8) ------------------
+  kraken_kurrent:
+    type: kraken
+    package: kraken==7.0.0
+    model: data/raw/models/kraken/german_kurrent.mlmodel   # setup_engines.sh: Zenodo 10.5281/zenodo.11673242 rec_bohemica.mlmodel
+    timeout: 1800                            # s per subprocess; 600 timed out on G50 (2026-09-24)
+    # command: ["{binary}", "-i", "{image}", "{output}", "segment", "-bl", "ocr", "-m", "{model}"]
+
+  calamari_fraktur:
+    type: calamari
+    package: calamari-ocr==2.3.1
+    checkpoint: data/raw/models/calamari/fraktur_historical/0.ckpt  # setup_engines.sh: Calamari-OCR/calamari_models 2.2 fraktur_historical
+    predict_binary: data/raw/models/bin/calamari-predict
+    kraken_binary: kraken
+    timeout: 1800                            # s per subprocess; 600 timed out on G50 (2026-09-24)
+
+  tesseract_fraktur:
+    type: tesseract
+    package: tesseract==5.5.2
+    lang: deu_latf                            # setup_engines.sh: tessdata_best German Latin-Fraktur
+    psm: 3
+    extra_args: ["--tessdata-dir", "data/raw/models/tessdata"]
+
+  # --- registered but unimplemented (fail loudly with instructions) ----------
+  pylaia:
+    type: pylaia
+
+  # Transkribus via the web app (no API on the plan); exports read back per page.
+  # Models fixed 2026-09-24 before any run (§6). Budget: 300 credits total
+  # (50 free until 2026-10-24 + 250 bought), 1 credit per page per model.
+  transkribus_text_titan_ii:
+    type: transkribus
+    model: Text Titan II
+    model_id: 579509
+    export_dir: evals/transkribus_exports/text_titan_ii
+    credit_cap: 61
+  transkribus_german_genius:
+    type: transkribus
+    model: German Genius (Super Model)
+    model_id: 265149
+    export_dir: evals/transkribus_exports/german_genius
+    credit_cap: 61
+
+  # --- testing ---------------------------------------------------------------
+  mock:
+    type: mock
+    text: ""

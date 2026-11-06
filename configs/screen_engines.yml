@@ -1,0 +1,33 @@
+# Base-model screen (model-track POST_GATE0 §4), DEV PAGES ONLY — never used on gold.
+# Not part of the frozen §6 engine list; no protocol amendment needed.
+# All models at released BF16 precision, served one at a time on the EVO (localhost:8080 tunnel).
+# Each candidate runs with the fixed §6 prompt (comparable across engines); OCR specialists also
+# run with their vendor's plain-OCR prompt (vendor/ prompts, from each model card / repo).
+defaults: &vlm
+  type: vlm_openai
+  base_url: http://localhost:8080/v1
+  max_tokens: 4096
+  temperature: 0.0
+  repetition_penalty: 1.1
+engines:
+  qwen35_9b:
+    <<: *vlm
+    model: qwen3.5-9b
+    prompt_file: configs/prompts/vlm_default.txt
+    chat_template_kwargs: {enable_thinking: false}
+  dots_ocr:
+    <<: *vlm
+    model: dots-ocr
+    prompt_file: configs/prompts/vlm_default.txt
+  dots_ocr_vendor:
+    <<: *vlm
+    model: dots-ocr
+    prompt_file: configs/prompts/vendor/dots_ocr_prompt_ocr.txt
+  paddleocr_vl16:
+    <<: *vlm
+    model: paddleocr-vl-1.6
+    prompt_file: configs/prompts/vlm_default.txt
+  paddleocr_vl16_vendor:
+    <<: *vlm
+    model: paddleocr-vl-1.6
+    prompt_file: configs/prompts/vendor/paddleocr_vl_ocr.txt

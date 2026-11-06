@@ -1,0 +1,20 @@
+.DS_Store
+.env
+.pytest_cache/
+.venv/
+.venv-*/
+__pycache__/
+*.pyc
+
+# Local public/silver development assets.
+data/dev_silver/
+data/raw/models/
+evals/
+
+# These names are forbidden here, not merely untracked. The boundary check
+# fails when they exist.
+data/gold/
+data/benchmark_gold/
+gold/entities/
+docs/outreach/
+
