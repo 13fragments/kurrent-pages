@@ -49,6 +49,6 @@ rows:
     category: open CRNN pipeline
     access: open source
   - aggregates: 20261025-065703_gate1_run11_sealed__gate1_run11_s800
-    engine: 13fragments 9B research preview (Qwen3.5-9B + LoRA, Run 11 step 800)
-    category: research preview, not released
+    engine: 13fragments 9B (internal, Run 11)
+    category: internal model-track run, not released
     access: not released

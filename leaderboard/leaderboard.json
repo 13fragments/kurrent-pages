@@ -167,8 +167,8 @@
       "loop_guard_pages": 0
     },
     {
-      "engine": "13fragments 9B research preview (Qwen3.5-9B + LoRA, Run 11 step 800)",
-      "category": "research preview, not released",
+      "engine": "13fragments 9B (internal, Run 11)",
+      "category": "internal model-track run, not released",
       "access": "not released",
       "run_id": "20261025-065703_gate1_run11_sealed",
       "harness_commit": "cb479c34846600d781a12b345b641ea2c0b60fba",

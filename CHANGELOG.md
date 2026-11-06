@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.0.1 (unreleased)
+
+Documentation only. No score, page, ground truth, prompt, or scoring code
+changed; the benchmark version stays Kurrent Pages Benchmark v1.0.
+
+- Leaderboard: the 9B row is now "13fragments 9B (internal, Run 11)". It is an
+  internal model-track run, not a released model (owner decision 2026-11-06).
+  Its scores are unchanged.
+- Add `CITATION.cff` (13fragments as author, concept DOI 10.5281/zenodo.24015417).
+
 ## v1.0.0 (unreleased)
 
 Kurrent Pages Benchmark v1.0: GT v1.0, this harness tag, and the protocol with §10 up to

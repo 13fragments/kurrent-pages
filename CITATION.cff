@@ -12,7 +12,7 @@ abstract: >-
   source links and hashes, and the leaderboard.
 authors:
   - name: "13fragments"
-version: "1.0.0"
+version: "1.0.1"
 date-released: "2026-11-06"
 doi: "10.5281/zenodo.24015417"
 identifiers:
