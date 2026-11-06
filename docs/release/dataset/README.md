@@ -8,6 +8,17 @@ language:
   - la
 task_categories:
   - image-to-text
+tags:
+  - benchmark
+  - handwritten-text-recognition
+  - htr
+  - ocr
+  - handwriting
+  - historical-documents
+  - kurrent
+  - suetterlin
+  - fraktur
+  - digital-humanities
 size_categories:
   - n<1K
 viewer: false
