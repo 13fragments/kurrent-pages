@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite it as below."
+type: software
+title: "Kurrent Pages Benchmark"
+abstract: >-
+  Held-out benchmark for end-to-end transcription of German historical pages:
+  Kurrent, Sütterlin, degraded Fraktur, early-modern hands, registers, and
+  marginalia from 1565 to 1948. An engine gets a raw page image and returns the
+  page text. The 53 scored pages are scored offline against a private,
+  double-keyed transcription; only aggregates are published. The archive holds
+  the preregistered protocol, the evaluation harness, the page manifest with
+  source links and hashes, and the leaderboard.
+authors:
+  - name: "13fragments"
+version: "1.0.0"
+date-released: "2026-11-06"
+doi: "10.5281/zenodo.24015417"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.24015418"
+    description: "Kurrent Pages Benchmark v1.0.0"
+repository-code: "https://github.com/13fragments/kurrent-pages"
+url: "https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+keywords:
+  - benchmark
+  - handwritten text recognition
+  - optical character recognition
+  - Kurrent
+  - Sütterlin
+  - Fraktur
+  - German
+  - historical documents
