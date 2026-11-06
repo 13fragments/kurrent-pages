@@ -76,4 +76,4 @@ Source collections and the selection record of every page are in
 ## Citation
 
 Cite the benchmark release: Kurrent Pages Benchmark v1.0. Zenodo, 2026.
-https://doi.org/10.5281/zenodo.24015418
+https://doi.org/10.5281/zenodo.24015417

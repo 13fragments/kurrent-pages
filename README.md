@@ -1,6 +1,6 @@
 # Kurrent Pages Benchmark
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24015418.svg)](https://doi.org/10.5281/zenodo.24015418)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24015417.svg)](https://doi.org/10.5281/zenodo.24015417)
 
 Held-out benchmark for end-to-end transcription of mixed German historical
 documents: Kurrent, Sütterlin, degraded Fraktur, early-modern hands, registers,
@@ -81,4 +81,7 @@ annotations are not published (protocol §7, §11).
 
 ## Citation
 
-Kurrent Pages Benchmark v1.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.24015418
+Kurrent Pages Benchmark v1.0. Zenodo, 2026. https://doi.org/10.5281/zenodo.24015417
+
+This DOI resolves to the latest release. Release v1.0.0 has
+https://doi.org/10.5281/zenodo.24015418.
