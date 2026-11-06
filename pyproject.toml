@@ -1,6 +1,6 @@
 [project]
 name = "kurrent-pages"
-version = "1.0.1"
+version = "1.0.2"
 description = "Held-out benchmark harness for mixed German historical documents"
 requires-python = ">=3.11"
 dependencies = ["pyyaml>=6"]

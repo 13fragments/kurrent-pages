@@ -1,6 +1,15 @@
 # Changelog
 
-## v1.0.1 (unreleased)
+## v1.0.2
+
+Documentation only; the benchmark version stays Kurrent Pages Benchmark v1.0.
+
+- Fix `CITATION.cff`: one licence value (Apache-2.0). Zenodo's citation loader
+  rejected the list of two, so v1.0.1 has no Zenodo record. The abstract names
+  CC BY 4.0 for the protocol, documentation, and leaderboard.
+- Includes every v1.0.1 change below.
+
+## v1.0.1
 
 Documentation only. No score, page, ground truth, prompt, or scoring code
 changed; the benchmark version stays Kurrent Pages Benchmark v1.0.
