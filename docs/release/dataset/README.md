@@ -46,6 +46,8 @@ outputs for scoring.
 
 - Benchmark repository, protocol, harness, and leaderboard:
   `https://github.com/13fragments/kurrent-pages`
+- Leaderboard as a web page:
+  [13fragments/kurrent-pages-leaderboard](https://huggingface.co/spaces/13fragments/kurrent-pages-leaderboard)
 - How to submit: `SUBMITTING.md` in that repository.
 - Ground truth and entity annotations are **not** published. Scoring happens
   offline against the private ground truth; only aggregates are published.

@@ -16,6 +16,7 @@ double-keyed transcription.
 | Document | Contents |
 |---|---|
 | [`leaderboard/LEADERBOARD.md`](leaderboard/LEADERBOARD.md) | per-engine and per-stratum aggregates |
+| [Leaderboard on Hugging Face](https://huggingface.co/spaces/13fragments/kurrent-pages-leaderboard) | the same aggregates as a web page |
 | [`SUBMITTING.md`](SUBMITTING.md) | how to get the page images and submit outputs |
 | [`BENCHMARK_PROTOCOL.md`](BENCHMARK_PROTOCOL.md) | the frozen protocol and its dated amendment log (§10) |
 | [`docs/release/RELEASE_NOTES_v1.0.md`](docs/release/RELEASE_NOTES_v1.0.md) | ground-truth provenance, harness tag, known limits |
