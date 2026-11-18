@@ -84,18 +84,18 @@ clean worktree of `v1.0.0-rc1`):
 ## Rows added in v1.0.4
 
 Release v1.0.4 adds two rows from the sealed run `20261117-114437_merge_gold_sealed` (§10,
-2026-11-17 and 2026-11-18). Each engine was copied to `evals/release_v1/rescore_rc1/` with its
-outputs, its adjudications, and `run.json` reduced to that engine, and scored with
+2026-11-17 and 2026-11-18). The outputs and adjudications of each engine were copied to
+`evals/release_v1/rescore_rc1/`, with `run.json` reduced to that engine. Each copy was scored with
 `harness report --aggregates-only` from a clean worktree of the v1.0.4 harness. The v1.0.0-rc1
-harness cannot score them: it has no image step, run removal, or output map.
+harness cannot score these engines, because it does not know their engine keys.
 
 - Kurrent Transcriber 1B, `merge_r2s1702_hgh`: median 0.0713; the model-track readout of the run
   reported 0.071. No failed page, no loop-guard cut; run removal changed 0 pages.
 - LightOnOCR-HGH, `lighton_hgh`: median 0.0899; the readout reported 0.090. No failed page, no
   loop-guard cut.
 
-Both used the GT digest `88ccc5879c1b74c2…`. Each of its 53 files has the sha256 recorded at the
-GT v1.0 freeze (2026-10-16), the entity lists have the set hash of their 2026-10-18 freeze, and
-the page selection and image freeze have the hashes of the v1.0 runs, so this is GT v1.0. The
-earlier rows were not rescored with the v1.0.4 harness. Their engines set none of the new keys,
-so their OCR metrics and public aggregates use unchanged code.
+Both rows were scored against the GT digest `88ccc5879c1b74c2…`. Each of its 53 files has the
+sha256 recorded at the GT v1.0 freeze (2026-10-16). The entity lists match their 2026-10-18
+freeze, and the page selection and image freeze match the v1.0 runs. So the new rows use GT v1.0.
+The earlier rows were not rescored with the v1.0.4 harness. Their engines set none of the new
+keys, so their OCR metrics and public aggregates use unchanged code.
