@@ -45,10 +45,11 @@ Use them to run an engine end to end, page image in, text out, and submit the
 outputs for scoring.
 
 - Benchmark repository, protocol, harness, and leaderboard:
-  `https://github.com/13fragments/kurrent-pages`
+  [13fragments/kurrent-pages](https://github.com/13fragments/kurrent-pages)
 - Leaderboard as a web page:
   [13fragments/kurrent-pages-leaderboard](https://huggingface.co/spaces/13fragments/kurrent-pages-leaderboard)
-- How to submit: `SUBMITTING.md` in that repository.
+- How to submit: [`SUBMITTING.md`](https://github.com/13fragments/kurrent-pages/blob/main/SUBMITTING.md).
+  Send the outputs to `kurrent-pages@13fragments.com`.
 - Ground truth and entity annotations are **not** published. Scoring happens
   offline against the private ground truth; only aggregates are published.
 
