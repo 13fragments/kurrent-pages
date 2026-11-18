@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- `SUBMITTING.md`: owners of open-weight models can ask the maintainer to run their model. The
+  maintainer decides on each request, and the usual rules apply.
+- Dataset card: links `SUBMITTING.md` and gives the submission address.
+
 ## v1.0.4
 
 Leaderboard, harness, and protocol log; the benchmark version stays Kurrent Pages Benchmark v1.0.

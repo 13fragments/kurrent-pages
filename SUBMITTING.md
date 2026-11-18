@@ -75,6 +75,22 @@ Send the `.zip` file to `kurrent-pages@13fragments.com`. Say whether the engine 
 name the submitter, and whether the engine is open (weights or code public) or
 commercial.
 
+## Ask the maintainer to run an open model
+
+If your engine is an open-weight model on Hugging Face, you can ask the maintainer
+to run it instead of sending outputs.
+
+1. Send the model ID and a link to its inference instructions to
+   `kurrent-pages@13fragments.com`. Name the decoding settings, or say that the
+   model card's settings apply.
+2. The maintainer decides on each request. A model with published inference code
+   that runs on one GPU is the most likely to be accepted.
+3. The maintainer runs the 53 scored pages once, with those settings. The rules
+   above apply: end to end, one scored run per engine per 30 days, and no tuning
+   on the benchmark pages.
+4. The leaderboard row says that the maintainer ran the engine, and its notes
+   give the settings. You receive the same aggregates as any submitter.
+
 ## What gets published
 
 The maintainer imports the bundle with `scripts/import_submission.py`, scores it
