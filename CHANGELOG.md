@@ -3,8 +3,8 @@
 ## v1.0.4
 
 Leaderboard, harness, and protocol log; the benchmark version stays Kurrent Pages Benchmark v1.0.
-No page, ground truth, prompt of an existing engine, or metric definition changed, and no existing
-score changed.
+No page, ground truth, prompt of an existing engine, or OCR metric definition changed, and no
+existing score changed. T3 scoring changed (`t3-v2-abstention-mark`, below).
 
 - Leaderboard: add Kurrent Transcriber 1B (published by the benchmark maintainer) and
   LightOnOCR-HGH (revision `47931fbe`) from the sealed gold run of 2026-11-17. The notes give

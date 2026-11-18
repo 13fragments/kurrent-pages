@@ -5,8 +5,8 @@ read_when: You publish or cite release v1.0.4 of the Kurrent Pages Benchmark.
 # Kurrent Pages Benchmark v1.0.4 release notes
 
 Leaderboard and harness release. The benchmark version stays v1.0: the ground truth, the pages, the
-prompts of existing engines, and the metric definitions are those of v1.0.0, and no existing score
-changed. Scores compare directly across v1.0.0 to v1.0.4.
+prompts of existing engines, and the OCR metric definitions are those of v1.0.0, and no existing
+score changed. OCR scores compare directly across v1.0.0 to v1.0.4. T3 scoring changed (see Harness).
 
 ## Changes since v1.0.3
 
