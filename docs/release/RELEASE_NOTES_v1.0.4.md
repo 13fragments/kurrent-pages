@@ -24,11 +24,14 @@ changed. Scores compare directly across v1.0.0 to v1.0.4.
 - **Disclosure.** 13fragments maintains this benchmark and publishes Kurrent Transcriber 1B. The
   row says so in its category.
 - **Invented text.** The T3 check (two AI model reviewers) ran for both new rows: 0 of 53 pages with
-  invented text each. No other row has a T3 result. The leaderboard notes say this.
+  invented text each, which meets the T3 pass rule of §10 (2026-11-06). No other row has a T3 result.
 - **Harness.** New opt-in engine keys, each logged in §10 before its first gold run: an image step
   (`preprocess`), run removal (`loop_policy`), an output map (`output_map`), a system message
-  (`system_prompt`), and server-side sampling (`server_sampling`). Engines without these keys go
-  through unchanged scoring code, so the earlier rows were not rescored.
+  (`system_prompt`), and server-side sampling (`server_sampling`). For engines without these keys,
+  the OCR metrics and the public aggregates use unchanged code, so the earlier rows were not
+  rescored. T3 scoring now exempts a bracketed abstention mark (`t3-v2-abstention-mark`).
+- **Same ground truth.** The new rows were scored against GT v1.0: every ground-truth file, the
+  entity lists, and the page selection have the hashes recorded at the v1.0 freeze.
 - **Protocol.** §3.2 item 9: scan furniture (colour charts, rulers, digitization footers) is not
   transcribed. The owner checked the ground truth against it: 0 pages changed. §1 allows one fixed
   image step per engine entry. §10 logs the gold runs and protocol decisions since v1.0.3, including

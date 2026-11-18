@@ -623,7 +623,7 @@ lucky subset while most pages collapsed.
 
 * **2026-09-28 — primary keyer's question rounds on the dev pages and Blatt package
   (§3.1/§3.2).** Sixteen rulings from the primary keyer's questions of 2026-09-17 to
-  2026-09-28, answered by mail and applied in her dev-page delivery (Stage-A dev set,
+  2026-09-28, answered by mail and applied in the keyer's dev-page delivery (Stage-A dev set,
   reviewed 2026-09-23): word boundaries by word not gap; punctuation only where visible
   (missing/cropped period not supplied, clear slip period kept, doubtful speck dropped);
   letter-value diacritics kept (`š`); ditto marks as written with straight `"`; death
@@ -1077,7 +1077,7 @@ lucky subset while most pages collapsed.
   run is sealed until the owner opens it; only aggregates are read. No page IDs, images, GT,
   prompts, metric definitions, or thresholds changed.
 * **2026-11-06 — T3 by two model reviewers (FABRICATION_METRIC Layer 3; VISION §12).** Owner
-  decision in session: "Two models + [primary keyer] check" (model-track D-2026-11-06-02). Logged after the
+  decision in session: "Two models + [reviewer 1] check" (model-track D-2026-11-06-02). Logged after the
   silver calibration and before any model reviewer saw a gold page. (1) **Reviewers.** Claude
   Fable 5.1 (effort max, Claude Code CLI) and GPT-6 Astra (effort max, Codex CLI) replace the two
   human reviewers for T3; one packet each; the human form's content and guide
@@ -1170,7 +1170,7 @@ lucky subset while most pages collapsed.
   the run finished: "Open it". Logged before any output of
   `20261109-234104_gate2_round2_sealed` is opened or scored. The run is complete: three engines
   (`gate2_r2_s1701_s2400`, `gate2_r2_s1702_s2400`, control `gate2_p1_s2400`), 55 page records
-  each, no error record, one serving identity (RunPod Pod `wahq8tfusc1m86`; weights sha256 equal
+  each, no error record, one serving identity (one RunPod Pod; weights sha256 equal
   to the 2026-11-08 entry, item (4); the windowed-penalty processor was shown to act for each
   engine on dev page D1 before any gold page). All engines are scored against GT v1.0 and the
   frozen entity lists by `harness score` and `harness report` with the harness of the
@@ -1368,16 +1368,23 @@ lucky subset while most pages collapsed.
     `docs/release/RESCORE_V1.md`). Both are complete: 53 scored pages, 0 failed pages, 0 loop-guard cuts; run
     removal changed 0 pages of Kurrent Transcriber 1B. The category of Kurrent Transcriber 1B states that the
     benchmark maintainer publishes it.
-  - **Ground truth.** The GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`). No GT file changed
-    after 2026-10-16, so it is GT v1.0, and the new rows compare directly with the earlier rows.
+  - **Ground truth.** The GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`). Each of its 53 files
+    has the sha256 recorded at the GT v1.0 freeze (private evaluation repository, 2026-10-16); the entity lists
+    have the set hash of their 2026-10-18 freeze; the page selection and the image freeze have the hashes of the
+    v1.0 runs. So the new rows use GT v1.0 and compare directly with the earlier rows.
   - **Not added.** `churro3b_official` has no valid output in the run (its server did not start), so the `churro`
     row stays as it is. The drift control `gate2_p1_s2400`, the 1B v1 (`release_r2_s1702_s2400`), and the budget
     0.8B are model-track runs of models that are not released, so they get no row (as the 9B row in v1.0.3).
-  - **T3.** The registered T3 of both engines in that run is complete: 0 of 53 pages with invented text each. The
-    leaderboard notes report it. The harness field `t3_status` stays "unresolved" for every engine, because no T3
-    pass threshold is ratified in this protocol.
-  - **Earlier rows.** Not rescored. Their published values stay those of harness `v1.0.0-rc1`; engines without the
-    keys of the 2026-11-13 and 2026-11-15 entries go through unchanged scoring code.
+  - **T3.** The registered T3 of both engines in that run is complete: 0 of 53 pages with invented text each, so
+    both meet the pass rule of the 2026-11-06 entry (median page `fab_rate_adj` at most 0.01, no page above 0.10).
+    That rule gates model-track candidates. The harness field `t3_status` does not apply it and stays
+    "unresolved" for every engine. The leaderboard notes report the T3 result.
+  - **Earlier rows.** Not rescored. Their published values stay those of harness `v1.0.0-rc1`. For engines without
+    the keys of the 2026-11-13 and 2026-11-15 entries, the OCR metrics and the public aggregates go through unchanged
+    code. T3 scoring changed (`t3-v2-abstention-mark`, 2026-11-13 entry); no earlier row has a T3 result.
+  - **Editorial, for the public release.** In earlier entries, a RunPod Pod identifier (2026-11-10) and a keyer's
+    pronoun (2026-09-28) were removed, and the name placeholder of the 2026-11-06 quote reads "[reviewer 1]". No
+    rule, number, or decision changed.
   - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
 
 ## 11. Release, versioning, and distribution (added 2026-07-09)

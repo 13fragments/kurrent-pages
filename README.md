@@ -13,7 +13,7 @@ double-keyed transcription.
 **Release: Kurrent Pages Benchmark v1.0** = ground truth v1.0 + harness tag `v1.0.0` +
 `BENCHMARK_PROTOCOL.md` with §10 up to the tag date.
 The rows added in release v1.0.4 were scored with harness tag `v1.0.4`. It adds opt-in engine
-keys; engines without them are scored by unchanged code.
+keys; for engines without them, the OCR metrics and the public aggregates use unchanged code.
 
 | Document | Contents |
 |---|---|

@@ -94,6 +94,8 @@ harness cannot score them: it has no image step, run removal, or output map.
 - LightOnOCR-HGH, `lighton_hgh`: median 0.0899; the readout reported 0.090. No failed page, no
   loop-guard cut.
 
-Both used the GT digest `88ccc5879c1b74c2…`. No GT file changed after 2026-10-16, so this is GT
-v1.0. The earlier rows were not rescored with the v1.0.4 harness. Their engines set none of the
-new keys, so their scoring code is unchanged.
+Both used the GT digest `88ccc5879c1b74c2…`. Each of its 53 files has the sha256 recorded at the
+GT v1.0 freeze (2026-10-16), the entity lists have the set hash of their 2026-10-18 freeze, and
+the page selection and image freeze have the hashes of the v1.0 runs, so this is GT v1.0. The
+earlier rows were not rescored with the v1.0.4 harness. Their engines set none of the new keys,
+so their OCR metrics and public aggregates use unchanged code.

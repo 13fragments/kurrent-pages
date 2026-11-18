@@ -5,9 +5,8 @@ read_when: You run, audit, or cite the T3 fabrication review of a release candid
 # T3 fabrication review by two model reviewers
 
 **Status: PRE-REGISTERED 2026-11-06T17:28Z (agent), before any model reviewer saw a page; calibration passed and frozen 2026-11-06 (BENCHMARK_PROTOCOL §10).**
-Owner approval 2026-11-06 (in session: "any way we can use fable max or astra max for the
-fabrication review? or both. I don't want to wait again for [primary keyer]", then "Two models + [primary keyer]
-check" to the agent's recommendation). Model-track decision D-2026-11-06-02.
+Owner approval 2026-11-06 (in session: "Two models + [reviewer 1] check", to the agent's recommendation).
+Model-track decision D-2026-11-06-02.
 
 ## Purpose
 
@@ -56,10 +55,11 @@ importer pairs the two reviewers' added proposals one-to-one and needs one conse
 pair, and it keeps the label of a pair whose reviewers agree. The union is therefore built per
 pair: each pair's claim covers its shared characters, the union characters between claims go to
 a neighbouring claim, and a disagreeing or single claim takes the most severe label among the
-proposals under it. This can only make a claim more severe, except for characters no claim may
-take; their count is printed as `unrepresentable_chars` (0 on the 12 pilot v2 units). If T3 fails only because of spans
-where the two reviewers disagree, the owner may resolve those spans on the resolver page; the
-report then gives both readings.
+proposals under it. This can only make a label more severe, except for characters that cannot be
+assigned to any pair; their count is printed as `unrepresentable_chars` (0 on the 12 pilot v2 units).
+
+If T3 fails only because of spans where the two reviewers disagree, the owner may resolve those
+spans on the resolver page; the report then gives both readings.
 
 ## Calibration on silver pages (gates the gold run)
 
@@ -151,8 +151,7 @@ instructions, the rule, or the thresholds.
 
 ## Gold result: P1 s2400 (2026-11-06T19:40Z)
 
-**T3 FAIL.** Aggregates only; page-level detail is in the private evaluation repository
-(`docs/T3_GOLD_READOUTS.md` there). Annex pages excluded.
+**T3 FAIL.** Aggregates only; page-level detail stays private. Annex pages excluded.
 
 | Measure | Result |
 |---|---|
@@ -162,18 +161,14 @@ instructions, the rule, or the thresholds.
 | Median page `fab_rate_adj` | 0.000 (limit 0.01: pass) |
 | Max page `fab_rate_adj` | 0.975 (limit 0.10: **fail**) |
 | Pages above 0.10 | 1 |
-| Pages with any invented text | 2 (39 and 49 characters) |
+| Pages with any invented text | 2 |
 | Micro rate, all invented characters / all output characters | 88 / 72,656 = 0.0012 |
 | Median `degenerate_rate_adj` | 0.000 |
 | Fabricated entities (union; reported, not gating) | 356 (R-A 296, R-B 330) |
 
 The fail comes from one page, and not from the resolver: both reviewers independently label
 the same spans on that page `fluent_fabrication`, so each reviewer alone gives the same fail.
-The owner-resolution route for disagreeing spans does not apply. On that page the candidate's
-output is a repetition loop that reaches the token limit. The loop guard (§10, 2026-10-16)
-scores the output without its trailing loop, so the scored text, and the text in the review
-packet, is the first repeated block. The reviewers judged that block as text that is not on
-the page. The output contains no abstention marker.
+The owner-resolution route for disagreeing spans does not apply.
 
 Agreement of R-A with R-B, pooled over the 53 pages (raw, kappa): span candidates (101) 97%,
 0.62; entity candidates (3,205) 98%, 0.94; added spans, aligned pairs (1,198) 63%, 0.32; added
@@ -209,11 +204,9 @@ excluded. Packets hold the scored text (with run removal) and the original page 
 | Median `degenerate_rate_adj` | 0.000 |
 | Fabricated entities (union; reported, not gating) | 373 |
 
-The fail comes from one span, and not from the resolver. Each reviewer labels exactly one span `fluent_fabrication` in
-the run, and it is the same span candidate. Scored on a copy of the run with one reviewer at a time, Fable alone and
-Astra alone each fail on the same one page, and the median passes. The owner-resolution route for disagreeing spans
-does not apply. The failing page has no loop-guard cut and no run removal, and its omission rate is not above 0.5. It
-is not the page that failed P1.
+The fail comes from one page, and not from the resolver. Scored on a copy of the run with one reviewer at a time,
+Fable alone and Astra alone each fail on one page, the same one for both, and the median passes. The owner-resolution route for
+disagreeing spans does not apply.
 
 Per "Gold run" above, this result does not change the rule or the thresholds. The readout was reviewed by Codex Sol
 Max (two rounds, accepted after fixes). The human check below is open.
@@ -221,7 +214,7 @@ Max (two rounds, accepted after fixes). The human check below is open.
 ## Human check (not gating)
 
 After the gold run, reviewer 1 reviews a seeded random sample of 10 of the candidate's gold
-pages in the v2 form. Her labels are compared with the union labels and reported beside T3.
+pages in the v2 form. Those labels are compared with the union labels and reported beside T3.
 
 ## Public wording
 
