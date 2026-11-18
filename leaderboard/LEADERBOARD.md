@@ -1,11 +1,13 @@
 # Leaderboard: Kurrent Pages Benchmark v1.0
 
-Held-out set of 53 scored pages, ground truth v1.0, scored with harness `v1.0.0-rc1`. Aggregates only: no page scores and no outputs are published. `cer_norm` is the normalized character error rate (protocol §4, §5); lower is better. Entity recall is the share of gold persons, places, and dates found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above 0.75 or an empty output (§5.4). Licence: CC BY 4.0.
+Held-out set of 53 scored pages, ground truth v1.0, scored with harness v1.0.0-rc1 (rows added in v1.0.4: v1.0.4). Aggregates only: no page scores and no outputs are published. `cer_norm` is the normalized character error rate (protocol §4, §5); lower is better. Entity recall is the share of gold persons, places, and dates found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above 0.75 or an empty output (§5.4). Licence: CC BY 4.0.
 
 ## Overall and hard strata
 
 | Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |
 |---|---|---|---|---|---|---|---|---|---|
+| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | open VLM, fine-tuned on Kurrent; published by the benchmark maintainer | 53 | **0.071** | 0.113 | 0.833 | 0% | 0.091 | 0.775 | 2 |
+| LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe) | open VLM, fine-tuned on Kurrent | 53 | **0.090** | 0.134 | 0.833 | 0% | 0.098 | 0.750 | 2 |
 | Transkribus German Genius (Super Model, model ID 265149) | commercial reference, run 2026-09-24 | 53 | **0.131** | 0.186 | 0.850 | 2% | 0.128 | 0.825 | 2 |
 | Transkribus Text Titan II (model ID 579509) | commercial reference, run 2026-09-24 | 53 | **0.169** | 0.214 | 0.857 | 2% | 0.150 | 0.804 | 1 |
 | CHURRO 3B (stanford-oval/churro-3B) | open VLM, zero-shot | 53 | **0.258** | 0.412 | 0.588 | 4% | 0.266 | 0.508 | 4 |
@@ -24,6 +26,8 @@ Pages per stratum in brackets.
 
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
+| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | 0.027 | 0.168 | 0.071 | 0.171 | 0.071 | 0.006 | 0.210 | 0.128 | 0.185 | 0.064 |
+| LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe) | 0.045 | 0.212 | 0.086 | 0.205 | 0.080 | 0.013 | 0.265 | 0.098 | 0.211 | 0.135 |
 | Transkribus German Genius (Super Model, model ID 265149) | 0.080 | 0.168 | 0.087 | 0.275 | 0.133 | 0.013 | 0.247 | 0.128 | 0.174 | 0.079 |
 | Transkribus Text Titan II (model ID 579509) | 0.077 | 0.211 | 0.145 | 0.199 | 0.147 | 0.016 | 0.372 | 0.150 | 0.269 | 0.184 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.232 | 0.387 | 2.902 | 0.452 | 0.303 | 0.004 | 0.419 | 0.182 | 0.238 | 0.216 |
@@ -42,6 +46,8 @@ Pages per stratum in brackets.
 
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
+| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | 1.000 | 0.333 | 1.000 | 0.750 | 0.800 | 1.000 | 0.571 | 0.857 | 0.429 | 0.722 |
+| LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe) | 0.929 | 0.293 | 1.000 | 0.917 | 0.733 | 0.869 | 0.571 | 0.857 | 0.143 | 0.694 |
 | Transkribus German Genius (Super Model, model ID 265149) | 1.000 | 0.758 | 1.000 | 0.633 | 0.875 | 0.917 | 0.571 | 0.857 | 0.714 | 0.694 |
 | Transkribus Text Titan II (model ID 579509) | 1.000 | 0.321 | 1.000 | 0.550 | 0.875 | 0.929 | 0.429 | 0.750 | 0.143 | 0.528 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.667 | 0.094 | 0.750 | 0.450 | 0.067 | 1.000 | 0.400 | 0.688 | 0.429 | 0.514 |
@@ -76,14 +82,32 @@ General-purpose frontier models, each a single run on one date through the vendo
   marginalia, and mixed_print_handwriting.
 - **Small strata.** A stratum with fewer than 5 pages is indicative only. Read every
   median with its page count.
-- **Fabrication** is not adjudicated for any engine (T3 open). The proxy column counts
-  pages whose automatic long-insertion rate (v0.1) is above 0.10. It is a review
-  diagnostic, not a fabrication verdict.
+- **Fabrication.** The proxy column counts pages whose automatic long-insertion rate
+  (v0.1) is above 0.10. It is a review diagnostic, not a fabrication verdict. T3, the
+  adjudicated check for invented text (two AI model reviewers, §10, 2026-11-06), ran only
+  for Kurrent Transcriber 1B and LightOnOCR-HGH in their run of 2026-11-17: each had 0 of
+  53 pages with invented text, and no other row has a T3 result. In `leaderboard.json`,
+  `t3_status` is "unresolved" for every row, because the protocol has no ratified T3
+  pass threshold.
 - **Reproducibility.** VLM rows are single greedy runs in one serving state. On the
   maintainer's hardware, a serving-state change moved medians by about 0.02. Rows from
   one run compare exactly; rows from different runs carry that noise.
 - **Loop guard.** VLM outputs that stopped at the token limit are scored without their
-  trailing repetition loop (§10, 2026-10-16).
+  trailing repetition loop (§10, 2026-10-16). Kurrent Transcriber 1B also removes repeated
+  runs (`run_removal_v1`, §10, 2026-11-13). `loop_policy_pages` in `leaderboard.json`
+  counts the pages that this step changed.
+- **Fine-tuned rows (added in v1.0.4).** Kurrent Transcriber 1B and LightOnOCR-HGH ran in
+  one sealed run on 2026-11-17 (§10). Both used greedy decoding, at most 4,096 tokens, the
+  page image only, a windowed repetition penalty of 1.1 over 20 tokens (the vLLM plugin
+  ships with the Kurrent Transcriber 1B repository), and the LightOnOCR output map
+  (`lighton-marks`). Kurrent Transcriber 1B also used its image step (`furniture_fp_v16`)
+  and run removal, as its model card documents. For LightOnOCR-HGH, these are the
+  maintainer's settings; its author's settings can differ. The maintainer of this
+  benchmark publishes Kurrent Transcriber 1B.
+- **Harness.** The rows added in v1.0.4 were scored with harness v1.0.4. It adds opt-in
+  engine keys: an image step, run removal, and an output map (§10, 2026-11-13 and
+  2026-11-15). Engines without these keys go through unchanged scoring code. The earlier
+  rows keep their v1.0.0-rc1 scores.
 - **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).
 - **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus
   service.

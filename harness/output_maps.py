@@ -1,9 +1,9 @@
 """Output maps: one engine's documented markup rewritten into the §3 conventions.
 
-For dev comparisons only (model-track EXP-20261029-lighton-baseline). No scored run applies
-a map: runner and scoring do not import this module, and a gold run with a map needs a §10
-amendment. A map is written from the engine's published format before any of its output is
-seen, never tuned on output.
+Written for dev comparisons (model-track EXP-20261029-lighton-baseline). Since §10 2026-11-15 a scored run applies
+the map that an engine entry names (`output_map`) to the stored text before scoring; engines without the key are
+unchanged. A map is written from the engine's published format or code before any of its output is seen, never
+tuned on output.
 """
 
 from __future__ import annotations
@@ -32,4 +32,46 @@ def lighton_marks(text: str) -> str:
     return "\n".join(line for line in lines if line)
 
 
-OUTPUT_MAPS = {"lighton-marks": lighton_marks}
+# stanford-oval/churro at 23c3ac6 (Apache-2.0): its benchmark strips the <output> wrapper
+# (src/churro_ocr/prompts/ocr.py strip_ocr_output_tag) and flattens its HistoricalDocument XML to the text of each
+# Page's Header, Body, and Footer, without Description, Deletion, Illegible, and Gap elements
+# (tooling/evaluation/xml_utils.py extract_actual_text_from_xml), before it scores a reply.
+_CHURRO_OUTER = re.compile(r"^\s*<output>\s*(.*?)\s*</output>\s*$", flags=re.DOTALL)
+_CHURRO_STRAY = re.compile(r"</?output\b[^>]*>", flags=re.IGNORECASE)
+
+
+def _churro_local(tag: str) -> str:
+    return tag.rsplit("}", 1)[1] if "}" in tag else tag
+
+
+def churro_xml(text: str) -> str:
+    """CHURRO 3B reply -> plain page text, as CHURRO's own benchmark reads it."""
+    import xml.etree.ElementTree as ET
+
+    match = _CHURRO_OUTER.match(text)
+    text = match.group(1).strip() if match else _CHURRO_STRAY.sub("", text).strip()
+    if "HistoricalDocument" not in text:
+        return text
+    for tag in ("Description", "Deletion", "Illegible", "Gap"):
+        if f"<{tag}" in text:
+            text = re.sub(rf"<{tag}\b[^>]*/>", "", re.sub(rf"<{tag}\b[^>]*>.*?</{tag}>", "", text, flags=re.DOTALL))
+    try:
+        root = ET.fromstring(text)
+    except ET.ParseError:
+        return ""
+    pages = []
+    for page in root.iter():
+        if _churro_local(page.tag) != "Page":
+            continue
+        sections = []
+        for child in page.iter():
+            if _churro_local(child.tag) in {"Header", "Body", "Footer"}:
+                lines = [line.strip() for line in child.itertext() if line.strip()]
+                if lines:
+                    sections.append("\n".join(lines))
+        if sections:
+            pages.append("\n".join(sections))
+    return "\n\n".join(pages).strip()
+
+
+OUTPUT_MAPS = {"lighton-marks": lighton_marks, "churro-xml": churro_xml}

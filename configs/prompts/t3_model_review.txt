@@ -1,0 +1,48 @@
+You review a machine transcription of one handwritten German page. The image above is the scan of the page. The scan decides every question.
+
+You get:
+- REFERENCE: a {reference_kind} transcription of the page. It helps you read the scan. It may contain errors; the scan decides.
+- MACHINE TEXT: the program's transcription, in numbered lines (L1, L2, ...).
+- SPAN CANDIDATES (S1, S2, ...): passages of the machine text that an automatic check highlighted.
+- ENTITY CANDIDATES (E1, E2, ...): words of the machine text that an automatic check thinks are names, places, dates, or amounts.
+
+You correct nothing and type no transcription. You answer questions.
+
+STEP 1. Give every span candidate exactly one label:
+- "supported": the passage stands like this in the scan.
+- "perception_error" (reading error): the program misread letters that are in the scan; the letters look similar. Example: the scan has "der Schmied Johann Kranz", the program writes "der Schmid Johanna Kranich". You can tell which place in the scan the program tried to read. This holds even when almost every word is wrong, and when the number of words differs: split or merged words, missing or added letters are reading errors.
+- "convention_error" (only the spelling): the program expands an abbreviation, uses modern spelling, or sets characters differently from the scan. Extra table rules or a different text layout also count here.
+- "order_layout_error" (stands elsewhere): the text is in the scan, but at another place or in another order.
+- "fluent_fabrication" (invented): the text is readable, but nothing in the scan at that place could be read like this, or the text has no relation to the letters in the scan. The program's own sentences, such as "Here is the transcription ...", are invented. Example: the scan ends with "gegeben zu Freiberg"; the program continues "im Beisein der ehrbaren Zeugen und des Herrn Pfarrers", and nothing stands there in the scan.
+- "degenerate_generation" (repetition): the program repeats the same text more often than the scan has it.
+- "gt_or_image_uncertain" (don't know): illegible, or you cannot decide.
+The rule between the two that matter most: if you can tell which place in the scan the program tried to read, it is a reading error, however bad. Choose "fluent_fabrication" only when nothing in the scan stands there, or the text does not fit the letters in the scan at all.
+
+STEP 2. Give every entity candidate exactly one label. Judge the program's word, not the scan:
+- "not_entity" (no name, only a word): the program's word is not a name, place, date, amount, number, or identifier, for example "Haus". This also holds for a fragment of an ordinary word and for ordinary words run together, even when the letters are right and even when the word is misread. Most candidates get this answer.
+- Only when the program's word really is a name, place, date, amount, number, or identifier, compare it with the scan at that place:
+  - "supported": it stands exactly like this in the scan, letter for letter.
+  - "fabricated": it differs, even by one letter, or nothing like it stands there.
+- "uncertain": you cannot decide.
+
+STEP 3. Read the whole machine text against the scan, line by line, including the parts that are not highlighted. Add every passage that is not supported and is not covered by a span candidate, with its label from step 1. A long misread passage may be one added span; you need not mark each word. Do not add supported text. Added spans must not overlap span candidates. If the program writes a name, place, date, or amount that is not among the entity candidates and does not stand in the scan, add it as an added entity.
+
+Reply with one JSON object and nothing else:
+{{"spans": {{"S1": "<label>"}},
+ "entities": {{"E1": "<label>"}},
+ "added_spans": [{{"line": <first line number>, "start": "<the first 1 to 6 words of the passage, copied exactly from that line>", "end_line": <last line number>, "end": "<the last 1 to 6 words of the passage, copied exactly from that line>", "label": "<label>"}}],
+ "added_entities": [{{"line": <line number>, "text": "<the words, copied exactly>", "kind": "person|place|date|amount|identifier", "label": "fabricated|supported|uncertain"}}],
+ "note": "<one short sentence>"}}
+Label every S and E candidate. Use empty lists when you add nothing.
+
+REFERENCE:
+{reference}
+
+MACHINE TEXT:
+{machine_text}
+
+SPAN CANDIDATES:
+{span_candidates}
+
+ENTITY CANDIDATES:
+{entity_candidates}

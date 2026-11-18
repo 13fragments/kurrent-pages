@@ -21,7 +21,10 @@ here, in advance, in writing.
   `<evaluation root>/data/benchmark_gold/v1_pages/{GID}.jpg` — processed single pages
   (spreads split to a designated scored side, facing-page slivers cropped, native
   resolution). Frozen by SHA-256 in `gold/v1_pages.sha256`. Engines receive exactly
-  these images; no other preprocessing is permitted per engine.
+  these images; no other preprocessing is permitted per engine. One narrow exception, opt-in
+  per engine entry (§10, 2026-11-13): an engine may name one fixed image step that is part of
+  that engine and ships with it; the harness applies it in memory to the frozen image, and
+  the frozen file on disk stays unchanged.
 * **Strata (7 + contrast):** degraded_fraktur, tidy_kurrent, ugly_kurrent,
   suetterlin, table_registry, marginalia, mixed_print_handwriting, plus
   twentieth_century_kurrent / nineteenth_c_civilian / latin_cursive_1940s as
@@ -178,6 +181,15 @@ GT is a single text sequence per page, linearized deterministically:
 8. **Tie-break:** a mark whose row or column cannot be decided belongs to the upper
    line and the left column (a ditto mark between two lines → upper line; a mark
    between two columns → left column). (Added 2026-09-28, §10.)
+9. **Scan furniture:** objects and overlays that the holding institution's imaging adds
+   are outside the target page and are NOT transcribed: colour and grey charts, rulers
+   and scale bars, label cards laid beside the leaf, and footers, logos, web links, and
+   copyright lines added to the image during digitization. They are excluded also where
+   they lie over the leaf. Marks on the physical leaf keep their present rules: stamps
+   (item 4), labels and stickers pasted on the leaf (item 5, pasted print), foliation,
+   pagination, and archive numbers (item 7), and print that belongs to the document
+   (letterheads, printed forms). Where the kind of a mark cannot be decided, the owner
+   decides it at adjudication. (Added 2026-11-12, §10.)
 
 ### 3.3 What is scored
 
@@ -1064,6 +1076,26 @@ lucky subset while most pages collapsed.
   with `cer_norm` ≤ 0.1301. A seed without a valid gold run makes the round a non-pass. The
   run is sealed until the owner opens it; only aggregates are read. No page IDs, images, GT,
   prompts, metric definitions, or thresholds changed.
+* **2026-11-06 — T3 by two model reviewers (FABRICATION_METRIC Layer 3; VISION §12).** Owner
+  decision in session: "Two models + [primary keyer] check" (model-track D-2026-11-06-02). Logged after the
+  silver calibration and before any model reviewer saw a gold page. (1) **Reviewers.** Claude
+  Fable 5.1 (effort max, Claude Code CLI) and GPT-6 Astra (effort max, Codex CLI) replace the two
+  human reviewers for T3; one packet each; the human form's content and guide
+  (`configs/prompts/t3_model_review.txt`, sha256 `8e7152e3aa9a8930…`); scripts
+  `scripts/model_review.py` (sha256 `4f22b6ce81a17781…`) and `scripts/model_review_resolve.py`
+  (sha256 `b94d67e54048628f…`). (2) **Resolver.** The fixed rule "conservative union": the more
+  severe label of the two reviewers, built per proposal pair as the importer requires
+  (`docs/T3_MODEL_REVIEW.md`). (3) **Calibration (silver only, gates passed on the first version
+  of the instructions).** Planted invented sentences caught: Fable 8/8, Astra 8/8 (gate C1 ≥ 7 for
+  the union, ≥ 6 each). Unchanged references: union median `fab_rate` 0, max 0.070 (gate C2: ≤ 0.01
+  and ≤ 0.10). Misread lines labelled invented: 0/8 each. Pilot v2 against reviewer 1: span
+  labels 50% / 55% (kappa 0.22 / 0.18), entity labels 82% / 81%; Fable against Astra: 80% (kappa
+  0.59) and 99% (kappa 0.93); the pilot v1 human pair had 45% (0.15) and 3% (0.01). (4) **Gold
+  run.** The 1B candidate P1 s2400, engine `gate2_p1_s2400` in run
+  `20261106-094256_gate2_round0_sealed`, exported with a fresh seed; T3 passes when the median page
+  `fab_rate_adj` is at most 0.01 and no scored page is above 0.10. One run per candidate; the result
+  changes no instruction, rule, or threshold. Public text says "two AI model reviewers", never
+  "human-reviewed". No page IDs, images, GT, metric definitions, or thresholds changed.
 
 * **2026-11-06 — `gpt6_astra_max` gold run, sealed (§2, §6).** Owner request in session: "Can we
   do astra max and gemini runs for the benchmark?", then "model training is set to off on
@@ -1089,6 +1121,264 @@ lucky subset while most pages collapsed.
   candidate: its gold outputs are not used for error analysis that chooses training data or
   recipes (gold-use guard 3). No page IDs, images, GT, prompts, metric definitions, or thresholds
   changed.
+
+* **2026-11-08 — Gate 2 Round 2 gold run, sealed (§2, §6).** Owner decision in session: "draft
+  it. start it on runpod when reviewers are a go", then "freeze and commit on your own on green
+  reviews. launch on your own." Logged before any Round 2 training run exists.
+  (1) **Round.** Data and training as model-track `experiments/EXP-20261108-gate2-round2.md`
+  (frozen, sha256 `7b728e0718a3d229…`, after its one external review): P1's data without the 26 loop
+  rows, plus three transcribed page sources with CC BY 4.0 licences (ÖAW Akademieprotokolle,
+  Greifswald Konzilsprotokolle, SBB DTA Kosmos and Fanny Hensel), each at about 1.5 passes; P1's
+  recipe; seeds 1701 and 1702; step 2400; no checkpoint selection. No gold page, output, or
+  per-page result was used for any of these choices; the only gold information used is the
+  Round 0 aggregate.
+  (2) **Run.** One RunPod session, one run dir `gate2_round2_sealed`: engines
+  `gate2_r2_s1701_s2400` and `gate2_r2_s1702_s2400`, decoding as `gate2_p1_s2400`, added to
+  `configs/engines.yml` with their weights' sha256 after training and before the run (logged
+  here), and `gate2_p1_s2400` as a same-session control (reported only). A dev sanity pass
+  comes first in the same session and gates nothing.
+  (3) **Decision.** The round rule of the 2026-11-06 entry "Gate 2 continue rule adds entity
+  recall" decides, against Round 0 (`cer_norm` 0.1201, entity recall 0.6333): pass if the
+  two-seed mean has `cer_norm` ≤ 0.1101 with entity recall ≥ 0.5833, or entity recall ≥ 0.6833
+  with `cer_norm` ≤ 0.1301. Round 1 has no round value (stopped at its floor before training);
+  how it counts under the plateau rule is an open owner decision, taken before any plateau
+  consequence of Round 2 is drawn. The entrenchment stop does not apply (no silver pages). A
+  seed without a valid gold run makes the round a non-pass. The run is sealed until the owner opens it; only aggregates are read. No
+  page IDs, images, GT, prompts, metric definitions, or thresholds changed.
+  (4) **Engines (logged 2026-11-09, after training, before the run).** `gate2_r2_s1701_s2400`:
+  adapter sha256 `2812bae548ee148a00beaf8f49e0841face5e453fc41d153cb090463d092b992`;
+  `gate2_r2_s1702_s2400`: adapter sha256
+  `8d5612d5cb14aa4ba1f1be83391fd06e36f45994651d946ad612a82ad0f85345` (full trained weights, step
+  2400). Seed 1702's trainer stopped at step 2026 when the network volume was full (exit 120); on
+  the owner's decision it resumed from its hash-checked step-2000 state (model-track record,
+  amendments A1–A3). Seed 1701 ran without a stop. Data, plan, recipe, step, and decoding are
+  unchanged.
+* **2026-11-09 — Gate 2 plateau rule: rounds stopped at their floor.** Owner decision in
+  session, taken while the Round 2 gold run was sealed and before it ran: "agreed", to the
+  recommendation "Round 1 not counted; future floor stops count as non-passes".
+  (1) **Round 1.** Round 1 does not count under the plateau rule of the 2026-11-06 entry "Gate 2
+  continue rule adds entity recall", item (3). It stopped at its data floor (318 of 9,189 pages
+  kept, under 1,500) before any training, so it has no model and no round value; the plateau
+  rule counts rounds that trained and did not pass on gold. A Round 2 non-pass is therefore the
+  first non-pass of the loop.
+  (2) **Later rounds.** From this entry on, a round that stops at its data floor counts as a
+  non-pass under the plateau rule. Round 1 is exempt only because the rule did not cover this
+  case when it ran.
+  No page IDs, images, GT, prompts, metric definitions, thresholds, or the round rule itself
+  changed. No gold output or result of Round 2 was seen before this decision.
+* **2026-11-10 — Gate 2 Round 2 gold run opened (§2).** Owner decision in session, given after
+  the run finished: "Open it". Logged before any output of
+  `20261109-234104_gate2_round2_sealed` is opened or scored. The run is complete: three engines
+  (`gate2_r2_s1701_s2400`, `gate2_r2_s1702_s2400`, control `gate2_p1_s2400`), 55 page records
+  each, no error record, one serving identity (RunPod Pod `wahq8tfusc1m86`; weights sha256 equal
+  to the 2026-11-08 entry, item (4); the windowed-penalty processor was shown to act for each
+  engine on dev page D1 before any gold page). All engines are scored against GT v1.0 and the
+  frozen entity lists by `harness score` and `harness report` with the harness of the
+  pre-registration (`7e0d4f0`; harness unchanged at `95a82c6`, configs changed only by the two
+  engine entries). Only aggregates are read. The round rule of the 2026-11-06 entry decides pass
+  or non-pass. No engine is run again and no stored output changes. No page IDs, images, GT,
+  prompts, metric definitions, or thresholds changed.
+
+* **2026-11-12 — Scan furniture is outside the page (§3.2 item 9).** Owner decision in
+  session: "Step 6. A protocol rule for scan furniture, written before the next gold run."
+  (1) **Rule.** Colour and grey charts, rulers and scale bars, label cards laid beside the
+  leaf, and footers, logos, web links, and copyright lines that the holding institution adds
+  to the image during digitization are outside the target page and are not transcribed, also
+  where they lie over the leaf. Marks on the physical leaf keep their present rules: stamps
+  (§3.2 item 4), labels and stickers pasted on the leaf (item 5), foliation, pagination, and
+  archive numbers (item 7), and print that belongs to the document. Where the kind of a mark
+  cannot be decided, the owner decides it at adjudication.
+  (2) **Scoring.** Engine output is not changed: furniture text that an engine writes stays in
+  its transcript and is scored by the existing metrics, for every engine alike. The marker
+  stripping of §3.3 and the other preprocessing are unchanged. No metric definition changes.
+  (3) **Scope.** The rule applies from the next gold run of any engine. Past runs, their
+  scores, and the published leaderboard are not rescored. Before the next gold run the owner
+  (who may see gold) checks the GT against the rule: furniture text is removed from the GT,
+  and a line is deleted only when it holds nothing else. The number of changed pages and
+  lines is logged here, without page IDs or text, also when it is zero, and the GT version
+  used by the next run is named. Earlier GT versions are kept.
+  (4) **Basis.** The transcription conventions (§3) and development pages only. On the
+  development sets of the model track (MKN pilot, the album pages of the entity dev panel,
+  dev pages D6 and D8, and the Dehmel letters), later model rounds wrote library footers,
+  links, logo slogans, colour-chart print, and ruler numbers into their transcripts, and the
+  conventions had no rule for this (model-track `experiments/EXP-20261110-entity-dev-v2.md`,
+  event log of 2026-11-12, audit of scan furniture). No gold page, image, output, or
+  per-page result was looked at in drafting this rule.
+  No page IDs, images, prompts, metric definitions, or thresholds changed.
+
+* **2026-11-13 — Engine keys `preprocess` and `loop_policy` (§1, §5, §6).** Owner decisions in
+  session: the 1B ship plan, approved 2026-11-12 ("Approve as written"; its decision 3 lifts the
+  2026-11-08 parking of run-only loop removal for this one policy, and its WP6 asks for these
+  keys), and "Masking first" (2026-11-12). Logged before any engine with either key runs on gold.
+  (1) **`preprocess`.** A `vlm_openai` engine entry may name one fixed image step. The only step
+  is `furniture_fp_v16`: `harness/furniture.py`, a byte copy (sha256 `2f81aca8a42eb001…`) of the
+  model track's `scripts/furniture_preprocess.py`, version fp-v16. It paints scan furniture
+  outside the leaf (a footer band at the bottom edge, colour charts beside the leaf, the scan
+  surround) and never paints inside its protected leaf box. The harness reads and hashes the
+  frozen image as for every engine (§1), applies the step in memory, and sends the result: the
+  original file when nothing is painted, else a JPEG (quality 95, original size). The frozen file
+  on disk stays unchanged; the step works in memory, and no painted copy is written. The step is
+  part of that engine, as a serving stack's internal
+  processing is (§1 "end-to-end"); the released system that claims the score ships the same step.
+  The record keeps the frozen image hash, the step, its version, every painted box, and the hash
+  of the bytes sent. Evidence: model-track `experiments/EXP-20261112-release-engine-dev.md`
+  (development and held-out silver pages; registration frozen before any score).
+  (2) **`loop_policy: run_removal_v1`.** For such an engine, an output below the token limit that
+  holds a run is scored without its runs: a block of 20 to 400 code points repeated at least 4
+  times in a row, exact after NFC (`harness/run_removal.py`, a copy of rule R2 of the model track's
+  `scripts/loop_cut.py`, sha256 `22ff27cb2b651afa…`). A token-limited output gets the 2026-10-16
+  loop guard alone, unchanged; the output record and the page score of such a page carry
+  `incomplete: repetition`. The stored raw output never changes. Evidence: model-track `experiments/EXP-20261107-loop-cut-stage-b.md`
+  (removed runs on the page in 1 of 65 judged units, upper bound 0.118 against the bound 0.20;
+  token-limited removal not adopted). The page score carries `loop_policy` with the unremoved
+  metrics; the engine result lists `loop_policy_pages`.
+  (3) **T3.** The review packet holds the scored text (`harness/pilot_gold.py` applies the same
+  function as scoring) beside the original page image. A removed run is not in the packet.
+  (4) **Disclosure.** A leaderboard row or claim for such an engine names both keys; the model
+  card describes them.
+  (5) **Scope.** Only engines whose entry sets a key change. Engines without the keys send the
+  same bytes and score the same: rescoring a development run with the old and the new harness
+  gave byte-identical score files for all seven engines. The harness step equals the model-track
+  step on all 787 pages of the release-engine development check (same boxes; untouched pages sent
+  as the original file; all 519 painted images byte-identical), and the run removal equals the
+  frozen policy on all 20,577 normally finished outputs of three sessions. No gold page, image,
+  output, or per-page result was used. No page IDs, images, GT, prompts, metric definitions, or
+  thresholds changed.
+
+* **2026-11-13 — 1B release gold run, sealed (§2, §6).** Owner decisions in session: the 1B ship
+  plan (approved 2026-11-12), "Select s1702" and "Gold first, GDA before publish (Recommended)"
+  (2026-11-13). Registered in model-track `experiments/EXP-20261113-release-gold.md` (frozen before
+  the run). Logged before the run, which waits for the owner's GT check of the 2026-11-12 entry.
+  (1) **Engine.** `release_r2_s1702_s2400`: the weights of `gate2_r2_s1702_s2400` (sha256
+  `8d5612d5…`) and its decoding, with the keys of the entry above. It is a new engine; the Round 2
+  run and its scores do not change. Its selection was made on development pages after the
+  development rule named no candidate (model-track `EXP-20261112-release-engine-dev.md`,
+  Amendments); the same weights without the keys ran on gold in Round 2, and only that run's
+  aggregates were read. Every claim from this run states both facts.
+  (2) **Run.** One run dir (`release_1b_sealed`): the release engine, then `gate2_p1_s2400`
+  unchanged as a drift control (reported only), on one RunPod Pod in one serving state; gold
+  images stay on the MacBook and reach the Pod only as requests. At most one run of this engine.
+  (3) **Decision.** Scored under the GT version that the owner's check names. G2: mean paired
+  `cer_norm` difference to `transkribus_german_genius` (rescored on a copy under the same GT),
+  percentile 95 % page-bootstrap upper end below +0.03. G1: T3 by the two model reviewers of the
+  2026-11-06 entry, median `fab_rate_adj` at most 0.01 and no scored page above 0.10, then the
+  reviewer 1 spot check. Nothing from this run is published before the owner's release decision
+  and the model track's held-out check (GDA Schriftkunde). The run is sealed until the owner opens
+  it; then only aggregates are read, with one exception: T3, where the two model reviewers and the
+  reviewer 1 spot check read page images and the scored text as the 2026-11-06 entry provides. No
+  page IDs, images, GT, prompts, metric definitions, or thresholds changed.
+
+* **2026-11-13 — GT check against the scan furniture rule (§3.2 item 9; 2026-11-12 entry (3)).**
+  Owner, in session (2026-11-13T09:58Z): "GT check done", "No changes needed". The owner checked the GT
+  against the rule before the next gold run: 0 pages and 0 lines changed. GT version for the
+  next run: the existing folder `<evaluation root>/data/benchmark_gold/gt` (53 files; digest
+  `88ccc5879c1b74c2…`, sha256 over the sorted lines "<sha256>  <name>" of its files). No page
+  IDs, images, GT, prompts, metric definitions, or thresholds changed.
+
+* **2026-11-13 — T3: the abstention mark is not invented text (§3.4, §5.6; FABRICATION_METRIC Layer 3).**
+  Owner decision in session: "go ahead with your rec" (model-track D-2026-11-13-03). Observation (development pages
+  only, model-track `experiments/EXP-20261113-fabrication-dev-diagnostic.md`): the T3 review labelled the abstention
+  mark "[unleserlich]" `fluent_fabrication` on one page; the T3 instructions do not name the mark, and T3 scoring did
+  not exempt it. So a candidate that abstains as §5.6 asks could fail T3 for it. Rule: in T3 scoring
+  (`harness/adjudication.py`), the characters of a bracketed abstention mark (the §3.4 mark "[unleserlich]", or a
+  bracketed "unlesbar", "nicht lesbar", "illegible", "not legible"), with the white space around it, never count as
+  invented or degenerate text. Bare words and prose are not exempt. Each adjudicated page reports the exempted count
+  (`abstention_exempt_chars_adj`) and the scoring version (`fabrication_scoring_version` "t3-v2-abstention-mark").
+  The reviewers, their instructions, and the calibration are unchanged (no recalibration). Prospective: T3 results
+  recorded before this entry (P1 on 2026-11-06, the release candidate on 2026-11-13; scoring "t3-v1", harness commit
+  `dadaee2` or earlier) stand as reported from their recorded score files; they are not rescored or overwritten with
+  this harness. Check on the diagnostic's 260 development adjudications: 259 unchanged, one page 15 to 0 invented
+  characters; degenerate totals unchanged. No page IDs, images, GT, prompts, or thresholds changed.
+
+* **2026-11-15 — Budget 0.8B gold run, sealed (§2, §6).** Owner decisions in session (2026-11-15): "proceed
+  with 08B" and "Approve, $10 cap" for the budget release path. Registered in model-track
+  `experiments/EXP-20261115-budget-08b-gold.md` (frozen before the run).
+  (1) **Engine.** `release_08b_s4115_s2400`: LightOnOCR-3-0.8B (revision `36d86369`) with the trained vision tower
+  of arm B seed 4115, step 2400 (sha256 `08719d99…`; model-track `EXP-20261112-size-screen-08b-lr.md`), the decoding
+  of `gate2_p1_s2400`, the release keys of the 2026-11-13 entry, and `chat_template_kwargs` `{enable_thinking:
+  false}`, the prompt form of its training and development runs. It is a new engine; no other engine changes. It has
+  not run on gold before. It was chosen on development pages only.
+  (2) **Run.** One run dir (`budget_08b_sealed`): the budget engine, then `gate2_p1_s2400` unchanged as a drift
+  control (reported only), on one RunPod Pod in one serving state; gold images stay on the MacBook and reach the Pod
+  only as requests. At most one run of this engine.
+  (3) **Decision.** Scored under the GT version that the owner names (the 2026-11-13 GT check named digest
+  `88ccc5879c1b74c2…`). G1: T3 by the two model reviewers of the 2026-11-06 entry, scoring "t3-v2-abstention-mark";
+  the budget bar is the 1B v1 result: median `fab_rate_adj` at most 0.01 and at most one scored page above 0.10.
+  Reading quality has no threshold: the mean paired `cer_norm` difference to `transkribus_german_genius` and to
+  `release_r2_s1702_s2400` (both rescored on copies under the same GT), with percentile 95 % page-bootstrap
+  intervals, and the entity recall are reported. Nothing from this run is published before the owner's release
+  decision. Sealing and reading as in the 2026-11-13 release entry. No page IDs, images, GT, prompts, metric
+  definitions, or thresholds changed.
+
+* **2026-11-15 — Engines run as their authors run them; sealed gold comparison run (§6, §10).** Owner decisions in
+  session (2026-11-15): "Yes let's do that" to scoring CHURRO 3B on gold with its official settings, and "Add HGH and
+  base" to adding LightOnOCR-HGH and the zero-shot base to the same run. Registered in model-track
+  `experiments/EXP-20261115-gold-comparators.md` (frozen before the run).
+  - **Engine keys, opt-in.** `system_prompt` sends a system message before the user message. `server_sampling` sends
+    no temperature, so the server applies the model's generation config. `output_map` applies a map of
+    `harness/output_maps.py` to the stored text before the loop guard and scoring; the stored output is unchanged.
+    The image step `fit_2500_png` sends RGB PNG with the longest side at most 2,500 px (LANCZOS).
+  - **Scope of the keys.** Each key mirrors an engine's published code or format, and none is tuned on output.
+    Engines without these keys are unchanged, and no recorded score is rescored.
+  - **`churro3b_official`.** `stanford-oval/churro-3B` at `ca2150ea`, run as its benchmark code at `23c3ac6` runs it:
+    the system message "Transcribe the entirety of this historical document to XML format.", the image alone,
+    `fit_2500_png`, `server_sampling`, and 25,000 tokens. Its `output_map` is `churro-xml`: the output-tag strip and
+    the HistoricalDocument flattening of that code.
+  - **`lighton_hgh`.** `b-straub/LightOnOCR-3-1B-Historic-German-Handwriting` at `47931fbe`: the image alone, greedy,
+    4,096 tokens, and the windowed repetition penalty 1.1 over 20 tokens. Its `output_map` is `lighton-marks`, from
+    its published output format.
+  - **`lighton_base_windowed`.** LightOnOCR-3-1B, zero-shot, with the same decoding and no map.
+  - **Leaderboard.** The row `churro` (benchmark prompt, native penalty 1.1) is unchanged; the new row is reported
+    beside it.
+  - **Run.** One run dir (`gold_comparators_sealed`) holds the three engines, then `gate2_p1_s2400` unchanged as a
+    drift control, on one RunPod Pod in one serving state. Gold images reach the Pod only as requests. Each new
+    engine runs at most once.
+  - **Scoring.** Under the GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`). Reported: `cer_norm`
+    medians, entity recall, and the paired differences to `release_r2_s1702_s2400` and `transkribus_german_genius`,
+    both rescored on copies. No threshold applies, and nothing gates a model.
+  - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
+
+* **2026-11-17 — The merge candidate and its sealed gold run; the T3 export applies the output map (§6, §10).** Owner
+  decision in session (2026-11-17): "Yes, register it" to registering the gold run and T3 of the merge (model-track
+  D-2026-11-17-02). Registered in model-track `experiments/EXP-20261117-merge-gold.md` (frozen before the run).
+  - **`merge_r2s1702_hgh`.** The 50/50 average of the vision encoder and projector of `release_r2_s1702_s2400` and
+    `lighton_hgh` (language model shared), weights sha256 `c3f281ce…` (model-track EXP-20261116-hgh-merge). Decoding
+    as `lighton_hgh`, with `preprocess: furniture_fp_v16`, `loop_policy: run_removal_v1`, and `output_map:
+    lighton-marks`. Selected on development pages and public page sets; no gold page, output, or score of it exists.
+  - **T3 export fix.** `harness/pilot_gold.py` now applies an engine's `output_map` before the loop guard and run
+    removal, as scoring does (2026-11-15 entry). Without it, the export refused a mapped engine ("stale score"). No
+    earlier T3 had an engine with the key, so no recorded T3 changes.
+  - **Run.** One run dir (`merge_gold_sealed`): `merge_r2s1702_hgh`, then `lighton_hgh` and `churro3b_official` (their
+    first gold run; the 2026-11-15 run `gold_comparators_sealed` does not run, and `lighton_base_windowed` is not
+    run), then `gate2_p1_s2400` unchanged as a drift control, on one RunPod Pod in one serving state. Gold images reach
+    the Pod only as requests. Each engine runs at most once.
+  - **Scoring.** Under the GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`), with T3 (scoring
+    `t3-v2-abstention-mark`) for `merge_r2s1702_hgh` only. The gates and readings are those of the registration.
+  - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
+
+* **2026-11-18 — Leaderboard rows from the merge gold run; release v1.0.4 (§10, §11).** Owner decisions in
+  session: "With merge decision" (2026-11-17T15:40Z: one leaderboard release with the LightOnOCR-HGH row, the merge
+  row if the merge is released, and the output-map harness change); "Yes, that name" (model-track D-2026-11-17-05:
+  the merge is released as Kurrent Transcriber 1B, `13fragments/kurrent-transcriber-1b`, public since
+  2026-11-18); "Yes, prepare B5" and "Full sync" (2026-11-18: the public repository gets the full protocol, the T3
+  documents, and the harness of this repository). Logged before the release.
+  - **Rows.** Kurrent Transcriber 1B (`merge_r2s1702_hgh`) and LightOnOCR-HGH (`lighton_hgh`) from the sealed run
+    `20261117-114437_merge_gold_sealed` (2026-11-17 entry), each copied with its outputs and adjudications and
+    scored with `harness report --aggregates-only` from a clean worktree of the v1.0.4 harness (method of
+    `docs/release/RESCORE_V1.md`). Both are complete: 53 scored pages, 0 failed pages, 0 loop-guard cuts; run
+    removal changed 0 pages of Kurrent Transcriber 1B. The category of Kurrent Transcriber 1B states that the
+    benchmark maintainer publishes it.
+  - **Ground truth.** The GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`). No GT file changed
+    after 2026-10-16, so it is GT v1.0, and the new rows compare directly with the earlier rows.
+  - **Not added.** `churro3b_official` has no valid output in the run (its server did not start), so the `churro`
+    row stays as it is. The drift control `gate2_p1_s2400`, the 1B v1 (`release_r2_s1702_s2400`), and the budget
+    0.8B are model-track runs of models that are not released, so they get no row (as the 9B row in v1.0.3).
+  - **T3.** The registered T3 of both engines in that run is complete: 0 of 53 pages with invented text each. The
+    leaderboard notes report it. The harness field `t3_status` stays "unresolved" for every engine, because no T3
+    pass threshold is ratified in this protocol.
+  - **Earlier rows.** Not rescored. Their published values stay those of harness `v1.0.0-rc1`; engines without the
+    keys of the 2026-11-13 and 2026-11-15 entries go through unchanged scoring code.
+  - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
 
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 

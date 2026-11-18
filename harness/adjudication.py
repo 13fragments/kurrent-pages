@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
 
 import yaml
@@ -27,6 +28,24 @@ from harness.adjudication_validation import (
     validated_reviews,
     validated_spans,
 )
+# BENCHMARK_PROTOCOL §10, 2026-11-13 ("T3: the abstention mark is not invented text"): characters of a bracketed
+# abstention mark (§3.4 "[unleserlich]", or a bracketed explicit illegible statement, §5.6), with the white space
+# around it, never count as invented or degenerate text. Bare words and prose are not exempt. Prospective: results
+# recorded before the entry stand, from their recorded score files (scoring version "t3-v1").
+FABRICATION_SCORING_VERSION = "t3-v2-abstention-mark"
+ABSTENTION_EXEMPT_RE = re.compile(
+    r"\s*\[\s*(?:unleserlich|unlesbar|nicht\s+lesbar|illegible|not\s+legible)\s*\]\s*", re.IGNORECASE
+)
+
+
+def abstention_ranges(hyp_norm: str) -> list[tuple[int, int]]:
+    return [match.span() for match in ABSTENTION_EXEMPT_RE.finditer(hyp_norm)]
+
+
+def _outside(start: int, end: int, ranges: list[tuple[int, int]]) -> int:
+    """Characters of [start, end) outside every exempt range."""
+    covered = sum(max(0, min(end, b) - max(start, a)) for a, b in ranges)
+    return (end - start) - covered
 
 
 def adjudication_template(engine: str, page: str, page_score: dict) -> dict:
@@ -99,6 +118,8 @@ def unadjudicated_fields() -> dict:
         "adjudication_label_counts": None,
         "adjudicated_entities": [],
         "fab_chars_adj": None,
+        "abstention_exempt_chars_adj": None,
+        "fabrication_scoring_version": None,
         "fab_rate_adj": None,
         "fab_page": None,
         "degenerate_chars_adj": None,
@@ -233,8 +254,13 @@ def score_adjudication(
         label_chars[span["label"]] += span["end"] - span["start"]
         label_counts[span["label"]] += 1
 
-    fab_chars = label_chars["fluent_fabrication"]
-    degenerate_chars = label_chars["degenerate_generation"]
+    exempt = abstention_ranges(hyp_norm)
+    fab_chars = sum(_outside(span["start"], span["end"], exempt) for span in spans
+                    if span["label"] == "fluent_fabrication")
+    degenerate_chars = sum(_outside(span["start"], span["end"], exempt) for span in spans
+                           if span["label"] == "degenerate_generation")
+    abstention_exempt_chars = (label_chars["fluent_fabrication"] + label_chars["degenerate_generation"]
+                               - fab_chars - degenerate_chars)
     fabricated_entities = [item for item in entities if item["label"] == "fabricated"]
     supported_entities = sum(item["label"] == "supported" for item in entities)
     decided_entities = supported_entities + len(fabricated_entities)
@@ -253,6 +279,8 @@ def score_adjudication(
         "adjudication_label_counts": label_counts,
         "adjudicated_entities": entities,
         "fab_chars_adj": fab_chars,
+        "abstention_exempt_chars_adj": abstention_exempt_chars,
+        "fabrication_scoring_version": FABRICATION_SCORING_VERSION,
         "fab_rate_adj": fab_chars / denominator if denominator else 0.0,
         "fab_page": fab_chars > 0,
         "degenerate_chars_adj": degenerate_chars,

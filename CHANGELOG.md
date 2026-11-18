@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.0.4
+
+Leaderboard, harness, and protocol log; the benchmark version stays Kurrent Pages Benchmark v1.0.
+No page, ground truth, prompt of an existing engine, or metric definition changed, and no existing
+score changed.
+
+- Leaderboard: add Kurrent Transcriber 1B (published by the benchmark maintainer) and
+  LightOnOCR-HGH (revision `47931fbe`) from the sealed gold run of 2026-11-17. The notes give
+  their decoding settings and their T3 result (0 of 53 pages with invented text each).
+- Harness: opt-in engine keys `preprocess` (one fixed image step), `loop_policy`
+  (`run_removal_v1`), `output_map` (`lighton-marks`, `churro-xml`), `system_prompt`, and
+  `server_sampling`. Engines without these keys are scored by unchanged code.
+- Harness: the T3 export applies an engine's output map and run removal, as scoring does. T3
+  scoring `t3-v2-abstention-mark` does not count a bracketed abstention mark as invented text.
+- Protocol: §3.2 item 9 (scan furniture is not transcribed; ground-truth check: 0 pages changed),
+  the §1 image-step exception, and §10 entries since v1.0.3.
+- Public T3 documents: `docs/T3_MODEL_REVIEW.md`, `configs/prompts/t3_model_review.txt`,
+  `scripts/model_review.py`, and `scripts/model_review_resolve.py`.
+- `docs/release/RESCORE_V1.md`: how the new rows were scored.
+
 ## v1.0.3
 
 Leaderboard and documentation; the benchmark version stays Kurrent Pages Benchmark v1.0.

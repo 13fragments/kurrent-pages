@@ -20,7 +20,15 @@ scored runs; any override is recorded in run.json via describe()).
 
 The page image is sent as-is (base64), no resizing — protocol §1 forbids
 per-engine preprocessing; anything the serving stack does internally is part
-of that engine's end-to-end behavior.
+of that engine's end-to-end behavior. Exception (§10, 2026-11-13): an engine
+entry may name one fixed image step (`preprocess`, see `image_steps.py`) that is
+part of that engine and ships with it; engines without the key are unchanged.
+
+Keys of §10 2026-11-15 ("Engines run as their authors run them"), opt-in, no other engine changes:
+system_prompt (a system message sent before the user message, as an engine's published code sends it),
+server_sampling (true: no temperature is sent, so the server applies the model's generation config, as an
+engine's published code does), output_map (a map of `harness/output_maps.py` applied to the stored text
+before scoring; the stored output is unchanged).
 """
 
 from __future__ import annotations
@@ -35,6 +43,7 @@ import urllib.request
 from pathlib import Path
 
 from harness.engines.base import Engine, EngineError, EngineOutput, EngineUnavailable
+from harness.engines.image_steps import check_step, prepared
 
 
 class VlmOpenAiEngine(Engine):
@@ -48,8 +57,21 @@ class VlmOpenAiEngine(Engine):
             raise EngineUnavailable(f"vlm engine {name!r}: prompt file not found: {prompt_path}")
         self.prompt = prompt_path.read_text(encoding="utf-8").strip()
         self.prompt_sha256 = hashlib.sha256(self.prompt.encode("utf-8")).hexdigest()
+        self.preprocess = config.get("preprocess")
+        if self.preprocess is not None:
+            check_step(name, self.preprocess)
+        policy = config.get("loop_policy")
+        if policy is not None and policy != "run_removal_v1":
+            raise EngineUnavailable(f"vlm engine {name!r}: unknown loop_policy {policy!r} (known: ['run_removal_v1'])")
+        output_map = config.get("output_map")
+        if output_map is not None:
+            from harness.output_maps import OUTPUT_MAPS
+
+            if output_map not in OUTPUT_MAPS:
+                raise EngineUnavailable(f"vlm engine {name!r}: unknown output_map {output_map!r} (known: {sorted(OUTPUT_MAPS)})")
 
     def transcribe(self, image: Path) -> EngineOutput:
+        data, mime, step_record = prepared(image, self.preprocess)
         payload = {
             "model": self.config["model"],
             "temperature": self.config.get("temperature", 0.0),
@@ -62,7 +84,7 @@ class VlmOpenAiEngine(Engine):
                         # reliable OpenAI-compatible multimodal shape.
                         {
                             "type": "image_url",
-                            "image_url": {"url": _data_url(image)},
+                            "image_url": {"url": _data_url(data, mime)},
                         },
                         {"type": "text", "text": self.prompt},
                     ],
@@ -71,6 +93,11 @@ class VlmOpenAiEngine(Engine):
         }
         if self.config.get("image_only"):
             payload["messages"][0]["content"].pop()
+        if self.config.get("system_prompt"):
+            payload["messages"].insert(
+                0, {"role": "system", "content": [{"type": "text", "text": self.config["system_prompt"]}]})
+        if self.config.get("server_sampling"):
+            del payload["temperature"]
         if self.config.get("repetition_penalty") is not None:
             payload["repetition_penalty"] = self.config["repetition_penalty"]
         if self.config.get("chat_template_kwargs"):
@@ -89,7 +116,8 @@ class VlmOpenAiEngine(Engine):
             text=text.strip(),
             model_id=response.get("model", self.config["model"]),
             duration_s=duration,
-            meta={"prompt_sha256": self.prompt_sha256, "usage": response.get("usage")},
+            meta={"prompt_sha256": self.prompt_sha256, "usage": response.get("usage"),
+                  **({"preprocess": step_record} if step_record is not None else {})},
         )
 
     def _headers(self) -> dict[str, str]:
@@ -149,8 +177,6 @@ class VlmOpenAiEngine(Engine):
         }
 
 
-def _data_url(image: Path) -> str:
-    suffix = image.suffix.lower().lstrip(".") or "jpeg"
-    mime = "jpeg" if suffix in ("jpg", "jpeg") else suffix
-    encoded = base64.b64encode(image.read_bytes()).decode("ascii")
+def _data_url(data: bytes, mime: str) -> str:
+    encoded = base64.b64encode(data).decode("ascii")
     return f"data:image/{mime};base64,{encoded}"

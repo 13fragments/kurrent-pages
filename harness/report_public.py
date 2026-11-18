@@ -90,6 +90,8 @@ def _engine(data: dict) -> dict:
             "hallucinated_chars_total": sum(annex["hallucinated_chars"].values()),
         },
         "gaps": {key: len(data.get(key) or []) for key in _GAP_KEYS},
+        # §10 2026-11-13: only engines that set `loop_policy` carry this count
+        **({"loop_policy_pages": len(data["loop_policy_pages"])} if "loop_policy_pages" in data else {}),
     }
 
 

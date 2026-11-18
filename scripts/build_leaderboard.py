@@ -69,6 +69,7 @@ def build(aggregates_dir: Path, spec: dict) -> dict:
                 "t3_status": engine["t3_status"],
                 "failed_pages": engine["gaps"]["error_pages"],
                 "loop_guard_pages": engine["gaps"]["loop_guard_pages"],
+                **({"loop_policy_pages": engine["loop_policy_pages"]} if "loop_policy_pages" in engine else {}),
             }
         )
     for group in (rows, frontier):
@@ -119,7 +120,7 @@ def render(board: dict) -> str:
         f"# Leaderboard: {board['benchmark']}",
         "",
         "Held-out set of 53 scored pages, ground truth v1.0, scored with harness "
-        f"`{board['harness_tag']}`. Aggregates only: no page scores and no outputs are "
+        f"{board['harness_tag']}. Aggregates only: no page scores and no outputs are "
         "published. `cer_norm` is the normalized character error rate (protocol §4, §5); "
         "lower is better. Entity recall is the share of gold persons, places, and dates "
         "found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above "
@@ -145,14 +146,32 @@ def render(board: dict) -> str:
         "  marginalia, and mixed_print_handwriting.",
         "- **Small strata.** A stratum with fewer than 5 pages is indicative only. Read every",
         "  median with its page count.",
-        "- **Fabrication** is not adjudicated for any engine (T3 open). The proxy column counts",
-        "  pages whose automatic long-insertion rate (v0.1) is above 0.10. It is a review",
-        "  diagnostic, not a fabrication verdict.",
+        "- **Fabrication.** The proxy column counts pages whose automatic long-insertion rate",
+        "  (v0.1) is above 0.10. It is a review diagnostic, not a fabrication verdict. T3, the",
+        "  adjudicated check for invented text (two AI model reviewers, §10, 2026-11-06), ran only",
+        "  for Kurrent Transcriber 1B and LightOnOCR-HGH in their run of 2026-11-17: each had 0 of",
+        "  53 pages with invented text, and no other row has a T3 result. In `leaderboard.json`,",
+        "  `t3_status` is \"unresolved\" for every row, because the protocol has no ratified T3",
+        "  pass threshold.",
         "- **Reproducibility.** VLM rows are single greedy runs in one serving state. On the",
         "  maintainer's hardware, a serving-state change moved medians by about 0.02. Rows from",
         "  one run compare exactly; rows from different runs carry that noise.",
         "- **Loop guard.** VLM outputs that stopped at the token limit are scored without their",
-        "  trailing repetition loop (§10, 2026-10-16).",
+        "  trailing repetition loop (§10, 2026-10-16). Kurrent Transcriber 1B also removes repeated",
+        "  runs (`run_removal_v1`, §10, 2026-11-13). `loop_policy_pages` in `leaderboard.json`",
+        "  counts the pages that this step changed.",
+        "- **Fine-tuned rows (added in v1.0.4).** Kurrent Transcriber 1B and LightOnOCR-HGH ran in",
+        "  one sealed run on 2026-11-17 (§10). Both used greedy decoding, at most 4,096 tokens, the",
+        "  page image only, a windowed repetition penalty of 1.1 over 20 tokens (the vLLM plugin",
+        "  ships with the Kurrent Transcriber 1B repository), and the LightOnOCR output map",
+        "  (`lighton-marks`). Kurrent Transcriber 1B also used its image step (`furniture_fp_v16`)",
+        "  and run removal, as its model card documents. For LightOnOCR-HGH, these are the",
+        "  maintainer's settings; its author's settings can differ. The maintainer of this",
+        "  benchmark publishes Kurrent Transcriber 1B.",
+        "- **Harness.** The rows added in v1.0.4 were scored with harness v1.0.4. It adds opt-in",
+        "  engine keys: an image step, run removal, and an output map (§10, 2026-11-13 and",
+        "  2026-11-15). Engines without these keys go through unchanged scoring code. The earlier",
+        "  rows keep their v1.0.0-rc1 scores.",
         "- **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).",
         "- **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus",
         "  service.",

@@ -41,6 +41,7 @@ from harness.engines import Engine
 from harness.engines.base import EngineError, EngineUnavailable
 from harness.gold import GoldPage, load_entities, load_gt, sha256_file
 from harness.loop_guard import cut_loop, token_limited
+from harness.run_removal import removed_text
 from harness.report import aggregate
 from harness.scoring import score_annex, score_page
 
@@ -167,6 +168,11 @@ def run_engines(
                 duration_s=round(output.duration_s, 3),
                 meta=output.meta,
             )
+            if engine.config.get("loop_policy") == "run_removal_v1" and token_limited(
+                record, engine.describe()
+            ):
+                # §10 2026-11-13: the engine's output record flags a token-limited reply
+                record["incomplete"] = "repetition"
             _write_json(out_path, record)
             return "ok"
 
@@ -282,6 +288,7 @@ def score_run(
         unbound_images: list[str] = []
         invalid_adjudications: list[str] = []
         guarded_pages: list[str] = []
+        policy_pages: list[str] = []
         for page in pages:
             out_path = engine_dir / f"{page.id}.json"
             if not out_path.exists():
@@ -293,6 +300,12 @@ def score_run(
             record = json.loads(out_path.read_text(encoding="utf-8"))
             failed = "error" in record
             hyp = "" if failed else record.get("text", "")
+            output_map = (engine_meta.get(engine_name, {}).get("config") or {}).get("output_map")
+            if output_map and not failed:
+                # §10 2026-11-15: the engine's own output map, before the loop guard and run removal
+                from harness.output_maps import OUTPUT_MAPS
+
+                hyp = OUTPUT_MAPS[output_map](hyp)
             image_hash = record.get("image_sha256")
             image_bound = _is_sha256(
                 image_hash
@@ -330,7 +343,10 @@ def score_run(
                 # not silently shrink the entity-metric population.
                 unannotated.append(page.id)
             guard = None
-            if not failed and token_limited(record, engine_meta.get(engine_name, {})):
+            policy = None
+            description = engine_meta.get(engine_name, {})
+            limited = not failed and token_limited(record, description)
+            if limited:
                 guarded, rule = cut_loop(hyp)
                 if rule is not None:
                     raw = score_page(gt, hyp, entities=entities)
@@ -342,9 +358,26 @@ def score_run(
                     }
                     hyp = guarded
                     guarded_pages.append(page.id)
+            elif not failed and (description.get("config") or {}).get("loop_policy") == "run_removal_v1":
+                # §10 2026-11-13: run-only loop removal, for engines that set the key
+                removed = removed_text(hyp)
+                if removed is not None:
+                    raw = score_page(gt, hyp, entities=entities)
+                    policy = {
+                        "policy": "run_removal_v1",
+                        "raw_chars": len(hyp),
+                        "scored_chars": len(removed),
+                        "unremoved": {key: raw[key] for key in GUARD_REPORTED if key in raw},
+                    }
+                    hyp = removed
+                    policy_pages.append(page.id)
             page_score = score_page(gt, hyp, entities=entities)
             if guard is not None:
                 page_score["loop_guard"] = guard
+            if policy is not None:
+                page_score["loop_policy"] = policy
+            if limited and (description.get("config") or {}).get("loop_policy") == "run_removal_v1":
+                page_score["incomplete"] = "repetition"
             page_score["image_sha256"] = image_hash
             adjudication_path = (
                 run_dir / "adjudications" / engine_name / f"{page.id}.yml"
@@ -393,6 +426,8 @@ def score_run(
             "unbound_image_pages": unbound_images,
             "invalid_adjudications": invalid_adjudications,
             "loop_guard_pages": guarded_pages,
+            **({"loop_policy_pages": policy_pages}
+               if ((engine_meta.get(engine_name, {}).get("config") or {}).get("loop_policy")) else {}),
             "aggregate": aggregate_result,
         }
         _write_json(run_dir / "scores" / f"{engine_name}.json", engine_result)

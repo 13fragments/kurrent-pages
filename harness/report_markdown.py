@@ -278,6 +278,7 @@ def _run_gaps(data: dict) -> list[str]:
         ("unbound_image_pages", "outputs without a valid image hash"),
         ("invalid_adjudications", "invalid adjudications"),
         ("loop_guard_pages", "token-limited outputs scored without their trailing loop (§10, 2026-10-16)"),
+        ("loop_policy_pages", "outputs scored without their repeated runs (§10, 2026-11-13)"),
     ):
         if data.get(key):
             gaps.append(f"{description}: {data[key]}")

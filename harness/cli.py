@@ -259,6 +259,8 @@ def _cmd_score(args, pages) -> int:
             line += f", INVALID adjudications: {result['invalid_adjudications']}"
         if result.get("loop_guard_pages"):
             line += f", loop guard cut: {result['loop_guard_pages']}"
+        if result.get("loop_policy_pages"):
+            line += f", runs removed: {result['loop_policy_pages']}"
         if (
             result["missing_pages"]
             or result["skipped_no_gt"]

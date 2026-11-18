@@ -22,6 +22,7 @@ from typing import Sequence
 from harness import normalization
 from harness.gold import load_gt, load_selection, sha256_file
 from harness.loop_guard import cut_loop, token_limited
+from harness.run_removal import removed_text
 from harness.pilot import export_pilot
 from harness.pilot_data import prepare_units
 from harness.pilot_types import PACKET_COUNT, PilotError
@@ -69,10 +70,21 @@ def load_gold_units(
             if reference is None:
                 raise PilotError("a scored page has no gold transcription")
             hypothesis = "" if "error" in record else record.get("text", "")
+            output_map = (engine_meta.get("config") or {}).get("output_map")
+            if output_map and "error" not in record:
+                # §10 2026-11-15: the engine's own output map, before the loop guard and run removal, as in scoring
+                from harness.output_maps import OUTPUT_MAPS
+
+                hypothesis = OUTPUT_MAPS[output_map](hypothesis)
             guarded = False
             if hypothesis and token_limited(record, engine_meta):
                 hypothesis, rule = cut_loop(hypothesis)
                 guarded = rule is not None
+            elif hypothesis and (engine_meta.get("config") or {}).get("loop_policy") == "run_removal_v1":
+                # §10 2026-11-13: the packet holds the scored text, so a removed run is not reviewed
+                removed = removed_text(hypothesis)
+                if removed is not None:
+                    hypothesis = removed
             score = scores[page.id]
             _, hyp_scored = normalization.scoring_texts(reference, hypothesis)
             hyp_sha = hashlib.sha256(
