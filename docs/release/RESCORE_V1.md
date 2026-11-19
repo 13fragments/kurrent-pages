@@ -122,3 +122,20 @@ the same check as v1.0.4: each GT file has the sha256 recorded at the GT v1.0 fr
 lists match their 2026-10-18 freeze, and the page selection and image freeze of both runs match the
 v1.0 runs. The earlier rows were not rescored. Their engines set none of the new keys, so their
 requests, OCR metrics, and public aggregates use unchanged code.
+
+## Row added in v1.0.6
+
+Release v1.0.6 adds one row from the sealed run `20261119-121555_hgh_fp_v16_sealed` (§10,
+2026-11-19): LightOnOCR-HGH with the image step of Kurrent Transcriber 1B. The outputs of each
+engine of the run were copied to `evals/release_v1/rescore_rc1/`, with `run.json` reduced to that
+engine. Each copy was scored with `harness score` and `harness report --aggregates-only` at
+`a142ddf`, whose harness code equals that of v1.0.5.
+
+- LightOnOCR-HGH with the image step, `lighton_hgh_fp_v16`: median 0.0751. No failed page; the
+  loop guard cut 1 page.
+
+The drift control of the run, Kurrent Transcriber 1B (`merge_r2s1702_hgh`), reproduced its
+published median of 0.0713 and its published aggregates. The row was scored against the GT digest
+`88ccc5879c1b74c2…`, the same check as v1.0.4 and v1.0.5: each GT file has the sha256 recorded at
+the GT v1.0 freeze, the entity lists match their 2026-10-18 freeze, and the page selection and image
+freeze of the run match the v1.0 runs. The earlier rows were not rescored.

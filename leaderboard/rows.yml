@@ -3,7 +3,7 @@
 # scripts/build_leaderboard.py writes leaderboard.json and LEADERBOARD.md from these rows.
 # `section: frontier` puts a row in the frontier reference section (`frontier_rows`).
 version: "Kurrent Pages Benchmark v1.0"
-harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5: v1.0.5)"
+harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5)"
 rows:
   - aggregates: 20260924-112302_sealed__transkribus_german_genius
     engine: Transkribus German Genius (Super Model, model ID 265149)
@@ -55,8 +55,13 @@ rows:
     category: open VLM, fine-tuned on Kurrent; published by the benchmark maintainer
     access: open weights
   - aggregates: 20261117-114437_merge_gold_sealed__lighton_hgh
-    engine: LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe)
+    engine: LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings
     category: open VLM, fine-tuned on Kurrent
+    access: open weights
+  # Added in v1.0.6: one sealed gold run at the model author's request, 2026-11-19 (§10), scored with harness v1.0.5.
+  - aggregates: 20261119-121555_hgh_fp_v16_sealed__lighton_hgh_fp_v16
+    engine: LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B
+    category: open VLM, fine-tuned on Kurrent; run by the maintainer at the author's request
     access: open weights
   # Added in v1.0.5: maintainer runs of open models, batch 1, 2026-11-19 (§10), scored with harness v1.0.5.
   - aggregates: 20261119-073625_batch1_vlm_sealed__lightonocr3_1b_card

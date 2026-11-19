@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.0.6
+
+Leaderboard and protocol release; the benchmark version stays Kurrent Pages Benchmark v1.0.
+No page, ground truth, prompt, harness code, or OCR metric definition changed, and no existing
+score changed.
+
+- Leaderboard: add a second LightOnOCR-HGH row (revision `47931fbe`), run by the maintainer on
+  2026-11-19 at the model author's request, with the image step of Kurrent Transcriber 1B
+  (`furniture_fp_v16`). The first LightOnOCR-HGH row keeps its score and now says that it read
+  uncropped scans with the maintainer's settings.
+- Leaderboard notes: the result of the new row under the rule registered before the run, a note
+  on image shifts of half a patch, and how `cer_norm` scores `[unleserlich]`.
+- Configs: engine `lighton_hgh_fp_v16`.
+- Protocol: §10 entries for the run and this release.
+- `docs/release/RESCORE_V1.md`: how the new row was scored.
+
 ## v1.0.5
 
 Leaderboard, harness, and protocol log; the benchmark version stays Kurrent Pages Benchmark v1.0.

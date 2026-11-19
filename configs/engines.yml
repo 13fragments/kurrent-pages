@@ -251,7 +251,21 @@ engines:
     repetition_penalty: 1.0
     vllm_xargs: {rep_penalty: 1.1, rep_window: 20}   # decoding of every earlier HGH score
     output_map: lighton-marks                # its published output format (model card, revision 47931fbe)
-  lighton_base_windowed:                     # lightonai/LightOnOCR-3-1B, zero-shot
+  # §10 2026-11-19 (author's request): LightOnOCR-HGH as `lighton_hgh`, plus the image step of Kurrent Transcriber 1B.
+  lighton_hgh_fp_v16:                        # b-straub/LightOnOCR-3-1B-Historic-German-Handwriting at 47931fbe
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: lighton-hgh
+    weights_sha256: e12771e075b08e4278f31fa4fbd4a71fbfd3e79a253bb4c11f3ec0e9afb5784d
+    prompt_file: configs/prompts/vlm_default.txt   # hash recorded; not sent (image_only)
+    image_only: true
+    max_tokens: 4096
+    temperature: 0.0
+    repetition_penalty: 1.0
+    vllm_xargs: {rep_penalty: 1.1, rep_window: 20}   # decoding as lighton_hgh
+    preprocess: furniture_fp_v16              # engine image step (§10 2026-11-13), as merge_r2s1702_hgh
+    output_map: lighton-marks                # as lighton_hgh
+  lighton_base_windowed:                    # lightonai/LightOnOCR-3-1B, zero-shot
     type: vlm_openai
     base_url: http://localhost:8080/v1
     model: lighton-base

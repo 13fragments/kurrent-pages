@@ -1463,6 +1463,72 @@ lucky subset while most pages collapsed.
     metrics, and the public aggregates go through unchanged code. No T3 for the new rows.
   - **Editorial, for the public release.** A private plan path was removed from the batch 1 entry.
 
+* **2026-11-19 — LightOnOCR-HGH with the image step of Kurrent Transcriber 1B, at its author's request; sealed gold
+  run (§1, §6, §10, §11).** Owner decisions in session (2026-11-19): "Waive, author request" (the 30-day cap),
+  "fp_v16 only" (the image input), and "Keep both rows" (the earlier row stays). Registered before the run.
+  - **Reason.** In the run of 2026-11-17, `lighton_hgh` read the frozen scans unchanged, and `merge_r2s1702_hgh` read
+    them after its image step `furniture_fp_v16`. The model card of LightOnOCR-HGH says that its training pages were
+    cropped to the paper edge and that uncropped scans work less well. Its author asked (2026-11-19) for a run with the
+    same image step as Kurrent Transcriber 1B or with pages cropped to the paper edge. So the difference between the
+    two rows also contains the image step.
+  - **Engine.** `lighton_hgh_fp_v16` is `lighton_hgh` with one added key, `preprocess: furniture_fp_v16`: the same
+    weights (revision `47931fbe`, sha256 `e12771e0…`), greedy decoding, at most 4,096 tokens, the page image only, the
+    windowed repetition penalty 1.1 over 20 tokens, and the output map `lighton-marks`. The image step paints scan
+    furniture outside the leaf and keeps the image size. It does not crop to the paper edge, and it does not split a
+    double-page spread. So this engine reads the same input as Kurrent Transcriber 1B. The LightOnOCR-HGH model card
+    prepares its input differently.
+  - **30-day cap.** Waived once for `lighton_hgh_fp_v16`. The run of 2026-11-17 used the maintainer's settings. This
+    run follows a request of the model's author, and its settings come from public sources and are fixed before the
+    first scored request; no setting is chosen from gold scores. The waiver covers this run only. It gives no
+    automatic waiver to a later model version: `SUBMITTING.md` (one model family from one submitter) and §11 (one per
+    engine version) word the cap differently, and that difference is open for a separate decision.
+  - **Run.** One run dir, `hgh_fp_v16_sealed`: `lighton_hgh_fp_v16`, then `merge_r2s1702_hgh` unchanged as a
+    same-stack drift control, on one RunPod Pod in one serving state, with the stack of the 2026-11-17 run (vLLM 0.23.0,
+    transformers 5.13.0). Gold images reach the Pod only as requests; the harness applies the image step on the
+    maintainer's computer. The run rules of the batch 1 entry apply: each engine runs once on all 55 pages, no
+    per-page retries, and a resume only after a lost connection, for pages with no record.
+  - **Scoring and rows.** Under the GT version of the 2026-11-13 check, as v1.0.4. No T3; the T3 result of
+    LightOnOCR-HGH stays attached to the 2026-11-17 row only. The new row stands beside the row of `lighton_hgh`,
+    which keeps its score; its name says "uncropped scans, maintainer settings". The new row names the image step and
+    is not called the author's settings.
+  - **Readings, fixed before the run.** All values are unrounded `cer_norm` medians over the 53 scored pages; a
+    boundary value counts as inside.
+    1. *Drift control.* Valid when `abs(control − 0.0712817) <= 0.0200`, where 0.0712817 is the recorded median of
+       `merge_r2s1702_hgh` in the run of 2026-11-17. If it is not valid, the new row is not published and the run is
+       reported as invalid.
+    2. *Image step (new HGH row vs old HGH row, two runs).* Let `d = new − 0.0899072` (the recorded median of
+       `lighton_hgh`). With `d <= −0.0200` the notes say that LightOnOCR-HGH reads better with the image step; with
+       `d >= 0.0200`, that it reads worse; otherwise, that the two rows are level within the serving drift.
+    3. *LightOnOCR-HGH vs Kurrent Transcriber 1B, same input.* Compared with the drift control of the same run. The
+       notes give the exact difference `new − control`. They call one engine ahead only when the difference is at
+       least 0.0200; otherwise they call the two level.
+    4. Entity recall, hard strata, and strata are reported as for every row. They are not read in the notes.
+  - **Unchanged.** No page IDs, images, GT, prompts, metric definitions, thresholds, or entries of existing engines
+    changed.
+
+* **2026-11-19 — Leaderboard row from the HGH image-step run; release v1.0.6 (§10, §11).** Owner decisions in
+  session: "Open it" (2026-11-19: open and score the sealed run) and "Release now" (2026-11-19: publish the new row
+  without waiting for the TrOCR rows). Logged before the release.
+  - **Run.** `20261119-121555_hgh_fp_v16_sealed`, one RunPod Pod, one serving state (vLLM 0.23.0, transformers
+    5.13.0). Both engines are complete: 55 records each, 0 error records. The checks of the windowed-penalty
+    processor on a development page gave the same values as in the run of 2026-11-17 for both engines.
+  - **Readings, as registered.** (1) Drift control: the median of `merge_r2s1702_hgh` is 0.0712817, equal to its
+    recorded median, so the run is valid; its public aggregates equal those of 2026-11-17. (2) Image step: the
+    median of `lighton_hgh_fp_v16` is 0.0751174; `d = −0.0147898`, so the two LightOnOCR-HGH rows are level within
+    the serving drift. (3) Same input: `new − control = +0.0038357`, level. (4) Entity recall, hard strata, and
+    strata are reported, not read. The loop guard cut 1 page of `lighton_hgh_fp_v16`.
+  - **Rows.** `lighton_hgh_fp_v16`, scored with `harness report --aggregates-only` at `a142ddf` (harness code as
+    v1.0.5; method of `docs/release/RESCORE_V1.md`), named "with the image step of Kurrent Transcriber 1B". The row
+    of `lighton_hgh` keeps its score; its name adds "uncropped scans, maintainer settings". The notes give the
+    readings, an observation of the model's author on image shifts of half a patch (not measured here), and how
+    `cer_norm` scores the mark `[unleserlich]`.
+  - **Ground truth.** The GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`), with the entity set hash
+    of the 2026-10-18 freeze and the page selection and image freeze of the v1.0 runs.
+  - **Unchanged.** No page IDs, images, GT, prompts, harness code, metric definitions, or existing scores changed.
+    No T3 for the new row.
+  - **Editorial, for the public release.** Two sentences of the registration entry (Engine and 30-day cap
+    bullets) were reworded after the run; their meaning did not change.
+
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 
 - **GT stays private — held-out evaluation.** The ground truth is **not published**.

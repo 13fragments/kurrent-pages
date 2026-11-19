@@ -1,6 +1,6 @@
 {
   "benchmark": "Kurrent Pages Benchmark v1.0",
-  "harness_tag": "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5: v1.0.5)",
+  "harness_tag": "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5)",
   "metric_note": "cer_norm: normalized character error rate (protocol §4, §5); lower is better.",
   "rows": [
     {
@@ -168,7 +168,170 @@
       "loop_policy_pages": 0
     },
     {
-      "engine": "LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe)",
+      "engine": "LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B",
+      "category": "open VLM, fine-tuned on Kurrent; run by the maintainer at the author's request",
+      "access": "open weights",
+      "run_id": "20261119-121555_hgh_fp_v16_sealed",
+      "harness_commit": "a142ddfef0cc3982957b6264d2351119aece2e46",
+      "overall": {
+        "n": 53,
+        "cer_norm_median": 0.07511737089201878,
+        "cer_norm_mean": 0.13538001363527213,
+        "cer_dipl_median": 0.07756813417190776,
+        "wer_norm_median": 0.22,
+        "nls_norm_median": 0.9248826291079812,
+        "ro_cost_median": 0.0,
+        "entity_recall_median": 0.8333333333333334,
+        "entity_pages": 53,
+        "seg_fail_rate": 0.0
+      },
+      "hard_strata": {
+        "n": 33,
+        "cer_norm_median": 0.08470964304741609,
+        "cer_norm_mean": 0.14188865769484804,
+        "cer_dipl_median": 0.08709506107275625,
+        "wer_norm_median": 0.2366412213740458,
+        "nls_norm_median": 0.9207772795216741,
+        "ro_cost_median": 0.0,
+        "entity_recall_median": 0.75,
+        "entity_pages": 33,
+        "seg_fail_rate": 0.0
+      },
+      "per_stratum": {
+        "degraded_fraktur": {
+          "n": 5,
+          "cer_norm_median": 0.01282782212086659,
+          "cer_norm_mean": 0.013945123065233074,
+          "cer_dipl_median": 0.04202157864849517,
+          "wer_norm_median": 0.06111111111111111,
+          "nls_norm_median": 0.9871721778791334,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.8685714285714285,
+          "entity_pages": 5,
+          "seg_fail_rate": 0.0
+        },
+        "latin_cursive_1940s": {
+          "n": 2,
+          "cer_norm_median": 0.13521237719016682,
+          "cer_norm_mean": 0.13521237719016682,
+          "cer_dipl_median": 0.13454682452387345,
+          "wer_norm_median": 0.31927990708478515,
+          "nls_norm_median": 0.8722827167932347,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.6944444444444444,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "marginalia": {
+          "n": 2,
+          "cer_norm_median": 0.2097840539741948,
+          "cer_norm_mean": 0.2097840539741948,
+          "cer_dipl_median": 0.21006493049858183,
+          "wer_norm_median": 0.656324056213833,
+          "nls_norm_median": 0.7902159460258051,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.14285714285714285,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "mixed_print_handwriting": {
+          "n": 3,
+          "cer_norm_median": 0.27419354838709675,
+          "cer_norm_mean": 0.21676373292296036,
+          "cer_dipl_median": 0.27419354838709675,
+          "wer_norm_median": 0.5897435897435898,
+          "nls_norm_median": 0.7258064516129032,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.4444444444444444,
+          "entity_pages": 3,
+          "seg_fail_rate": 0.0
+        },
+        "nineteenth_c_civilian": {
+          "n": 5,
+          "cer_norm_median": 0.06806282722513089,
+          "cer_norm_mean": 0.13718148766948163,
+          "cer_dipl_median": 0.06932052161976665,
+          "wer_norm_median": 0.25510204081632654,
+          "nls_norm_median": 0.9320557491289199,
+          "ro_cost_median": 0.0006971449734758106,
+          "entity_recall_median": 0.875,
+          "entity_pages": 5,
+          "seg_fail_rate": 0.0
+        },
+        "suetterlin": {
+          "n": 13,
+          "cer_norm_median": 0.044571428571428574,
+          "cer_norm_mean": 0.0641419257467719,
+          "cer_dipl_median": 0.04436860068259386,
+          "wer_norm_median": 0.14130434782608695,
+          "nls_norm_median": 0.9554794520547946,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.9285714285714286,
+          "entity_pages": 13,
+          "seg_fail_rate": 0.0
+        },
+        "table_registry": {
+          "n": 3,
+          "cer_norm_median": 0.07511737089201878,
+          "cer_norm_mean": 0.12556257247418393,
+          "cer_dipl_median": 0.0748829953198128,
+          "wer_norm_median": 0.26262626262626265,
+          "nls_norm_median": 0.9248826291079812,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.8571428571428571,
+          "entity_pages": 3,
+          "seg_fail_rate": 0.0
+        },
+        "tidy_kurrent": {
+          "n": 2,
+          "cer_norm_median": 0.06690459783432835,
+          "cer_norm_mean": 0.06690459783432835,
+          "cer_dipl_median": 0.06960085654415518,
+          "wer_norm_median": 0.12618592466723308,
+          "nls_norm_median": 0.9330954021656717,
+          "ro_cost_median": 0.031191346084963108,
+          "entity_recall_median": 1.0,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "twentieth_century_kurrent": {
+          "n": 6,
+          "cer_norm_median": 0.21381988250515355,
+          "cer_norm_mean": 0.22215800250281237,
+          "cer_dipl_median": 0.2174759442418625,
+          "wer_norm_median": 0.2861724875267284,
+          "nls_norm_median": 0.7861801174948465,
+          "ro_cost_median": 0.029601289663564387,
+          "entity_recall_median": 0.9166666666666667,
+          "entity_pages": 6,
+          "seg_fail_rate": 0.0
+        },
+        "ugly_kurrent": {
+          "n": 12,
+          "cer_norm_median": 0.2033660469783818,
+          "cer_norm_mean": 0.20016113709017735,
+          "cer_dipl_median": 0.2043182448478859,
+          "wer_norm_median": 0.5842315579157684,
+          "nls_norm_median": 0.7966339530216182,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.3696581196581197,
+          "entity_pages": 12,
+          "seg_fail_rate": 0.0
+        }
+      },
+      "fabrication_proxy_unadjudicated": {
+        "metric": "long_ins_rate_v01",
+        "median": 0.0,
+        "mean": 0.018026598053167666,
+        "micro": 0.017643223340194587,
+        "pages_above_0.10": 2
+      },
+      "t3_status": "unresolved",
+      "failed_pages": 0,
+      "loop_guard_pages": 1
+    },
+    {
+      "engine": "LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings",
       "category": "open VLM, fine-tuned on Kurrent",
       "access": "open weights",
       "run_id": "20261117-114437_merge_gold_sealed",
