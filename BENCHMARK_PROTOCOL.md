@@ -1387,6 +1387,78 @@ lucky subset while most pages collapsed.
     rule, number, or decision changed.
   - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
 
+* **2026-11-19 — Maintainer runs of open models, batch 1; sealed gold runs (§1, §6, §10).** Owner decisions in
+  session: "All three groups" (2026-11-18: a batch of maintainer-run rows for open OCR and HTR models) and "Approved"
+  (2026-11-19: phases 1 and 2 of the plan, a RunPod cap of $15). Plan: the maintainer's batch plan, v2, after one
+  Codex Sol Max review. These are external reference readings, not model-track candidates.
+  - **Engines.** Each runs as its model card or its authors' published code runs it, at a pinned revision:
+    `lightonocr3_1b_card` (LightOnOCR-3-1B at `23d54408`: image only, temperature 0.2, top_p 0.9, seed 20261119,
+    4,096 tokens), `lightonocr3_4b_card` (LightOnOCR-3-4B at `b71010f0`: the same, thinking off on the server, and
+    the card client's `thumbnail_2048_png`), `deepseek_ocr_free` (DeepSeek-OCR at `9f30c71f`: "Free OCR.",
+    temperature 0, 8,192 tokens, its n-gram logits processor 30/90 with the card's whitelist, special tokens kept),
+    `kraken_german_xix_v1` (the card's `segment -bl ocr` command, kraken 7.0), and three dh-unibe TrOCR models behind
+    kraken 7.0 baseline segmentation (`trocr_kurrent_kraken`, `trocr_kurrent_xvi_xvii_kraken`,
+    `trocr_german_kurrent_v2_kraken`, each with its card's `generate()` settings). Settings are in
+    `configs/engines.yml` and do not change after the first scored request.
+  - **New keys, opt-in.** `top_p`, `seed`, `stop`, and `skip_special_tokens` are sent only when set; `top_p` and
+    `seed` cannot be combined with `server_sampling`. The image step `thumbnail_2048_png` mirrors the LightOnOCR-3-4B
+    card client. The engine type `trocr_lines` segments the original page with kraken (no binarization), crops each
+    line polygon's bounding box from the original page in RGB in kraken's order, reads the crops with TrOCR, and
+    fails the page when a line has no reading. Engines without these keys send unchanged requests.
+  - **Run rules.** Each engine runs once on all 55 pages (53 scored, A01 and A02 reported only). No per-page
+    retries; a failed page counts as empty output (§1, §6). Setup problems may be fixed before the first scored
+    request of an engine; after it, only a lost connection may be resumed, for pages with no record, on the verified
+    identical stack. Every engine first passes a preflight on public non-benchmark pages (response shape, output,
+    the same result for the same request where decoding is greedy).
+  - **Where.** The three VLM engines on one RunPod Pod, with `merge_r2s1702_hgh` unchanged as a same-stack drift
+    control; gold images reach the Pod only as requests. The four line engines on the maintainer's computer; the
+    images stay local.
+  - **Scoring and rows.** Under the GT version of the 2026-11-13 check, as v1.0.4. No T3. Each row says that the
+    maintainer ran the engine and names its settings; line rows name the segmenter ("model + kraken 7.0 blla").
+    Differences within the measured serving drift (about 0.02 median, 2026-10-16) are not ranked in the notes.
+  - **Not in this batch.** DeepSeek-OCR-2 (its card points to custom scripts, not a documented server path), the
+    dh-unibe Qwen line models, Unlimited-OCR, GLM-OCR, dots.ocr, Chandra, and Surya: a later batch with its own
+    entry. Held until their authors give permission: the fgho TrOCR models and Nanonets-OCR2-3B (no licence stated).
+  - **Unchanged.** No page IDs, images, GT, prompts of existing engines, metric definitions, or thresholds changed.
+  - **Amendment, 2026-11-19, before any scored request of `deepseek_ocr_free`.** Owner decision in session ("Fill
+    the context"). The card's 8,192 new tokens equal the model's whole context; its offline code stops when the
+    context is full, but the vLLM server refuses a request whose prompt plus `max_tokens` exceeds the context. The
+    entry now sends no `max_tokens` (key `server_max_tokens: true`), so the server fills the context as the offline
+    code does. Every VLM reply now records its `finish_reason`; for an engine with `server_max_tokens`, the loop
+    guard counts a reply as token-limited when `finish_reason` is "length". Engines without the key are unchanged.
+  - **Amendment, 2026-11-19, a maintainer pause of the line run.** The owner needed the maintainer's computer
+    ("MacBook tonight"). The run `batch1_lines_sealed` was paused at 07:25:15Z: `kraken_german_xix_v1` complete (55
+    records, 0 errors), `trocr_kurrent_kraken` at 27 of 55 records, the other two line engines not started. It
+    resumes on the same computer with the same stack: kraken 7.0, the same recognizer environment, and engine code
+    unchanged since `47a326f` (`trocr_lines.py`, `trocr_predict.py`, `kraken.py`, the runner). As after a lost
+    connection, pages with a record do not run again; the page in progress at the pause has no record and runs.
+  - **Amendment, 2026-11-19, DeepSeek-OCR moves to the later batch.** Owner decision in session ("Move to phase
+    3"). On vLLM 0.30.0 the card's own offline code failed before serving (a Triton compile error on the RTX PRO
+    6000), so `deepseek_ocr_free` made no gold request; its one run is unused. It returns with the later batch, on a
+    vLLM version that its card's code runs on, under its own entry. Batch 1 has six engines.
+
+* **2026-11-19 — Leaderboard rows from batch 1; release v1.0.5 (§10, §11).** Owner decision in session: "Publish
+  v1.0.5 now" (2026-11-19: release the three complete batch 1 rows now; the three TrOCR rows follow in a later
+  release when the paused line run is complete). Logged before the release.
+  - **Rows.** `lightonocr3_1b_card` and `lightonocr3_4b_card` from the sealed run `20261119-073625_batch1_vlm_sealed`,
+    and `kraken_german_xix_v1` from the sealed run `20261119-054405_batch1_lines_sealed` (batch 1 entry). Each was
+    copied with its outputs and scored with `harness report --aggregates-only` at `77c3f78` (method of
+    `docs/release/RESCORE_V1.md`). Each is complete: 53 scored pages and 0 failed pages. The loop guard (§10,
+    2026-10-16) cut 5 pages of each LightOnOCR-3 engine. Each row says that the maintainer ran it.
+  - **Drift control.** `merge_r2s1702_hgh` ran in the same session as the two LightOnOCR-3 engines and reproduced its
+    recorded score (median 0.0713, entity recall 0.833). The two LightOnOCR-3 medians differ by 0.016, less than the
+    serving drift of about 0.02, so the notes read them as level.
+  - **Ground truth.** The GT version of the 2026-11-13 check (digest `88ccc5879c1b74c2…`): each of its 53 files has
+    the sha256 recorded at the GT v1.0 freeze, the entity lists have the set hash of their 2026-10-18 freeze, and the
+    page selection and the image freeze of both batch 1 runs have the hashes of the v1.0 runs. So the new rows use
+    GT v1.0 and compare directly with the earlier rows.
+  - **Line run.** `kraken_german_xix_v1` completed before the pause (55 records, 0 errors). Its score does not change
+    the settings or the resume rules of the three TrOCR engines, which are fixed in `configs/engines.yml` and in the
+    batch 1 entry.
+  - **Earlier rows.** Not rescored. For engines without the keys of the batch 1 entry, the requests, the OCR
+    metrics, and the public aggregates go through unchanged code. No T3 for the new rows.
+  - **Editorial, for the public release.** A private plan path was removed from the batch 1 entry.
+
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 
 - **GT stays private — held-out evaluation.** The ground truth is **not published**.

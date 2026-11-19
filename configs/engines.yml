@@ -277,6 +277,40 @@ engines:
     preprocess: furniture_fp_v16              # engine image step (§10 2026-11-13)
     loop_policy: run_removal_v1               # run-only loop removal (§10 2026-11-13)
     output_map: lighton-marks                # as lighton_hgh and every development score of the merge
+  # §10 2026-11-19: maintainer runs of open models. Settings from each model card, fixed before one sealed run each.
+  lightonocr3_1b_card:                       # lightonai/LightOnOCR-3-1B at 23d54408, its model card's vLLM client
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: lightonocr3-1b
+    weights_sha256: 32879861d5cdc3b2c3909d3f9a47dc8f7338685d13113c8c98c144f68b358dbb
+    prompt_file: configs/prompts/vlm_default.txt   # hash recorded; not sent (image_only, transcription-only mode)
+    image_only: true
+    max_tokens: 4096
+    temperature: 0.2
+    top_p: 0.9
+    seed: 20261119                            # fixed: one sample at the card's temperature
+  lightonocr3_4b_card:                       # lightonai/LightOnOCR-3-4B at b71010f0, its model card's vLLM client
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: lightonocr3-4b                    # server: --trust-remote-code --default-chat-template-kwargs '{"enable_thinking": false}'
+    weights_sha256: 6b0dab74a2dab02d5b10ca56322255024ed8dca35c02746b42e9f296aaeb4e67
+    prompt_file: configs/prompts/vlm_default.txt   # hash recorded; not sent (image_only, transcription-only mode)
+    image_only: true
+    max_tokens: 4096
+    temperature: 0.2
+    top_p: 0.9
+    seed: 20261119
+    preprocess: thumbnail_2048_png            # the card client's thumbnail((2048, 2048)), PNG
+  deepseek_ocr_free:                         # deepseek-ai/DeepSeek-OCR at 9f30c71f, its model card's vLLM settings
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: deepseek-ocr                      # server: --logits-processors <NGramPerReqLogitsProcessor> --no-enable-prefix-caching --mm-processor-cache-gb 0
+    weights_sha256: 1169e7cdc28ff2fb6186556acb2175db148ad26a62097df4c45a17e523180d3f
+    prompt_file: configs/prompts/deepseek_ocr_free.txt   # the card's "<image>\nFree OCR." (no layout)
+    server_max_tokens: true                   # no max_tokens: the server fills the 8,192-token context, as the card's offline code stops (§10 2026-11-19 amendment)
+    temperature: 0.0
+    skip_special_tokens: false
+    vllm_xargs: {ngram_size: 30, window_size: 90, whitelist_token_ids: [128821, 128822]}
   churro:                                   # vllm serve stanford-oval/churro-3B --port 8001
     type: vlm_openai
     base_url: http://localhost:8001/v1
@@ -301,6 +335,35 @@ engines:
     model: data/raw/models/kraken/german_kurrent.mlmodel   # setup_engines.sh: Zenodo 10.5281/zenodo.11673242 rec_bohemica.mlmodel
     timeout: 1800                            # s per subprocess; 600 timed out on G50 (2026-09-24)
     # command: ["{binary}", "-i", "{image}", "{output}", "segment", "-bl", "ocr", "-m", "{model}"]
+
+  # §10 2026-11-19: line models with kraken baseline segmentation, settings from each model card.
+  kraken_german_xix_v1:                      # dh-unibe/kraken-german-xix-v1 at 945658d6, the card's command
+    type: kraken
+    package: kraken==7.0.0
+    model: data/raw/models/kraken/kraken-german-xix-v1.mlmodel   # sha256 7af3d4a0eb1a778c3b8c7f9bab86ed656a2eb235470f972193918db35fa2ece6
+    command: ["{binary}", "-i", "{image}", "{output}", "segment", "-bl", "ocr", "-m", "{model}"]
+    timeout: 1800
+  trocr_kurrent_kraken:                      # dh-unibe/trocr-kurrent + kraken 7.0 blla
+    type: trocr_lines
+    model: dh-unibe/trocr-kurrent
+    revision: 2882072ac68f7aa09353a71092ebd5510f4b82cd
+    python: data/raw/venvs/trocr/bin/python  # torch 2.13.0, transformers 5.23.0, pillow 12.3.0
+    kraken_binary: kraken
+    generate: {num_beams: 4, max_length: 128}
+  trocr_kurrent_xvi_xvii_kraken:             # dh-unibe/trocr-kurrent-XVI-XVII + kraken 7.0 blla
+    type: trocr_lines
+    model: dh-unibe/trocr-kurrent-XVI-XVII
+    revision: c599751f3f93fc80542aa0f4082ecaff0dd952bf
+    python: data/raw/venvs/trocr/bin/python
+    kraken_binary: kraken
+    generate: {num_beams: 4, max_length: 128}
+  trocr_german_kurrent_v2_kraken:            # dh-unibe/trocr-german-kurrent-xvi-xix-from-kurrent-v2 + kraken 7.0 blla
+    type: trocr_lines
+    model: dh-unibe/trocr-german-kurrent-xvi-xix-from-kurrent-v2
+    revision: bd1d96b67225b580846d7759f6ba74c66f56680e
+    python: data/raw/venvs/trocr/bin/python
+    kraken_binary: kraken
+    generate: {num_beams: 4, no_repeat_ngram_size: 3, max_new_tokens: 256}
 
   calamari_fraktur:
     type: calamari

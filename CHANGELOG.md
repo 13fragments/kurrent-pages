@@ -1,10 +1,24 @@
 # Changelog
 
-## Unreleased
+## v1.0.5
 
+Leaderboard, harness, and protocol log; the benchmark version stays Kurrent Pages Benchmark v1.0.
+No page, ground truth, prompt of an existing engine, or OCR metric definition changed, and no
+existing score changed.
+
+- Leaderboard: add three rows that the maintainer ran on 2026-11-19 with the settings of each
+  model card: LightOnOCR-3-1B (revision `23d54408`), LightOnOCR-3-4B (revision `b71010f0`), and
+  kraken-german-xix-v1 (revision `945658d6`, kraken 7.0). The notes give their settings.
+- Harness: opt-in `vlm_openai` keys `top_p`, `seed`, `stop`, `skip_special_tokens`, and
+  `server_max_tokens`; every VLM reply records its `finish_reason`. Image step
+  `thumbnail_2048_png`. Engine type `trocr_lines` (TrOCR line models behind kraken baseline
+  segmentation) with `scripts/trocr_predict.py`. Engines without these keys send unchanged
+  requests, and their OCR metrics and public aggregates use unchanged code.
 - `SUBMITTING.md`: owners of open-weight models can ask the maintainer to run their model. The
   maintainer decides on each request, and the usual rules apply.
 - Dataset card: links `SUBMITTING.md` and gives the submission address.
+- Protocol: §10 entries for the maintainer runs of batch 1 and this release.
+- `docs/release/RESCORE_V1.md`: how the new rows were scored.
 
 ## v1.0.4
 

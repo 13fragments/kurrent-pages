@@ -27,9 +27,12 @@ VLM_DEFAULT_MAX_TOKENS = 4096  # VlmOpenAiEngine default when max_tokens is unse
 
 def token_limited(record: dict, engine_description: dict) -> bool:
     """Whether a stored output used all of its engine's completion tokens."""
-    usage = (record.get("meta") or {}).get("usage") or {}
+    meta = record.get("meta") or {}
+    usage = meta.get("usage") or {}
     used = usage.get("completion_tokens")
     config = engine_description.get("config") or {}
+    if config.get("server_max_tokens"):  # §10 2026-11-19: the server fills the context; its stop reason decides
+        return meta.get("finish_reason") == "length"
     limit = config.get("max_tokens")
     if limit is None and engine_description.get("type") == "vlm_openai":
         limit = VLM_DEFAULT_MAX_TOKENS

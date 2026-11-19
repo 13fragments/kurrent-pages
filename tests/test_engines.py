@@ -322,3 +322,94 @@ def test_vlm_sends_chat_template_kwargs_when_configured(monkeypatch, tmp_path):
     monkeypatch.setattr(engine, "_post", fake_post)
     engine.transcribe(image)
     assert seen["payload"]["chat_template_kwargs"] == {"enable_thinking": False}
+
+
+# Sampling keys of the 2026-11-19 batch (§10): top_p, seed, stop. Failure modes covered:
+# an engine without the keys sends a changed payload; a key is sent when not configured;
+# seed 0 is dropped as falsy; a bad stop type reaches the server; the keys stack with
+# server_sampling, which promises the server's own generation config.
+
+
+def _payload_for(monkeypatch, tmp_path, extra):
+    image = tmp_path / "p.png"
+    image.write_bytes(b"x")
+    engine = create_engine("vlm", {**_vlm_config(), **extra})
+    seen = {}
+
+    def fake_post(payload):
+        seen["payload"] = payload
+        return {"choices": [{"message": {"content": "ok"}}]}
+
+    monkeypatch.setattr(engine, "_post", fake_post)
+    engine.transcribe(image)
+    return seen["payload"]
+
+
+def test_vlm_payload_without_sampling_keys_is_unchanged(monkeypatch, tmp_path):
+    payload = _payload_for(monkeypatch, tmp_path, {})
+    assert set(payload) == {"model", "temperature", "max_tokens", "messages"}
+
+
+def test_vlm_sends_top_p_seed_stop_only_when_configured(monkeypatch, tmp_path):
+    payload = _payload_for(monkeypatch, tmp_path, {})
+    assert not {"top_p", "seed", "stop"} & set(payload)
+    payload = _payload_for(monkeypatch, tmp_path, {"top_p": 0.9, "seed": 1234, "stop": ["</s>"]})
+    assert payload["top_p"] == 0.9
+    assert payload["seed"] == 1234
+    assert payload["stop"] == ["</s>"]
+
+
+def test_vlm_sends_seed_zero(monkeypatch, tmp_path):
+    payload = _payload_for(monkeypatch, tmp_path, {"seed": 0})
+    assert payload["seed"] == 0
+
+
+def test_vlm_rejects_bad_sampling_values():
+    for extra in ({"stop": "</s>"}, {"stop": [1]}, {"seed": "1"}, {"seed": True}, {"top_p": 0}, {"top_p": 1.5}):
+        with pytest.raises(EngineUnavailable):
+            create_engine("vlm", {**_vlm_config(), **extra})
+
+
+def test_vlm_rejects_sampling_keys_with_server_sampling():
+    for extra in ({"top_p": 0.9}, {"seed": 1}):
+        with pytest.raises(EngineUnavailable, match="server_sampling"):
+            create_engine("vlm", {**_vlm_config(), "server_sampling": True, **extra})
+
+
+# skip_special_tokens (§10 2026-11-19; DeepSeek-OCR's card sets it to false). Failure modes: sent when not set;
+# false dropped as falsy; a non-bool reaches the server.
+
+
+def test_vlm_sends_skip_special_tokens_only_when_configured(monkeypatch, tmp_path):
+    assert "skip_special_tokens" not in _payload_for(monkeypatch, tmp_path, {})
+    assert _payload_for(monkeypatch, tmp_path, {"skip_special_tokens": False})["skip_special_tokens"] is False
+
+
+def test_vlm_rejects_non_bool_skip_special_tokens():
+    with pytest.raises(EngineUnavailable, match="skip_special_tokens"):
+        create_engine("vlm", {**_vlm_config(), "skip_special_tokens": "false"})
+
+
+# server_max_tokens (§10 2026-11-19 amendment; DeepSeek-OCR fills its context as its card's offline code does).
+# Failure modes: max_tokens still sent; sent together with an explicit max_tokens; a non-bool accepted; the stop
+# reason not recorded, so the loop guard cannot tell a full context from a normal stop.
+
+
+def test_vlm_server_max_tokens_omits_max_tokens(monkeypatch, tmp_path):
+    assert _payload_for(monkeypatch, tmp_path, {})["max_tokens"] == 4096
+    assert "max_tokens" not in _payload_for(monkeypatch, tmp_path, {"server_max_tokens": True})
+
+
+def test_vlm_server_max_tokens_rejects_conflicts():
+    with pytest.raises(EngineUnavailable, match="server_max_tokens"):
+        create_engine("vlm", {**_vlm_config(), "server_max_tokens": True, "max_tokens": 8192})
+    with pytest.raises(EngineUnavailable, match="server_max_tokens"):
+        create_engine("vlm", {**_vlm_config(), "server_max_tokens": "yes"})
+
+
+def test_vlm_records_finish_reason(monkeypatch, tmp_path):
+    image = tmp_path / "p.png"
+    image.write_bytes(b"x")
+    engine = create_engine("vlm", _vlm_config())
+    monkeypatch.setattr(engine, "_post", lambda payload: {"choices": [{"message": {"content": "ok"}, "finish_reason": "length"}]})
+    assert engine.transcribe(image).meta["finish_reason"] == "length"

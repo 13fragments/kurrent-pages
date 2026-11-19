@@ -145,3 +145,13 @@ def test_score_cuts_only_token_limited_outputs_and_keeps_raw(loop_repo):  # F1, 
     # resuming with the unchanged engine config is still allowed
     assert main([*_args(loop_repo), "run", "--engines", "at_limit,below_limit",
                  "--run-dir", str(run_dir)]) == 0
+
+
+def test_token_limited_uses_finish_reason_when_the_server_fills_the_context():
+    from harness.loop_guard import token_limited
+
+    desc = {"type": "vlm_openai", "config": {"server_max_tokens": True}}
+    long_stop = {"meta": {"usage": {"completion_tokens": 5000}, "finish_reason": "stop"}}
+    full = {"meta": {"usage": {"completion_tokens": 7900}, "finish_reason": "length"}}
+    assert token_limited(long_stop, desc) is False
+    assert token_limited(full, desc) is True

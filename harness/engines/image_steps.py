@@ -28,6 +28,9 @@ STEPS = {
     # src/churro_ocr/_internal/image.py prepare_ocr_image): RGB, longest side at most 2,500 px (LANCZOS, no
     # upscaling); sent as PNG, as its image encoder does for an image without a source format.
     "fit_2500_png": {"module": None, "version": "churro-23c3ac6"},
+    # §10 2026-11-19: the LightOnOCR-3-4B model card client (revision b71010f0): `pil_image.thumbnail((2048, 2048))`
+    # (Pillow defaults, no upscaling), sent as PNG.
+    "thumbnail_2048_png": {"module": None, "version": "lightonocr3-4b-card-b71010f0"},
 }
 FIT_MAX = 2500
 
@@ -76,6 +79,18 @@ def prepared(image: Path, step: str | None) -> tuple[bytes, str, dict | None]:
         data = buffer.getvalue()
         return data, "png", {"step": step, "version": STEPS[step]["version"], "size": [width, height],
                              "resized": width > FIT_MAX or height > FIT_MAX,
+                             "sent_sha256": hashlib.sha256(data).hexdigest()}
+
+    if step == "thumbnail_2048_png":
+        with Image.open(io.BytesIO(raw)) as source:
+            image = source.convert("RGB")
+        width, height = image.size
+        image.thumbnail((2048, 2048))
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        data = buffer.getvalue()
+        return data, "png", {"step": step, "version": STEPS[step]["version"], "size": [width, height],
+                             "resized": image.size != (width, height),
                              "sent_sha256": hashlib.sha256(data).hexdigest()}
 
     from harness import furniture

@@ -99,3 +99,26 @@ sha256 recorded at the GT v1.0 freeze (2026-10-16). The entity lists match their
 freeze, and the page selection and image freeze match the v1.0 runs. So the new rows use GT v1.0.
 The earlier rows were not rescored with the v1.0.4 harness. Their engines set none of the new
 keys, so their OCR metrics and public aggregates use unchanged code.
+
+## Rows added in v1.0.5
+
+Release v1.0.5 adds three rows from batch 1 of the maintainer runs (§10, 2026-11-19). Two come from
+the sealed run `20261119-073625_batch1_vlm_sealed`, one from the sealed run
+`20261119-054405_batch1_lines_sealed`. The outputs of each engine were copied to
+`evals/release_v1/rescore_rc1/`, with `run.json` reduced to that engine. Each copy was scored with
+`harness score` and `harness report --aggregates-only` from a clean tree of the v1.0.5 harness
+(`77c3f78`).
+
+- LightOnOCR-3-1B, `lightonocr3_1b_card`: median 0.3589, the same as the score of the full run.
+  No failed page; the loop guard cut 5 pages.
+- LightOnOCR-3-4B, `lightonocr3_4b_card`: median 0.3747, the same as the score of the full run.
+  No failed page; the loop guard cut 5 pages.
+- kraken-german-xix-v1, `kraken_german_xix_v1`: median 0.2918. No failed page. This release is its
+  first score.
+
+The drift control of the VLM session, Kurrent Transcriber 1B (`merge_r2s1702_hgh`), reproduced its
+published median of 0.0713. All three rows were scored against the GT digest `88ccc5879c1b74c2…`,
+the same check as v1.0.4: each GT file has the sha256 recorded at the GT v1.0 freeze, the entity
+lists match their 2026-10-18 freeze, and the page selection and image freeze of both runs match the
+v1.0 runs. The earlier rows were not rescored. Their engines set none of the new keys, so their
+requests, OCR metrics, and public aggregates use unchanged code.

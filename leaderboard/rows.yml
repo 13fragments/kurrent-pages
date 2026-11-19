@@ -3,7 +3,7 @@
 # scripts/build_leaderboard.py writes leaderboard.json and LEADERBOARD.md from these rows.
 # `section: frontier` puts a row in the frontier reference section (`frontier_rows`).
 version: "Kurrent Pages Benchmark v1.0"
-harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4)"
+harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5: v1.0.5)"
 rows:
   - aggregates: 20260924-112302_sealed__transkribus_german_genius
     engine: Transkribus German Genius (Super Model, model ID 265149)
@@ -58,6 +58,19 @@ rows:
     engine: LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe)
     category: open VLM, fine-tuned on Kurrent
     access: open weights
+  # Added in v1.0.5: maintainer runs of open models, batch 1, 2026-11-19 (§10), scored with harness v1.0.5.
+  - aggregates: 20261119-073625_batch1_vlm_sealed__lightonocr3_1b_card
+    engine: LightOnOCR-3-1B (lightonai/LightOnOCR-3-1B, revision 23d54408), model card settings
+    category: open VLM, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261119-073625_batch1_vlm_sealed__lightonocr3_4b_card
+    engine: LightOnOCR-3-4B (lightonai/LightOnOCR-3-4B, revision b71010f0), model card settings
+    category: open VLM, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261119-054405_batch1_lines_sealed__kraken_german_xix_v1
+    engine: Kraken 7.0, kraken-german-xix-v1 model (dh-unibe/kraken-german-xix-v1, revision 945658d6)
+    category: open CRNN pipeline; run by the maintainer
+    access: open source
   # Frontier reference: a separate section, not ranked with the rows above.
   - aggregates: 20261031-155542_fable51_max_sealed__fable51_max
     engine: Claude Fable 5.1 (claude-fable-5-1, effort max, Claude Code CLI)

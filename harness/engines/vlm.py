@@ -29,6 +29,12 @@ system_prompt (a system message sent before the user message, as an engine's pub
 server_sampling (true: no temperature is sent, so the server applies the model's generation config, as an
 engine's published code does), output_map (a map of `harness/output_maps.py` applied to the stored text
 before scoring; the stored output is unchanged).
+
+Keys of §10 2026-11-19 (maintainer runs of open models), opt-in, no other engine changes: top_p, seed
+(sent only when set, as an engine's model card sets them; not with server_sampling), stop (a list of strings),
+skip_special_tokens (true or false, sent only when set). Amendment 2026-11-19: server_max_tokens (true: no
+max_tokens is sent, so the server fills the model's context, as an engine's offline code does; the loop guard then
+reads finish_reason "length", which every reply now records).
 """
 
 from __future__ import annotations
@@ -69,6 +75,7 @@ class VlmOpenAiEngine(Engine):
 
             if output_map not in OUTPUT_MAPS:
                 raise EngineUnavailable(f"vlm engine {name!r}: unknown output_map {output_map!r} (known: {sorted(OUTPUT_MAPS)})")
+        _check_sampling_keys(name, config)
 
     def transcribe(self, image: Path) -> EngineOutput:
         data, mime, step_record = prepared(image, self.preprocess)
@@ -98,17 +105,27 @@ class VlmOpenAiEngine(Engine):
                 0, {"role": "system", "content": [{"type": "text", "text": self.config["system_prompt"]}]})
         if self.config.get("server_sampling"):
             del payload["temperature"]
+        if self.config.get("server_max_tokens"):
+            del payload["max_tokens"]
         if self.config.get("repetition_penalty") is not None:
             payload["repetition_penalty"] = self.config["repetition_penalty"]
         if self.config.get("chat_template_kwargs"):
             payload["chat_template_kwargs"] = dict(self.config["chat_template_kwargs"])
         if self.config.get("vllm_xargs"):
             payload["vllm_xargs"] = dict(self.config["vllm_xargs"])
+        for key in ("top_p", "seed"):
+            if self.config.get(key) is not None:
+                payload[key] = self.config[key]
+        if self.config.get("stop") is not None:
+            payload["stop"] = list(self.config["stop"])
+        if self.config.get("skip_special_tokens") is not None:
+            payload["skip_special_tokens"] = self.config["skip_special_tokens"]
         start = time.monotonic()
         response = self._post(payload)
         duration = time.monotonic() - start
         try:
-            message = response["choices"][0]["message"]
+            choice = response["choices"][0]
+            message = choice["message"]
             text = message.get("content") or ""
         except (KeyError, IndexError, TypeError) as exc:
             raise EngineError(f"unexpected response shape: {str(response)[:300]}") from exc
@@ -117,6 +134,7 @@ class VlmOpenAiEngine(Engine):
             model_id=response.get("model", self.config["model"]),
             duration_s=duration,
             meta={"prompt_sha256": self.prompt_sha256, "usage": response.get("usage"),
+                  "finish_reason": choice.get("finish_reason"),
                   **({"preprocess": step_record} if step_record is not None else {})},
         )
 
@@ -175,6 +193,27 @@ class VlmOpenAiEngine(Engine):
             "prompt_sha256": self.prompt_sha256,
             "config": {k: v for k, v in self.config.items() if k != "api_key_env"},
         }
+
+
+def _check_sampling_keys(name: str, config: dict) -> None:
+    """Keys of §10 2026-11-19 (opt-in): top_p, seed, stop, skip_special_tokens, sent only when set."""
+    top_p, seed, stop = config.get("top_p"), config.get("seed"), config.get("stop")
+    if top_p is not None and (isinstance(top_p, bool) or not isinstance(top_p, (int, float)) or not 0 < top_p <= 1):
+        raise EngineUnavailable(f"vlm engine {name!r}: top_p must be a number in (0, 1], got {top_p!r}")
+    if seed is not None and (isinstance(seed, bool) or not isinstance(seed, int)):
+        raise EngineUnavailable(f"vlm engine {name!r}: seed must be an integer, got {seed!r}")
+    if stop is not None and (not isinstance(stop, list) or not all(isinstance(s, str) and s for s in stop)):
+        raise EngineUnavailable(f"vlm engine {name!r}: stop must be a list of non-empty strings, got {stop!r}")
+    smt = config.get("server_max_tokens")
+    if smt is not None and not isinstance(smt, bool):
+        raise EngineUnavailable(f"vlm engine {name!r}: server_max_tokens must be true or false, got {smt!r}")
+    if smt and config.get("max_tokens") is not None:
+        raise EngineUnavailable(f"vlm engine {name!r}: server_max_tokens cannot be combined with max_tokens")
+    skip = config.get("skip_special_tokens")
+    if skip is not None and not isinstance(skip, bool):
+        raise EngineUnavailable(f"vlm engine {name!r}: skip_special_tokens must be true or false, got {skip!r}")
+    if config.get("server_sampling") and (top_p is not None or seed is not None):
+        raise EngineUnavailable(f"vlm engine {name!r}: top_p and seed cannot be combined with server_sampling")
 
 
 def _data_url(data: bytes, mime: str) -> str:
