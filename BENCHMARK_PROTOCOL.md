@@ -1436,6 +1436,10 @@ lucky subset while most pages collapsed.
     3"). On vLLM 0.30.0 the card's own offline code failed before serving (a Triton compile error on the RTX PRO
     6000), so `deepseek_ocr_free` made no gold request; its one run is unused. It returns with the later batch, on a
     vLLM version that its card's code runs on, under its own entry. Batch 1 has six engines.
+  - **Clarification, 2026-11-19, from the v1.0.5 review.** "Fails the page when a line has no reading" means that
+    the recognizer returns a different number of readings than kraken found lines. An empty reading stays an empty
+    line. This is the behavior of `trocr_lines.py` as fixed at `47a326f`, before the first scored request of a
+    TrOCR engine; no code or run changes.
 
 * **2026-11-19 — Leaderboard rows from batch 1; release v1.0.5 (§10, §11).** Owner decision in session: "Publish
   v1.0.5 now" (2026-11-19: release the three complete batch 1 rows now; the three TrOCR rows follow in a later
