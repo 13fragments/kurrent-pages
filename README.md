@@ -10,6 +10,21 @@ manifest, the evaluation harness, the engine adapters, and the leaderboard. It
 holds no ground truth: the 53 scored pages are scored offline against a private,
 double-keyed transcription.
 
+## How this benchmark differs
+
+- **The ground truth is sealed.** The transcriptions of the 53 pages are not
+  published, and no other transcription of these pages is known to be online.
+  No model can have them in its training data. Common Kurrent test sets, such as
+  READ 2016 and the Swiss Federal Council minutes test set, publish their
+  transcriptions.
+- **The pages are broad.** They come from 20 volumes in 10 strata, from 1565 to
+  1948: Sütterlin, hard and tidy Kurrent hands, 20th-century Kurrent, degraded
+  Fraktur, Latin cursive, tables and registers, marginalia, and pages that mix
+  print and handwriting. READ 2016 and the Swiss set each come from one series
+  of minutes.
+- **The size is standard.** The 53 pages hold about 1,700 lines and 13,000
+  words. The READ 2016 test set has 50 pages and 1,140 lines.
+
 **Release: Kurrent Pages Benchmark v1.0** = ground truth v1.0 + harness tag `v1.0.0` +
 `BENCHMARK_PROTOCOL.md` with §10 up to the tag date.
 The rows added in release v1.0.4 were scored with harness tag `v1.0.4`. It adds opt-in engine

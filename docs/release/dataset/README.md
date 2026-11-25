@@ -53,6 +53,21 @@ outputs for scoring.
 - Ground truth and entity annotations are **not** published. Scoring happens
   offline against the private ground truth; only aggregates are published.
 
+## How this benchmark differs
+
+- **The ground truth is sealed.** The transcriptions of the 53 pages are not
+  published, and no other transcription of these pages is known to be online.
+  No model can have them in its training data. Common Kurrent test sets, such as
+  READ 2016 and the Swiss Federal Council minutes test set, publish their
+  transcriptions.
+- **The pages are broad.** They come from 20 volumes in 10 strata, from 1565 to
+  1948: Sütterlin, hard and tidy Kurrent hands, 20th-century Kurrent, degraded
+  Fraktur, Latin cursive, tables and registers, marginalia, and pages that mix
+  print and handwriting. READ 2016 and the Swiss set each come from one series
+  of minutes.
+- **The size is standard.** The 53 pages hold about 1,700 lines and 13,000
+  words. The READ 2016 test set has 50 pages and 1,140 lines.
+
 ## Contents
 
 | Path | Contents |
