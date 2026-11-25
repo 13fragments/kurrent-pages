@@ -6,7 +6,6 @@ Held-out set of 53 scored pages, ground truth v1.0, scored with harness v1.0.0-r
 
 | Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |
 |---|---|---|---|---|---|---|---|---|---|
-| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | open VLM, fine-tuned on Kurrent; published by the benchmark maintainer | 53 | **0.071** | 0.113 | 0.833 | 0% | 0.091 | 0.775 | 2 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B | open VLM, fine-tuned on Kurrent; run by the maintainer at the author's request | 53 | **0.075** | 0.135 | 0.833 | 0% | 0.085 | 0.750 | 2 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings | open VLM, fine-tuned on Kurrent | 53 | **0.090** | 0.134 | 0.833 | 0% | 0.098 | 0.750 | 2 |
 | Transkribus German Genius (Super Model, model ID 265149) | commercial reference, run 2026-09-24 | 53 | **0.131** | 0.186 | 0.850 | 2% | 0.128 | 0.825 | 2 |
@@ -30,7 +29,6 @@ Pages per stratum in brackets.
 
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | 0.027 | 0.168 | 0.071 | 0.171 | 0.071 | 0.006 | 0.210 | 0.128 | 0.185 | 0.064 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B | 0.045 | 0.203 | 0.067 | 0.214 | 0.068 | 0.013 | 0.274 | 0.075 | 0.210 | 0.135 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings | 0.045 | 0.212 | 0.086 | 0.205 | 0.080 | 0.013 | 0.265 | 0.098 | 0.211 | 0.135 |
 | Transkribus German Genius (Super Model, model ID 265149) | 0.080 | 0.168 | 0.087 | 0.275 | 0.133 | 0.013 | 0.247 | 0.128 | 0.174 | 0.079 |
@@ -54,7 +52,6 @@ Pages per stratum in brackets.
 
 | Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | 1.000 | 0.333 | 1.000 | 0.750 | 0.800 | 1.000 | 0.571 | 0.857 | 0.429 | 0.722 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B | 0.929 | 0.370 | 1.000 | 0.917 | 0.875 | 0.869 | 0.444 | 0.857 | 0.143 | 0.694 |
 | LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings | 0.929 | 0.293 | 1.000 | 0.917 | 0.733 | 0.869 | 0.571 | 0.857 | 0.143 | 0.694 |
 | Transkribus German Genius (Super Model, model ID 265149) | 1.000 | 0.758 | 1.000 | 0.633 | 0.875 | 0.917 | 0.571 | 0.857 | 0.714 | 0.694 |
@@ -87,6 +84,20 @@ General-purpose frontier models, each a single run on one date through the vendo
 |---|---|---|---|---|---|---|---|---|---|---|
 | Claude Fable 5.1 (claude-fable-5-1, effort max, Claude Code CLI) | 0.011 | 0.139 | 0.081 | 0.132 | 0.088 | 0.003 | 0.228 | 0.083 | 0.180 | 0.027 |
 | GPT-6-Astra (gpt-6-astra, reasoning effort max, Codex CLI) | 0.019 | 0.160 | 0.088 | 0.105 | 0.078 | 0.003 | 0.320 | 0.106 | 0.237 | 0.028 |
+
+## Self-reported (benchmark maintainer)
+
+13fragments maintains this benchmark and also built the models in this section. 13fragments scored them with the same scorer and protocol as every other row. Because of this conflict of interest, these rows are self-reported and are not ranked with the main table.
+
+| Engine | Category | n | `cer_norm` median | `cer_norm` mean | Entity recall median | Seg-fail | Hard strata (33) `cer_norm` median | Hard strata entity recall median | Fabrication proxy, pages > 0.10 (unadjudicated) |
+|---|---|---|---|---|---|---|---|---|---|
+| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | open VLM, fine-tuned on Kurrent; published by the benchmark maintainer | 53 | **0.071** | 0.113 | 0.833 | 0% | 0.091 | 0.775 | 2 |
+
+`cer_norm` median per stratum:
+
+| Engine | suetterlin (13) | ugly_kurrent (12) | tidy_kurrent (2, indicative) | twentieth_century_kurrent (6) | nineteenth_c_civilian (5) | degraded_fraktur (5) | mixed_print_handwriting (3, indicative) | table_registry (3, indicative) | marginalia (2, indicative) | latin_cursive_1940s (2, indicative) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1) | 0.027 | 0.168 | 0.071 | 0.171 | 0.071 | 0.006 | 0.210 | 0.128 | 0.185 | 0.064 |
 
 ## Notes
 
@@ -150,6 +161,9 @@ General-purpose frontier models, each a single run on one date through the vendo
   `[unleserlich]`. A later protocol version may score the mark differently.
 - **Unchanged rows.** For engines without the new keys, the OCR metrics and the public
   aggregates use unchanged code. The earlier rows keep their scores.
+- **Self-reported row.** Kurrent Transcriber 1B is in its own section, outside the
+  rank order, because the maintainer of this benchmark built it (§10, 2026-11-25). Its
+  scores did not change.
 - **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).
 - **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus
   service.

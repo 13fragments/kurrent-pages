@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+Leaderboard and protocol change; the benchmark version stays Kurrent Pages Benchmark v1.0.
+No page, ground truth, prompt, harness code, OCR metric definition, or score changed.
+
+- Leaderboard: list Kurrent Transcriber 1B in a new "Self-reported (benchmark maintainer)"
+  section, outside the rank order, because 13fragments maintains the benchmark and built the
+  model. The main table has 16 ranked rows. `leaderboard.json` adds `self_reported_note` and
+  `self_reported_rows`.
+- `scripts/build_leaderboard.py`: rows with `section: self_reported` go to the new section.
+- Protocol: §10 entry for this rule.
+
 ## v1.0.6
 
 Leaderboard and protocol release; the benchmark version stays Kurrent Pages Benchmark v1.0.
