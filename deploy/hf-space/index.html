@@ -119,9 +119,11 @@ footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line);
 <body>
 <main>
   <h1>Kurrent Pages Leaderboard</h1>
+  <p>The benchmark website is <a href="https://kurrentpages.org/">kurrentpages.org</a>. It has the full results, the metric definitions, and the citation.</p>
   <p>Results of the Kurrent Pages Benchmark v1.0. The benchmark has 53 held-out pages of German handwriting and print from 1565 to 1948. Each engine reads the page image and returns the page text. We score that text against a private ground truth.</p>
   <p>The ground truth is not published, so no model can have it in its training data. The pages come from 20 volumes in 10 strata. With about 1,700 lines, the set is as large as the READ 2016 test set, which publishes its transcriptions and comes from one series of minutes.</p>
   <ul class="links">
+    <li><a href="https://kurrentpages.org/">Website</a></li>
     <li><a href="https://github.com/13fragments/kurrent-pages">GitHub</a></li>
     <li><a href="https://github.com/13fragments/kurrent-pages/blob/main/SUBMITTING.md">How to submit</a></li>
     <li><a href="https://huggingface.co/datasets/13fragments/kurrent-pages-v1">Page images</a></li>
@@ -142,6 +144,14 @@ footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line);
     <div class="frame"><table id="frontier"></table></div>
     <p class="note" style="margin-top:12px">Median CER for each stratum.</p>
     <div class="frame"><table id="frontier-strata"></table></div>
+  </section>
+
+  <section id="self-reported-section" hidden>
+    <h2>Self-reported (benchmark maintainer)</h2>
+    <p class="note" id="self-reported-note"></p>
+    <div class="frame"><table id="self-reported"></table></div>
+    <p class="note" style="margin-top:12px">Median CER for each stratum.</p>
+    <div class="frame"><table id="self-reported-strata"></table></div>
   </section>
 
   <h2>Metrics</h2>
@@ -194,7 +204,7 @@ function bestOf(rows, get, dir) {
   return dir === "min" ? Math.min(...values) : Math.max(...values);
 }
 
-function renderOverall(rows, id = "overall", highlight = true) {
+function renderOverall(rows, id = "overall", highlight = true, ranked = true) {
   const cols = [
     ["CER median", (r) => r.overall.cer_norm_median, fix3, "min"],
     ["CER mean", (r) => r.overall.cer_norm_mean, fix3, "min"],
@@ -205,10 +215,10 @@ function renderOverall(rows, id = "overall", highlight = true) {
     ["Fabrication flags", (r) => r.fabrication_proxy_unadjudicated?.["pages_above_0.10"], String, null],
   ];
   const best = cols.map(([, get, , dir]) => (highlight ? bestOf(rows, get, dir) : undefined));
-  const head = el("tr", {}, el("th", { class: "l" }, "#"), el("th", { class: "l" }, "Engine"),
+  const head = el("tr", {}, ...(ranked ? [el("th", { class: "l" }, "#")] : []), el("th", { class: "l" }, "Engine"),
     ...cols.map(([label]) => el("th", {}, label)));
   const body = rows.map((row, i) => el("tr", {},
-    el("td", { class: "l rank" }, String(i + 1)),
+    ...(ranked ? [el("td", { class: "l rank" }, String(i + 1))] : []),
     el("td", { class: "l engine" }, row.engine, el("span", { class: "category" },
       el("span", { class: "chip " + (ACCESS_HUE[row.access] ?? "") }, row.access), row.category)),
     ...cols.map(([, get, fmt], c) => {
@@ -251,6 +261,13 @@ async function main() {
       renderOverall(frontier, "frontier", false);
       renderStrata(frontier, "frontier-strata", false);
       document.getElementById("frontier-section").hidden = false;
+    }
+    const selfReported = [...(data.self_reported_rows ?? [])].sort((a, b) => a.overall.cer_norm_median - b.overall.cer_norm_median);
+    if (selfReported.length) {
+      document.getElementById("self-reported-note").textContent = data.self_reported_note ?? "";
+      renderOverall(selfReported, "self-reported", false, false);
+      renderStrata(selfReported, "self-reported-strata", false);
+      document.getElementById("self-reported-section").hidden = false;
     }
   } catch (error) {
     const msg = el("td", { class: "status" }, `The results did not load (${error.message}). `,
