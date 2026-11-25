@@ -33,4 +33,14 @@ curl -sI https://kurrentpages.com/leaderboard/ | grep -i '^location'
 
 Rollback: `npx wrangler rollback --config site/wrangler.toml`.
 
+## Link preview image
+
+`public/og-image.png` is the 1200x630 image for social link previews. Its
+source is `social/og-image.html`. After you change the source, render the
+image again from the repository root:
+
+```sh
+scripts/render_social_card.sh
+```
+
 Font: STIX Two Text, SIL Open Font License (`public/assets/fonts/OFL.txt`).
