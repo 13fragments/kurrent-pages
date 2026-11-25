@@ -18,13 +18,24 @@ python3 -m http.server --directory site/public 8080
 
 ## Deploy
 
-Run from the repository root, on `main`, after the leaderboard data changes:
+The GitHub workflow `.github/workflows/deploy-site.yml` deploys on every push
+to `main` that changes `leaderboard/leaderboard.json`, `site/`, or the deploy
+script. It then checks that the live `/leaderboard.json` has the same number of
+ranked rows. To deploy by hand, run the workflow from the Actions tab, or run
+this from the repository root on `main`:
 
 ```sh
 scripts/deploy_site.sh
 ```
 
-Then check:
+The workflow needs two repository secrets:
+
+- `CLOUDFLARE_API_TOKEN`: a token from the "Edit Cloudflare Workers" template,
+  limited to this account and the `kurrentpages.org` and `kurrentpages.com`
+  zones.
+- `CLOUDFLARE_ACCOUNT_ID`: the account that owns the `kurrentpages` Worker.
+
+Check after a deploy:
 
 ```sh
 curl -sI https://kurrentpages.org/ | head -1

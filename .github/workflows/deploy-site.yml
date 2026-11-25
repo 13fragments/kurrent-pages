@@ -1,0 +1,48 @@
+name: Deploy site
+
+# Deploys kurrentpages.org when the site or the leaderboard data changes on main.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "leaderboard/leaderboard.json"
+      - "site/**"
+      - "scripts/deploy_site.sh"
+      - ".github/workflows/deploy-site.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: kurrentpages.org
+      url: https://kurrentpages.org/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER: npx --yes wrangler@4
+        run: scripts/deploy_site.sh
+      - name: Check the live data
+        run: |
+          expected=$(python3 -c "import json; print(len(json.load(open('leaderboard/leaderboard.json'))['rows']))")
+          for attempt in 1 2 3 4 5 6; do
+            live=$(curl -fsS "https://kurrentpages.org/leaderboard.json?run=${GITHUB_RUN_ID}" | python3 -c "import json,sys; print(len(json.load(sys.stdin)['rows']))") || live=""
+            if [ "$live" = "$expected" ]; then echo "Live site has $live ranked rows."; exit 0; fi
+            sleep 10
+          done
+          echo "Live site has '$live' ranked rows; expected $expected." >&2
+          exit 1
