@@ -3,14 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kurrent Pages: a held-out benchmark for German historical pages</title>
-<meta name="description" content="Kurrent Pages is a held-out benchmark for end-to-end transcription of German historical pages from 1565 to 1948: Kurrent, Sütterlin, degraded Fraktur, registers, and marginalia. The ground truth is sealed.">
+<title>Kurrent Pages: a held-out HTR benchmark for German historical pages</title>
+<meta name="description" content="Kurrent Pages is a held-out benchmark for handwritten text recognition (HTR) and OCR on German historical pages from 1565 to 1948: Kurrent, Sütterlin, degraded Fraktur, registers, and marginalia. The ground truth is sealed.">
 <link rel="canonical" href="https://kurrentpages.org/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Kurrent Pages">
 <meta property="og:url" content="https://kurrentpages.org/">
 <meta property="og:title" content="Kurrent Pages">
 <meta property="og:description" content="A held-out benchmark for transcribing German historical pages, 1565 to 1948. The ground truth is sealed.">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://kurrentpages.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kurrent Pages: a held-out benchmark for transcribing German historical pages. 53 scored pages, 1565 to 1948, sealed ground truth.">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/assets/fonts/stix-two-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
@@ -27,6 +32,8 @@
   "datePublished": "2026-11-06",
   "inLanguage": ["de", "la"],
   "temporalCoverage": "1565/1948",
+  "keywords": ["handwritten text recognition", "HTR", "OCR", "Kurrent", "Sütterlin", "Fraktur", "German historical documents", "benchmark"],
+  "measurementTechnique": "Normalized character error rate (CER) against a private, double-keyed transcription",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "isAccessibleForFree": true,
   "creator": { "@type": "Organization", "name": "13fragments", "url": "https://13fragments.com/" },
