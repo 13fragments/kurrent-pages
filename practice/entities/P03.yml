@@ -1,0 +1,9 @@
+entities:
+  - {type: person, surface: "Carl von Hummelauer", normalized: "Hummelauer"}
+  - {type: person, surface: "Karajan", normalized: "Karajan"}
+  - {type: person, surface: "Diemer", normalized: "Diemer"}
+  - {type: person, surface: "Charrière", normalized: "Charrière", variants: ["Charriere"]}
+  - {type: person, surface: "Hammer-Purgstall", normalized: "Hammer-Purgstall"}
+  - {type: person, surface: "Pipitz", normalized: "Pipitz"}
+  - {type: person, surface: "Pfizmaier", normalized: "Pfizmaier"}
+  - {type: person, surface: "Tschudi", normalized: "Tschudi"}

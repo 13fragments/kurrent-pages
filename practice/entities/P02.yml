@@ -1,0 +1,6 @@
+entities:
+  - {type: place, surface: "Aarau", normalized: "Aarau"}
+  - {type: date, surface: "6 Merz 1864", normalized: "6. März 1864"}
+  - {type: person, surface: "Dr. Schmidlin", normalized: "Schmidlin"}
+  - {type: person, surface: "H. Fiertz", normalized: "Fiertz"}
+  - {type: place, surface: "Turin", normalized: "Turin"}

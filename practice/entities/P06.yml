@@ -1,0 +1,10 @@
+entities:
+  - {type: person, surface: "L. v. Buch", normalized: "Buch"}
+  - {type: place, surface: "Monte Nuovo", normalized: "Monte Nuovo"}
+  - {type: place, surface: "Bajae", normalized: "Bajae"}
+  - {type: place, surface: "Vesuv", normalized: "Vesuv"}
+  - {type: place, surface: "Monti Rossi", normalized: "Monti Rossi"}
+  - {type: place, surface: "Ätna", normalized: "Ätna"}
+  - {type: place, surface: "Quito", normalized: "Quito"}
+  - {type: place, surface: "Cotopaxi", normalized: "Cotopaxi"}
+  - {type: place, surface: "Pichincha", normalized: "Pichincha"}

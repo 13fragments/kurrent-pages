@@ -1,0 +1,10 @@
+# Kurrent Pages practice set: page list in the harness selection format.
+# Practice pages only. These are not benchmark pages and their scores are not benchmark results.
+selection:
+  - {id: P01, file: "letter / MA Depos. 3,5 (Mappe 2), fol. 18r", primary: ugly_kurrent, strata: [ugly_kurrent, nineteenth_c_civilian], hand: "Fanny Hensel (née Mendelssohn)", period: "1829", license: "image Public Domain Mark 1.0; text CC BY 4.0"}
+  - {id: P02, file: "letter / ICDAR2017 HTR Train-A, page 000050", primary: tidy_kurrent, strata: [tidy_kurrent, nineteenth_c_civilian], hand: "letter to Alfred Escher, Aarau", period: "1864-03-06", license: "image CC BY 4.0; text CC BY 4.0"}
+  - {id: P03, file: "minutes / Akademieprotokolle, phil.-hist. Classe, Sitzung C 87, page 2", primary: marginalia, strata: [marginalia, tidy_kurrent], hand: "secretary, philosophisch-historische Classe", period: "1850-11-27", license: "image CC BY 4.0; text CC BY 4.0"}
+  - {id: P04, file: "minutes / Konzilsprotokolle 1794–95, image 00000050", primary: tidy_kurrent, strata: [tidy_kurrent], hand: "secretary of the Concilium", period: "1794/95", license: "image CC BY 4.0; text CC BY 4.0"}
+  - {id: P05, file: "lecture notes / Ms. germ. qu. 2345, p. 259", primary: tidy_kurrent, strata: [tidy_kurrent], hand: "anonymous student, notes of Alexander von Humboldt's lectures", period: "1827/28", license: "image Public Domain Mark 1.0; text CC BY 4.0"}
+  - {id: P06, file: "lecture notes / Ms. germ. qu. 1711, fol. 193v", primary: latin_cursive, strata: [latin_cursive], hand: "Gustav Parthey, notes of Alexander von Humboldt's lectures", period: "1828", license: "image Public Domain Mark 1.0; text CC BY 4.0"}
+  - {id: P07, file: "printed notice (newspaper) / Deutscher Reichsanzeiger 1893, issue 2, page image 1893_2_0023, notice [58706]", primary: clean_fraktur, strata: [clean_fraktur], hand: "print", period: "1893 (notice dated 1892-12-15)", license: "image Public Domain Mark 1.0; text CC0 1.0"}

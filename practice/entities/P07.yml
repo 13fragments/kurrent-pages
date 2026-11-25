@@ -1,0 +1,14 @@
+entities:
+  - {type: person, surface: "Valentin Gierok", normalized: "Valentin Gierok"}
+  - {type: person, surface: "Joſeph Gaida", normalized: "Joseph Gaida"}
+  - {type: person, surface: "Anton Dubiel", normalized: "Anton Dubiel"}
+  - {type: person, surface: "Paul Joſeph Scholz", normalized: "Paul Joseph Scholz"}
+  - {type: place, surface: "Niewodnik", normalized: "Niewodnik"}
+  - {type: place, surface: "Norok", normalized: "Norok"}
+  - {type: place, surface: "Rauske", normalized: "Rauske"}
+  - {type: place, surface: "Brieg", normalized: "Brieg"}
+  - {type: date, surface: "14. Februar 1869", normalized: "14. Februar 1869"}
+  - {type: date, surface: "11. November 1869", normalized: "11. November 1869"}
+  - {type: date, surface: "8. Juni 1869", normalized: "8. Juni 1869"}
+  - {type: date, surface: "25. Januar 1869", normalized: "25. Januar 1869"}
+  - {type: date, surface: "15. Dezember 1892", normalized: "15. Dezember 1892"}

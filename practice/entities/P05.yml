@@ -1,0 +1,6 @@
+entities:
+  - {type: place, surface: "Columbia", normalized: "Columbia"}
+  - {type: place, surface: "Peking", normalized: "Peking"}
+  - {type: place, surface: "Berlin", normalized: "Berlin"}
+  - {type: place, surface: "New York", normalized: "New York"}
+  - {type: person, surface: "Strabo", normalized: "Strabo"}

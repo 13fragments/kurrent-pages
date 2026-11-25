@@ -5,6 +5,10 @@ privately. The maintainer scores them offline against the private ground truth
 and publishes aggregates only. Your outputs and per-page scores are never
 published (protocol §7, §11).
 
+Before you submit, test your pipeline on the public practice set in
+[`practice/`](practice/). It runs on your own computer and gives a score in a
+few minutes. A practice score is not a benchmark result.
+
 ## Rules
 
 - **One scored submission per engine per 30 days.** An engine is one model

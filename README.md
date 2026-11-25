@@ -35,6 +35,7 @@ keys; for engines without them, the OCR metrics and the public aggregates use un
 | [`leaderboard/LEADERBOARD.md`](leaderboard/LEADERBOARD.md) | per-engine and per-stratum aggregates |
 | [Leaderboard on Hugging Face](https://huggingface.co/spaces/13fragments/kurrent-pages-leaderboard) | the same aggregates as a web page |
 | [`SUBMITTING.md`](SUBMITTING.md) | how to get the page images and submit outputs |
+| [`practice/`](practice/) | seven public practice pages with transcriptions: test your pipeline and the submission format on your own computer |
 | [`BENCHMARK_PROTOCOL.md`](BENCHMARK_PROTOCOL.md) | the frozen protocol and its dated amendment log (§10) |
 | [`docs/release/RELEASE_NOTES_v1.0.md`](docs/release/RELEASE_NOTES_v1.0.md) | ground-truth provenance, harness tag, known limits |
 | [`CHANGELOG.md`](CHANGELOG.md) | harness changes |
@@ -91,6 +92,7 @@ Copyright 2026 the Kurrent Pages Benchmark authors.
 |---|---|
 | `harness/`, `scripts/`, `tests/`, `configs/`, `deploy/`, `pyproject.toml`, `uv.lock` | Apache License 2.0 ([`LICENSE`](LICENSE)) |
 | `BENCHMARK_PROTOCOL.md`, `VISION.md`, `README.md`, `CHANGELOG.md`, `SUBMITTING.md`, `docs/`, `gold/` (page manifest, source links, hashes), `leaderboard/` | Creative Commons Attribution 4.0 International ([`LICENSE-docs`](LICENSE-docs)) |
+| `practice/` | Images and transcriptions keep the licences of their sources (CC0, Public Domain Mark, or CC BY 4.0; see `practice/metadata.csv`). The page list, metadata, entity lists, and our changes: CC BY 4.0 |
 
 The benchmark page images are not in this repository. Each image keeps the
 licence of its source record (CC0, Public Domain Mark, or CC BY 4.0), which

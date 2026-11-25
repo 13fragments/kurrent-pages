@@ -1,0 +1,3 @@
+entities:
+  - {type: person, surface: "Aeminga", normalized: "Aeminga"}
+  - {type: person, surface: "Heyn", normalized: "Heyn"}
