@@ -31,6 +31,7 @@ The page loads `leaderboard/leaderboard.json` from
 <https://github.com/13fragments/kurrent-pages> at view time. To change the rows,
 change that file. This Space needs no rebuild.
 
+- Benchmark website: <https://kurrentpages.org/>
 - Benchmark, protocol, and harness: <https://github.com/13fragments/kurrent-pages>
 - Page images (gated, evaluation only): <https://huggingface.co/datasets/13fragments/kurrent-pages-v1>
 - Citation: <https://doi.org/10.5281/zenodo.24015417>
