@@ -4,170 +4,6 @@
   "metric_note": "cer_norm: normalized character error rate (protocol §4, §5); lower is better.",
   "rows": [
     {
-      "engine": "Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1)",
-      "category": "open VLM, fine-tuned on Kurrent; published by the benchmark maintainer",
-      "access": "open weights",
-      "run_id": "20261117-114437_merge_gold_sealed",
-      "harness_commit": "822aa0a08e1dabc0173b47a712e01c268ce5af0c",
-      "overall": {
-        "n": 53,
-        "cer_norm_median": 0.07128169979437972,
-        "cer_norm_mean": 0.11271805321460285,
-        "cer_dipl_median": 0.07618393960192175,
-        "wer_norm_median": 0.21333333333333335,
-        "nls_norm_median": 0.9287183002056203,
-        "ro_cost_median": 0.0,
-        "entity_recall_median": 0.8333333333333334,
-        "entity_pages": 53,
-        "seg_fail_rate": 0.0
-      },
-      "hard_strata": {
-        "n": 33,
-        "cer_norm_median": 0.09063745019920319,
-        "cer_norm_mean": 0.11540032817526942,
-        "cer_dipl_median": 0.09063745019920319,
-        "wer_norm_median": 0.2828282828282828,
-        "nls_norm_median": 0.9096325719960278,
-        "ro_cost_median": 0.0,
-        "entity_recall_median": 0.775,
-        "entity_pages": 33,
-        "seg_fail_rate": 0.0
-      },
-      "per_stratum": {
-        "degraded_fraktur": {
-          "n": 5,
-          "cer_norm_median": 0.006271379703534778,
-          "cer_norm_mean": 0.02717955676342073,
-          "cer_dipl_median": 0.04205607476635514,
-          "wer_norm_median": 0.04003813155386082,
-          "nls_norm_median": 0.9937286202964652,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 1.0,
-          "entity_pages": 5,
-          "seg_fail_rate": 0.0
-        },
-        "latin_cursive_1940s": {
-          "n": 2,
-          "cer_norm_median": 0.06397675922228002,
-          "cer_norm_mean": 0.06397675922228002,
-          "cer_dipl_median": 0.06445891757532715,
-          "wer_norm_median": 0.22926829268292684,
-          "nls_norm_median": 0.93602324077772,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 0.7222222222222222,
-          "entity_pages": 2,
-          "seg_fail_rate": 0.0
-        },
-        "marginalia": {
-          "n": 2,
-          "cer_norm_median": 0.1853331527627302,
-          "cer_norm_mean": 0.1853331527627302,
-          "cer_dipl_median": 0.18614987928084198,
-          "wer_norm_median": 0.624855332047396,
-          "nls_norm_median": 0.8158147045702482,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 0.42857142857142855,
-          "entity_pages": 2,
-          "seg_fail_rate": 0.0
-        },
-        "mixed_print_handwriting": {
-          "n": 3,
-          "cer_norm_median": 0.20967741935483872,
-          "cer_norm_mean": 0.1728553245600486,
-          "cer_dipl_median": 0.20967741935483872,
-          "wer_norm_median": 0.48717948717948717,
-          "nls_norm_median": 0.7903225806451613,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 0.5714285714285714,
-          "entity_pages": 3,
-          "seg_fail_rate": 0.0
-        },
-        "nineteenth_c_civilian": {
-          "n": 5,
-          "cer_norm_median": 0.0709812108559499,
-          "cer_norm_mean": 0.14946340842656652,
-          "cer_dipl_median": 0.07618393960192175,
-          "wer_norm_median": 0.21333333333333335,
-          "nls_norm_median": 0.9290187891440501,
-          "ro_cost_median": 0.009955896264081832,
-          "entity_recall_median": 0.8,
-          "entity_pages": 5,
-          "seg_fail_rate": 0.0
-        },
-        "suetterlin": {
-          "n": 13,
-          "cer_norm_median": 0.02710843373493976,
-          "cer_norm_mean": 0.06001923455636207,
-          "cer_dipl_median": 0.028245192307692308,
-          "wer_norm_median": 0.1267605633802817,
-          "nls_norm_median": 0.9728915662650602,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 1.0,
-          "entity_pages": 13,
-          "seg_fail_rate": 0.0
-        },
-        "table_registry": {
-          "n": 3,
-          "cer_norm_median": 0.12832550860719874,
-          "cer_norm_mean": 0.15435793949877089,
-          "cer_dipl_median": 0.12636505460218408,
-          "wer_norm_median": 0.2828282828282828,
-          "nls_norm_median": 0.8716744913928013,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 0.8571428571428571,
-          "entity_pages": 3,
-          "seg_fail_rate": 0.0
-        },
-        "tidy_kurrent": {
-          "n": 2,
-          "cer_norm_median": 0.07066565843207323,
-          "cer_norm_mean": 0.07066565843207323,
-          "cer_dipl_median": 0.0731176121455964,
-          "wer_norm_median": 0.12801791277258567,
-          "nls_norm_median": 0.9293343415679267,
-          "ro_cost_median": 0.03545894609724397,
-          "entity_recall_median": 1.0,
-          "entity_pages": 2,
-          "seg_fail_rate": 0.0
-        },
-        "twentieth_century_kurrent": {
-          "n": 6,
-          "cer_norm_median": 0.17137743306734282,
-          "cer_norm_mean": 0.1688910548885695,
-          "cer_dipl_median": 0.17278882301232534,
-          "wer_norm_median": 0.2813897168405365,
-          "nls_norm_median": 0.8286225669326572,
-          "ro_cost_median": 0.0001693958215697386,
-          "entity_recall_median": 0.75,
-          "entity_pages": 6,
-          "seg_fail_rate": 0.0
-        },
-        "ugly_kurrent": {
-          "n": 12,
-          "cer_norm_median": 0.16751174108472616,
-          "cer_norm_mean": 0.13963789023743875,
-          "cer_dipl_median": 0.16771960477993747,
-          "wer_norm_median": 0.492948472877108,
-          "nls_norm_median": 0.8324882589152738,
-          "ro_cost_median": 0.0,
-          "entity_recall_median": 0.3333333333333333,
-          "entity_pages": 12,
-          "seg_fail_rate": 0.0
-        }
-      },
-      "fabrication_proxy_unadjudicated": {
-        "metric": "long_ins_rate_v01",
-        "median": 0.0,
-        "mean": 0.010008604325484517,
-        "micro": 0.010278284554307886,
-        "pages_above_0.10": 2
-      },
-      "t3_status": "unresolved",
-      "failed_pages": 0,
-      "loop_guard_pages": 0,
-      "loop_policy_pages": 0
-    },
-    {
       "engine": "LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), with the image step of Kurrent Transcriber 1B",
       "category": "open VLM, fine-tuned on Kurrent; run by the maintainer at the author's request",
       "access": "open weights",
@@ -3103,6 +2939,173 @@
       "t3_status": "unresolved",
       "failed_pages": 0,
       "loop_guard_pages": 0
+    }
+  ],
+  "self_reported_note": "13fragments maintains this benchmark and also built the models in this section. 13fragments scored them with the same scorer and protocol as every other row. Because of this conflict of interest, these rows are self-reported and are not ranked with the main table.",
+  "self_reported_rows": [
+    {
+      "engine": "Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1)",
+      "category": "open VLM, fine-tuned on Kurrent; published by the benchmark maintainer",
+      "access": "open weights",
+      "run_id": "20261117-114437_merge_gold_sealed",
+      "harness_commit": "822aa0a08e1dabc0173b47a712e01c268ce5af0c",
+      "overall": {
+        "n": 53,
+        "cer_norm_median": 0.07128169979437972,
+        "cer_norm_mean": 0.11271805321460285,
+        "cer_dipl_median": 0.07618393960192175,
+        "wer_norm_median": 0.21333333333333335,
+        "nls_norm_median": 0.9287183002056203,
+        "ro_cost_median": 0.0,
+        "entity_recall_median": 0.8333333333333334,
+        "entity_pages": 53,
+        "seg_fail_rate": 0.0
+      },
+      "hard_strata": {
+        "n": 33,
+        "cer_norm_median": 0.09063745019920319,
+        "cer_norm_mean": 0.11540032817526942,
+        "cer_dipl_median": 0.09063745019920319,
+        "wer_norm_median": 0.2828282828282828,
+        "nls_norm_median": 0.9096325719960278,
+        "ro_cost_median": 0.0,
+        "entity_recall_median": 0.775,
+        "entity_pages": 33,
+        "seg_fail_rate": 0.0
+      },
+      "per_stratum": {
+        "degraded_fraktur": {
+          "n": 5,
+          "cer_norm_median": 0.006271379703534778,
+          "cer_norm_mean": 0.02717955676342073,
+          "cer_dipl_median": 0.04205607476635514,
+          "wer_norm_median": 0.04003813155386082,
+          "nls_norm_median": 0.9937286202964652,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 1.0,
+          "entity_pages": 5,
+          "seg_fail_rate": 0.0
+        },
+        "latin_cursive_1940s": {
+          "n": 2,
+          "cer_norm_median": 0.06397675922228002,
+          "cer_norm_mean": 0.06397675922228002,
+          "cer_dipl_median": 0.06445891757532715,
+          "wer_norm_median": 0.22926829268292684,
+          "nls_norm_median": 0.93602324077772,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.7222222222222222,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "marginalia": {
+          "n": 2,
+          "cer_norm_median": 0.1853331527627302,
+          "cer_norm_mean": 0.1853331527627302,
+          "cer_dipl_median": 0.18614987928084198,
+          "wer_norm_median": 0.624855332047396,
+          "nls_norm_median": 0.8158147045702482,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.42857142857142855,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "mixed_print_handwriting": {
+          "n": 3,
+          "cer_norm_median": 0.20967741935483872,
+          "cer_norm_mean": 0.1728553245600486,
+          "cer_dipl_median": 0.20967741935483872,
+          "wer_norm_median": 0.48717948717948717,
+          "nls_norm_median": 0.7903225806451613,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.5714285714285714,
+          "entity_pages": 3,
+          "seg_fail_rate": 0.0
+        },
+        "nineteenth_c_civilian": {
+          "n": 5,
+          "cer_norm_median": 0.0709812108559499,
+          "cer_norm_mean": 0.14946340842656652,
+          "cer_dipl_median": 0.07618393960192175,
+          "wer_norm_median": 0.21333333333333335,
+          "nls_norm_median": 0.9290187891440501,
+          "ro_cost_median": 0.009955896264081832,
+          "entity_recall_median": 0.8,
+          "entity_pages": 5,
+          "seg_fail_rate": 0.0
+        },
+        "suetterlin": {
+          "n": 13,
+          "cer_norm_median": 0.02710843373493976,
+          "cer_norm_mean": 0.06001923455636207,
+          "cer_dipl_median": 0.028245192307692308,
+          "wer_norm_median": 0.1267605633802817,
+          "nls_norm_median": 0.9728915662650602,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 1.0,
+          "entity_pages": 13,
+          "seg_fail_rate": 0.0
+        },
+        "table_registry": {
+          "n": 3,
+          "cer_norm_median": 0.12832550860719874,
+          "cer_norm_mean": 0.15435793949877089,
+          "cer_dipl_median": 0.12636505460218408,
+          "wer_norm_median": 0.2828282828282828,
+          "nls_norm_median": 0.8716744913928013,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.8571428571428571,
+          "entity_pages": 3,
+          "seg_fail_rate": 0.0
+        },
+        "tidy_kurrent": {
+          "n": 2,
+          "cer_norm_median": 0.07066565843207323,
+          "cer_norm_mean": 0.07066565843207323,
+          "cer_dipl_median": 0.0731176121455964,
+          "wer_norm_median": 0.12801791277258567,
+          "nls_norm_median": 0.9293343415679267,
+          "ro_cost_median": 0.03545894609724397,
+          "entity_recall_median": 1.0,
+          "entity_pages": 2,
+          "seg_fail_rate": 0.0
+        },
+        "twentieth_century_kurrent": {
+          "n": 6,
+          "cer_norm_median": 0.17137743306734282,
+          "cer_norm_mean": 0.1688910548885695,
+          "cer_dipl_median": 0.17278882301232534,
+          "wer_norm_median": 0.2813897168405365,
+          "nls_norm_median": 0.8286225669326572,
+          "ro_cost_median": 0.0001693958215697386,
+          "entity_recall_median": 0.75,
+          "entity_pages": 6,
+          "seg_fail_rate": 0.0
+        },
+        "ugly_kurrent": {
+          "n": 12,
+          "cer_norm_median": 0.16751174108472616,
+          "cer_norm_mean": 0.13963789023743875,
+          "cer_dipl_median": 0.16771960477993747,
+          "wer_norm_median": 0.492948472877108,
+          "nls_norm_median": 0.8324882589152738,
+          "ro_cost_median": 0.0,
+          "entity_recall_median": 0.3333333333333333,
+          "entity_pages": 12,
+          "seg_fail_rate": 0.0
+        }
+      },
+      "fabrication_proxy_unadjudicated": {
+        "metric": "long_ins_rate_v01",
+        "median": 0.0,
+        "mean": 0.010008604325484517,
+        "micro": 0.010278284554307886,
+        "pages_above_0.10": 2
+      },
+      "t3_status": "unresolved",
+      "failed_pages": 0,
+      "loop_guard_pages": 0,
+      "loop_policy_pages": 0
     }
   ]
 }

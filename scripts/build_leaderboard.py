@@ -4,7 +4,9 @@
   uv run python scripts/build_leaderboard.py --aggregates <dir of <run>__<engine>/aggregates.json>
 
 Rows come from leaderboard/rows.yml. Rows with `section: frontier` go to `frontier_rows`
-and a separate "Frontier reference" section; they are not ranked with `rows`. The inputs are the aggregates-only reports
+and a separate "Frontier reference" section. Rows with `section: self_reported` go to
+`self_reported_rows` and a separate "Self-reported (benchmark maintainer)" section. Neither
+section is ranked with `rows`. The inputs are the aggregates-only reports
 (`harness report --aggregates-only`), so the outputs hold no page ID, page
 score, or page text. The script checks that again before it writes.
 """
@@ -45,17 +47,25 @@ FRONTIER_NOTE = (
     "images were sent; model training on the data was off in both accounts. Vendor models change, so "
     "these rows are snapshots. They are not ranked with the main table."
 )
+SELF_REPORTED_NOTE = (
+    "13fragments maintains this benchmark and also built the models in this section. 13fragments "
+    "scored them with the same scorer and protocol as every other row. Because of this conflict of "
+    "interest, these rows are self-reported and are not ranked with the main table."
+)
 
 
 def build(aggregates_dir: Path, spec: dict) -> dict:
-    rows, frontier = [], []
+    rows, frontier, self_reported = [], [], []
+    groups = {None: rows, "frontier": frontier, "self_reported": self_reported}
     for row in spec["rows"]:
+        if row.get("section") not in groups:
+            raise SystemExit(f"{row['aggregates']}: unknown section {row['section']!r}")
         public = json.loads((aggregates_dir / row["aggregates"] / "aggregates.json").read_text())
         engine_key = row["aggregates"].split("__", 1)[1]
         engine = public["engines"][engine_key]
         if any(engine["gaps"][key] for key in ("missing_pages", "skipped_no_gt", "unbound_image_pages")):
             raise SystemExit(f"{row['aggregates']}: incomplete run; not a leaderboard row")
-        (frontier if row.get("section") == "frontier" else rows).append(
+        groups[row.get("section")].append(
             {
                 "engine": row["engine"],
                 "category": row["category"],
@@ -72,7 +82,7 @@ def build(aggregates_dir: Path, spec: dict) -> dict:
                 **({"loop_policy_pages": engine["loop_policy_pages"]} if "loop_policy_pages" in engine else {}),
             }
         )
-    for group in (rows, frontier):
+    for group in groups.values():
         group.sort(key=lambda r: r["overall"]["cer_norm_median"])
     return {
         "benchmark": spec["version"],
@@ -81,6 +91,8 @@ def build(aggregates_dir: Path, spec: dict) -> dict:
         "rows": rows,
         "frontier_note": FRONTIER_NOTE,
         "frontier_rows": frontier,
+        "self_reported_note": SELF_REPORTED_NOTE,
+        "self_reported_rows": self_reported,
     }
 
 
@@ -111,6 +123,7 @@ def stratum_table(rows: list[dict], key: str, header: str) -> list[str]:
 
 def render(board: dict) -> str:
     rows, frontier = board["rows"], board["frontier_rows"]
+    self_reported = board.get("self_reported_rows", [])
     strata_n = {s: rows[0]["per_stratum"][s]["n"] for s in STRATA}
     header = " | ".join(
         f"{s} ({strata_n[s]}{', indicative' if strata_n[s] < INDICATIVE_BELOW else ''})"
@@ -138,6 +151,10 @@ def render(board: dict) -> str:
     if frontier:
         lines += ["", "## Frontier reference", "", board["frontier_note"], "", *overall_table(frontier),
                   "", "`cer_norm` median per stratum:", "", *stratum_table(frontier, "cer_norm_median", header)]
+    if self_reported:
+        lines += ["", "## Self-reported (benchmark maintainer)", "", board["self_reported_note"], "",
+                  *overall_table(self_reported), "", "`cer_norm` median per stratum:", "",
+                  *stratum_table(self_reported, "cer_norm_median", header)]
     lines += [
         "",
         "## Notes",
@@ -202,6 +219,9 @@ def render(board: dict) -> str:
         "  `[unleserlich]`. A later protocol version may score the mark differently.",
         "- **Unchanged rows.** For engines without the new keys, the OCR metrics and the public",
         "  aggregates use unchanged code. The earlier rows keep their scores.",
+        "- **Self-reported row.** Kurrent Transcriber 1B is in its own section, outside the",
+        "  rank order, because the maintainer of this benchmark built it (§10, 2026-11-25). Its",
+        "  scores did not change.",
         "- **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).",
         "- **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus",
         "  service.",
@@ -232,7 +252,10 @@ def main() -> int:
             raise SystemExit(f"page ID {page.id} would be published; nothing written")
     (OUT / "leaderboard.json").write_text(payload, encoding="utf-8")
     (OUT / "LEADERBOARD.md").write_text(markdown, encoding="utf-8")
-    print(f"leaderboard: {len(board['rows'])} rows, {len(board['frontier_rows'])} frontier rows; page-ID check clean")
+    print(
+        f"leaderboard: {len(board['rows'])} rows, {len(board['frontier_rows'])} frontier rows, "
+        f"{len(board['self_reported_rows'])} self-reported rows; page-ID check clean"
+    )
     return 0
 
 

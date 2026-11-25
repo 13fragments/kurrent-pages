@@ -2,6 +2,7 @@
 # (`harness report --aggregates-only`, release harness) by <run id>__<engine>.
 # scripts/build_leaderboard.py writes leaderboard.json and LEADERBOARD.md from these rows.
 # `section: frontier` puts a row in the frontier reference section (`frontier_rows`).
+# `section: self_reported` puts a row in the self-reported section (`self_reported_rows`).
 version: "Kurrent Pages Benchmark v1.0"
 harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5)"
 rows:
@@ -50,10 +51,6 @@ rows:
     category: open CRNN pipeline
     access: open source
   # Added in v1.0.4: one sealed gold run, 2026-11-17 (§10), scored with harness v1.0.4.
-  - aggregates: 20261117-114437_merge_gold_sealed__merge_r2s1702_hgh
-    engine: Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1)
-    category: open VLM, fine-tuned on Kurrent; published by the benchmark maintainer
-    access: open weights
   - aggregates: 20261117-114437_merge_gold_sealed__lighton_hgh
     engine: LightOnOCR-HGH (b-straub/LightOnOCR-3-1B-Historic-German-Handwriting, revision 47931fbe), uncropped scans, maintainer settings
     category: open VLM, fine-tuned on Kurrent
@@ -87,3 +84,10 @@ rows:
     category: frontier VLM reference, run 2026-11-06
     access: commercial service
     section: frontier
+  # Self-reported: models that the benchmark maintainer built. A separate section, not ranked (§10, 2026-11-25).
+  # Added in v1.0.4 from the sealed run of 2026-11-17 (§10), scored with harness v1.0.4.
+  - aggregates: 20261117-114437_merge_gold_sealed__merge_r2s1702_hgh
+    engine: Kurrent Transcriber 1B (13fragments/kurrent-transcriber-1b, v1)
+    category: open VLM, fine-tuned on Kurrent; published by the benchmark maintainer
+    access: open weights
+    section: self_reported

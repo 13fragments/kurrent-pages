@@ -1529,6 +1529,17 @@ lucky subset while most pages collapsed.
   - **Editorial, for the public release.** Two sentences of the registration entry (Engine and 30-day cap
     bullets) were reworded after the run; their meaning did not change.
 
+* **2026-11-25 — Kurrent Transcriber 1B listed as self-reported, outside the rank order (§10).** Owner decision in
+  session, after an adversarial review of the planned paper named the conflict of interest: 13fragments maintains
+  this benchmark and also built Kurrent Transcriber 1B, which had the lowest median `cer_norm` of the ranked rows.
+  - **Rule.** A row for a model that the benchmark maintainer built goes in a separate section, "Self-reported
+    (benchmark maintainer)" (`section: self_reported` in `leaderboard/rows.yml`, `self_reported_rows` in
+    `leaderboard.json`). The section is not ranked with the main table, as the frontier reference section.
+  - **Rows.** Kurrent Transcriber 1B (`merge_r2s1702_hgh`, run `20261117-114437_merge_gold_sealed`) moves to that
+    section. The main table has 16 ranked rows.
+  - **Unchanged.** No page IDs, images, GT, prompts, harness code, metric definitions, or scores changed. The row
+    keeps the same scorer, protocol, and aggregates as every other row.
+
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 
 - **GT stays private — held-out evaluation.** The ground truth is **not published**.
