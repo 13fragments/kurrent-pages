@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leaderboard: Kurrent Pages</title>
+<meta name="description" content="Full results of the Kurrent Pages Benchmark v1.0: overall and per-stratum scores for every engine, with metric definitions.">
+<link rel="canonical" href="https://kurrentpages.org/leaderboard/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kurrentpages.org/leaderboard/">
+<meta property="og:title" content="Kurrent Pages leaderboard">
+<meta property="og:description" content="Overall and per-stratum scores for every engine on the Kurrent Pages Benchmark v1.0.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/assets/fonts/stix-two-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<div class="page wide">
+  <header class="running-head">
+    <a class="home" href="/">Kurrent Pages</a>
+    <nav aria-label="Site">
+      <a href="/">Overview</a>
+      <a href="/leaderboard/" aria-current="page">Leaderboard</a>
+      <a href="/#submit">Submit</a>
+      <a href="/#cite">Cite</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="title-block prose">
+      <h1>Leaderboard</h1>
+      <p class="subtitle"><span data-field="benchmark">Kurrent Pages Benchmark v1.0</span>, <span data-field="ranked">16</span> ranked engines</p>
+    </div>
+
+    <section aria-labelledby="overall">
+      <h2 id="overall"><span class="num">1</span>Overall</h2>
+      <figure>
+        <p class="caption" id="table-1"><b>Table 1.</b>Scores on the 53 scored pages, sorted by median CER. Lower is better, except entity recall. Bold marks the best ranked value in each column.</p>
+        <div class="table-scroll">
+          <table data-results="full" aria-labelledby="table-1">
+            <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
+          </table>
+        </div>
+        <figcaption class="notes">
+          <p><span class="mark flag">†</span> <span data-field="self_note">Not ranked: built by the benchmark maintainer.</span> See the <a href="/#disclosure">disclosure</a>.</p>
+          <p>‡ <span data-field="frontier_note">Not ranked: single dated runs of general-purpose frontier models.</span></p>
+          <p>Harness: <span data-field="harness">v1.0.0</span>.</p>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="strata">
+      <h2 id="strata"><span class="num">2</span>By stratum</h2>
+      <figure>
+        <p class="caption" id="table-2"><b>Table 2.</b>Median CER for each stratum, ranked engines. Gray columns have three pages or fewer; treat them as indicative.</p>
+        <div class="table-scroll">
+          <table data-results="strata" aria-labelledby="table-2">
+            <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
+          </table>
+        </div>
+      </figure>
+      <figure>
+        <p class="caption" id="table-3"><b>Table 3.</b>Median CER for each stratum, engines that are not ranked.</p>
+        <div class="table-scroll">
+          <table data-results="strata-unranked" aria-labelledby="table-3">
+            <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
+          </table>
+        </div>
+      </figure>
+    </section>
+
+    <section class="prose" aria-labelledby="metrics">
+      <h2 id="metrics"><span class="num">3</span>Metrics</h2>
+      <dl class="defs">
+        <dt>CER</dt><dd>Normalized character error rate against the private transcription. Lower is better.</dd>
+        <dt>Hard-strata CER</dt><dd>Median CER on the 33 pages in the hard strata.</dd>
+        <dt>Entity recall</dt><dd>Share of the persons, places, and dates in the transcription that appear in the output.</dd>
+        <dt>Seg-fail</dt><dd>Share of pages with a CER above 0.75 or an empty output.</dd>
+        <dt>Fabrication flags</dt><dd>Pages where long insertions make up more than 10% of the text. A script sets this flag; nobody has reviewed the flagged pages.</dd>
+      </dl>
+      <p class="small muted" style="margin-top:1rem">Only aggregates are published. Page scores, engine outputs, and the transcriptions stay private. The <a href="https://github.com/13fragments/kurrent-pages/blob/main/BENCHMARK_PROTOCOL.md">protocol</a> has the full definitions.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Maintained by <a href="https://13fragments.com/">13fragments</a>. Leaderboard data: CC BY 4.0. <a href="/leaderboard.json">Download the data (JSON)</a> or read <a href="https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md">LEADERBOARD.md</a>.</p>
+  </footer>
+</div>
+<script src="/assets/results.js" defer></script>
+</body>
+</html>

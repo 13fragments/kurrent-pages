@@ -18,3 +18,7 @@ data/benchmark_gold/
 gold/entities/
 docs/outreach/
 
+
+# Website: copied from leaderboard/ at deploy time.
+site/public/leaderboard.json
+.wrangler/

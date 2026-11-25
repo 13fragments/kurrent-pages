@@ -33,6 +33,7 @@ keys; for engines without them, the OCR metrics and the public aggregates use un
 | Document | Contents |
 |---|---|
 | [`leaderboard/LEADERBOARD.md`](leaderboard/LEADERBOARD.md) | per-engine and per-stratum aggregates |
+| [kurrentpages.org](https://kurrentpages.org/) | the benchmark website: overview, [leaderboard](https://kurrentpages.org/leaderboard/), and citation; source in [`site/`](site/) |
 | [Leaderboard on Hugging Face](https://huggingface.co/spaces/13fragments/kurrent-pages-leaderboard) | the same aggregates as a web page |
 | [`SUBMITTING.md`](SUBMITTING.md) | how to get the page images and submit outputs |
 | [`practice/`](practice/) | seven public practice pages with transcriptions: test your pipeline and the submission format on your own computer |
