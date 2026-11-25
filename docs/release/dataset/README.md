@@ -44,6 +44,8 @@ degraded Fraktur, early-modern hands, Latin cursive, registers, marginalia).
 Use them to run an engine end to end, page image in, text out, and submit the
 outputs for scoring.
 
+- Benchmark website, with the leaderboard and citation:
+  [kurrentpages.org](https://kurrentpages.org/)
 - Benchmark repository, protocol, harness, and leaderboard:
   [13fragments/kurrent-pages](https://github.com/13fragments/kurrent-pages)
 - Leaderboard as a web page:
