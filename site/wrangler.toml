@@ -1,0 +1,18 @@
+name = "kurrentpages"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = false
+
+routes = [
+  { pattern = "kurrentpages.org", custom_domain = true },
+  { pattern = "www.kurrentpages.org", custom_domain = true },
+  { pattern = "kurrentpages.com", custom_domain = true },
+  { pattern = "www.kurrentpages.com", custom_domain = true },
+]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
