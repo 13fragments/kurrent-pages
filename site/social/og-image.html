@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <title>Kurrent Pages link preview</title>
-<!-- Source for site/public/og-image.png. Render with scripts/render_social_card.sh. -->
+<!-- Source for site/public/og-image.png. Render with scripts/render_social_card.sh.
+     The page image is practice page P01 (Fanny Hensel to Wilhelm Hensel, 1829;
+     Staatsbibliothek zu Berlin, Public Domain Mark 1.0). The line below it is
+     the first line of practice/gt/P01.txt. -->
 <style>
   @font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 400; src: url("../public/assets/fonts/stix-two-text-latin-400-normal.woff2") format("woff2"); }
   @font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 400; src: url("../public/assets/fonts/stix-two-text-latin-400-italic.woff2") format("woff2"); }
@@ -11,44 +14,43 @@
   :root { --paper: #ffffff; --ink: #1c2128; --muted: #5b6470; --hair: #d5d9de; --link: #1d4f91; }
   * { box-sizing: border-box; margin: 0; }
   html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--paper); }
-  body { color: var(--ink); font-family: "STIX Two Text", serif; font-variant-numeric: lining-nums; padding: 56px 80px 52px; display: flex; flex-direction: column; }
+  body { color: var(--ink); font-family: "STIX Two Text", serif; font-variant-numeric: lining-nums; display: grid; grid-template-columns: 1fr 470px; }
 
-  .running-head { display: flex; justify-content: space-between; font-size: 26px; padding-bottom: 16px; border-bottom: 2px solid var(--hair); }
-  .running-head .home { font-style: italic; }
-  .running-head .doi { color: var(--muted); }
-
-  main { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  h1 { font-size: 112px; line-height: 1; font-weight: 600; letter-spacing: -0.01em; }
-  .subtitle { margin-top: 20px; font-size: 36px; white-space: nowrap; line-height: 1.25; font-style: italic; color: var(--muted); }
-
-  table { margin-top: 44px; border-collapse: collapse; font-size: 26px; }
-  td { padding: 0 48px 0 0; }
-  td.n { font-size: 44px; font-weight: 600; line-height: 1.1; }
-  td.l { color: var(--muted); }
-
-  footer { padding-top: 16px; border-top: 2px solid var(--hair); font-size: 26px; display: flex; justify-content: space-between; }
+  .text { padding: 60px 92px 52px 72px; position: relative; z-index: 0; display: flex; flex-direction: column; }
+  .label { font-size: 24px; color: var(--muted); font-style: italic; }
+  h1 { margin-top: auto; font-size: 88px; white-space: nowrap; line-height: 1; font-weight: 600; letter-spacing: -0.01em; }
+  .subtitle { margin-top: 20px; font-size: 34px; line-height: 1.25; font-style: italic; color: var(--muted); }
+  .facts { margin-top: 36px; display: flex; gap: 44px; font-size: 24px; color: var(--muted); }
+  .facts b { display: block; font-size: 38px; line-height: 1.15; font-weight: 600; color: var(--ink); }
+  footer { margin-top: auto; padding-top: 16px; border-top: 2px solid var(--hair); font-size: 26px; display: flex; justify-content: space-between; }
   footer .url { color: var(--link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
-  footer .by { color: var(--muted); }
+
+  .plate { position: relative; background: #e9e1d0 url("../../practice/images/P01.jpg") no-repeat; background-size: 940px auto; background-position: -40px -28px; }
+  .plate::before { content: ""; position: absolute; inset: 0; box-shadow: inset 12px 0 18px -12px rgba(28, 33, 40, .35); }
+  .out { position: absolute; left: -64px; right: 28px; bottom: 36px; background: var(--paper); padding: 16px 22px 18px; box-shadow: 0 2px 14px rgba(28, 33, 40, .18); }
+  .out .k { font-size: 18px; color: var(--muted); }
+  .out p { margin-top: 4px; font-size: 28px; white-space: nowrap; line-height: 1.2; font-style: italic; }
 </style>
 </head>
 <body>
-  <header class="running-head">
-    <span class="home">Kurrent Pages</span>
-    <span class="doi">doi:10.5281/zenodo.24015417</span>
-  </header>
-
-  <main>
+  <section class="text">
+    <p class="label">A benchmark by 13fragments, version 1.0</p>
     <h1>Kurrent Pages</h1>
     <p class="subtitle">A held-out benchmark for transcribing German historical pages</p>
-    <table>
-      <tr><td class="n">53</td><td class="n">1565–1948</td><td class="n">Sealed</td></tr>
-      <tr><td class="l">scored pages</td><td class="l">Kurrent, Sütterlin, Fraktur</td><td class="l">ground truth</td></tr>
-    </table>
-  </main>
-
-  <footer>
-    <span class="url">kurrentpages.org</span>
-    <span class="by">Maintained by 13fragments</span>
-  </footer>
+    <div class="facts">
+      <span><b>53</b>scored pages</span>
+      <span><b>1565–1948</b>Kurrent to Fraktur</span>
+      <span><b>Sealed</b>ground truth</span>
+    </div>
+    <footer>
+      <span class="url">kurrentpages.org</span>
+    </footer>
+  </section>
+  <div class="plate">
+    <div class="out">
+      <span class="k">Page image in, text out</span>
+      <p>Lieber Wilhelm, Mutter will fahren.</p>
+    </div>
+  </div>
 </body>
 </html>
