@@ -139,3 +139,34 @@ published median of 0.0713 and its published aggregates. The row was scored agai
 `88ccc5879c1b74c2…`, the same check as v1.0.4 and v1.0.5: each GT file has the sha256 recorded at
 the GT v1.0 freeze, the entity lists match their 2026-10-18 freeze, and the page selection and image
 freeze of the run match the v1.0 runs. The earlier rows were not rescored.
+
+## Rows added in v1.0.7
+
+Release v1.0.7 adds six rows from batch 3 of the maintainer runs (§10, 2026-11-25), from four sealed
+runs: `20261125-175130_batch3_b1_sealed` (DeepSeek-OCR, DeepSeek-OCR-2),
+`20261125-202609_batch3_b2_sealed` (GLM-OCR, dots.ocr), `20261126-081705_batch3_a2_sealed` (Gemma 4
+31B), and `20261126-100222_batch3_a3_sealed` (Qwen3.5-27B). The outputs of each engine were copied
+to `evals/release_v1/rescore_rc1/`, with `run.json` reduced to that engine. Each copy was scored with
+`harness score` and `harness report --aggregates-only` from a clean tree of the v1.0.7 harness
+(`b40c573`).
+
+- Gemma 4 31B, `gemma4_31b`: median 0.2902. No failed page; the loop guard cut no page.
+- Qwen3.5-27B, `qwen35_27b`: median 0.3457. No failed page; the loop guard cut 2 pages.
+- GLM-OCR, `glm_ocr_sdk`: median 0.5382. No failed page; the loop guard cut no page.
+- dots.ocr, `dots_ocr_parser`: median 0.7479. No failed page; the loop guard cut 9 pages.
+- DeepSeek-OCR-2, `deepseek_ocr2_free`: median 0.8024. No failed page; the loop guard cut 13 pages.
+- DeepSeek-OCR, `deepseek_ocr_free`: median 0.8682. No failed page; the loop guard cut 24 pages.
+
+Each median is the same as the score of the full run. The drift control,
+LightOnOCR-HGH with the image step (`lighton_hgh_fp_v16`), ran in three of the four runs and
+reproduced its published median of 0.0751 in each. Run B1 has no control; B2 ran the control on the
+same GPU type in the same data center. All rows were scored against the GT digest
+`88ccc5879c1b74c2…`, the same check as v1.0.4 to v1.0.6: each GT file has the sha256 recorded at the
+GT v1.0 freeze, the entity lists match their 2026-10-18 freeze, and the page selection and image
+freeze of the runs match the v1.0 runs.
+
+The earlier rows were not rescored. Their engines set none of the new keys, so their requests, OCR
+metrics, and public aggregates use unchanged code. As a check, the recorded runs of CHURRO 3B,
+LightOnOCR-HGH (both rows), and LightOnOCR-3-1B were scored again with the v1.0.7 harness: each gave
+its published median. Kurrent Transcriber 1B keeps its published aggregates in the self-reported
+section.

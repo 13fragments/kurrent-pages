@@ -1,16 +1,34 @@
 # Changelog
 
-## Unreleased
+## v1.0.7
 
-Leaderboard and protocol change; the benchmark version stays Kurrent Pages Benchmark v1.0.
-No page, ground truth, prompt, harness code, OCR metric definition, or score changed.
+Leaderboard, harness, and protocol release; the benchmark version stays Kurrent Pages Benchmark
+v1.0. No page, ground truth, prompt of an existing engine, or OCR metric definition changed, and no
+existing score changed.
 
+- Leaderboard: add six rows from batch 3 of the maintainer runs (2026-11-25 and 2026-11-26): Gemma
+  4 31B (revision `842da379`), Qwen3.5-27B (`81a287ca`), GLM-OCR (`2e85a628`, SDK 0.1.5), dots.ocr
+  (`c0111ce6`, the authors' parser), DeepSeek-OCR-2 (`aaa02f38`), and DeepSeek-OCR (`9f30c71f`).
+  The notes give their settings and the engines that were not run.
 - Leaderboard: list Kurrent Transcriber 1B in a new "Self-reported (benchmark maintainer)"
   section, outside the rank order, because 13fragments maintains the benchmark and built the
-  model. The main table has 16 ranked rows. `leaderboard.json` adds `self_reported_note` and
-  `self_reported_rows`.
-- `scripts/build_leaderboard.py`: rows with `section: self_reported` go to the new section.
-- Protocol: §10 entry for this rule.
+  model. Its score did not change. `leaderboard.json` adds `self_reported_note` and
+  `self_reported_rows`, and `scripts/build_leaderboard.py` accepts `section: self_reported`. On
+  public `main` since 2026-11-25.
+- Gold use: a maintainer model now runs on the held-out pages at most once per public release,
+  after it is chosen on development sets.
+- Leaderboard notes: the result of three repeat runs of four rows, and the batch 3 settings.
+- Harness: engine type `pipeline_http` with `scripts/pipeline_server.py` (the authors' page
+  pipelines), opt-in key `text_first`, and output map `unlimited-remove-det`. Existing engines send
+  unchanged requests, and their OCR metrics and public aggregates use unchanged code.
+- Configs: the batch 3 engines.
+- Website: version 1.0.7 on kurrentpages.org.
+- Protocol: §10 entries for the self-reported section, batch 3, its amendments, the repeat runs,
+  and this release.
+- `docs/release/RESCORE_V1.md`: how the new rows were scored.
+- Public since 2026-11-25, listed here for the record: the practice set (`practice/`), the
+  "How this benchmark differs" section, and the kurrentpages.org website with its links from the
+  dataset card and the leaderboard Space.
 
 ## v1.0.6
 

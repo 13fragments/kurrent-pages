@@ -35,6 +35,9 @@ Keys of §10 2026-11-19 (maintainer runs of open models), opt-in, no other engin
 skip_special_tokens (true or false, sent only when set). Amendment 2026-11-19: server_max_tokens (true: no
 max_tokens is sent, so the server fills the model's context, as an engine's offline code does; the loop guard then
 reads finish_reason "length", which every reply now records).
+
+Key of §10 2026-11-25 (maintainer runs of open models, batch 3), opt-in, no other engine changes: text_first (true:
+the text part goes before the image, as the Unlimited-OCR vLLM recipe client sends it; not with image_only).
 """
 
 from __future__ import annotations
@@ -100,6 +103,8 @@ class VlmOpenAiEngine(Engine):
         }
         if self.config.get("image_only"):
             payload["messages"][0]["content"].pop()
+        elif self.config.get("text_first"):
+            payload["messages"][0]["content"].reverse()
         if self.config.get("system_prompt"):
             payload["messages"].insert(
                 0, {"role": "system", "content": [{"type": "text", "text": self.config["system_prompt"]}]})
@@ -212,6 +217,11 @@ def _check_sampling_keys(name: str, config: dict) -> None:
     skip = config.get("skip_special_tokens")
     if skip is not None and not isinstance(skip, bool):
         raise EngineUnavailable(f"vlm engine {name!r}: skip_special_tokens must be true or false, got {skip!r}")
+    text_first = config.get("text_first")
+    if text_first is not None and not isinstance(text_first, bool):
+        raise EngineUnavailable(f"vlm engine {name!r}: text_first must be true or false, got {text_first!r}")
+    if text_first and config.get("image_only"):
+        raise EngineUnavailable(f"vlm engine {name!r}: text_first cannot be combined with image_only")
     if config.get("server_sampling") and (top_p is not None or seed is not None):
         raise EngineUnavailable(f"vlm engine {name!r}: top_p and seed cannot be combined with server_sampling")
 

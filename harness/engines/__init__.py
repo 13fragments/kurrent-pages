@@ -13,6 +13,7 @@ from harness.engines.codex_cli import CodexCliEngine
 from harness.engines.kraken import KrakenEngine
 from harness.engines.trocr_lines import TrocrLinesEngine
 from harness.engines.mock import MockEngine
+from harness.engines.pipeline_http import PipelineHttpEngine
 from harness.engines.stubs import PylaiaEngine
 from harness.engines.tesseract import TesseractEngine
 from harness.engines.transkribus import TranskribusEngine
@@ -24,6 +25,7 @@ ENGINE_TYPES: dict[str, type[Engine]] = {
     "calamari": CalamariEngine,
     "trocr_lines": TrocrLinesEngine,
     "vlm_openai": VlmOpenAiEngine,
+    "pipeline_http": PipelineHttpEngine,
     "codex_cli": CodexCliEngine,
     "claude_cli": ClaudeCliEngine,
     "pylaia": PylaiaEngine,

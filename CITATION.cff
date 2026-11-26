@@ -13,8 +13,8 @@ abstract: >-
   documentation, and leaderboard: CC BY 4.0.
 authors:
   - name: "13fragments"
-version: "1.0.6"
-date-released: "2026-11-19"
+version: "1.0.7"
+date-released: "2026-11-26"
 doi: "10.5281/zenodo.24015417"
 identifiers:
   - type: doi

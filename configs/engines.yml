@@ -325,6 +325,71 @@ engines:
     temperature: 0.0
     skip_special_tokens: false
     vllm_xargs: {ngram_size: 30, window_size: 90, whitelist_token_ids: [128821, 128822]}
+  # §10 2026-11-25: maintainer runs of open models, batch 3. Settings fixed before one sealed run each; server flags are
+  # in the batch 3 launcher record. deepseek_ocr_free (above) runs unchanged in this batch.
+  deepseek_ocr2_free:                        # deepseek-ai/DeepSeek-OCR-2 at aaa02f38, the DeepSeek-OCR request on the same stack
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: deepseek-ocr-2                    # server: as deepseek_ocr_free (the vLLM recipe of DeepSeek-OCR-2 names the same processor)
+    weights_sha256: cda8e8f71ac05334a1fa85f876a9bfa96d1348e17bc3d7b18e29ea112e470ac9   # combined digest of the safetensors shards
+    prompt_file: configs/prompts/deepseek_ocr_free.txt   # the card's "without layouts" prompt "<image>\nFree OCR."
+    server_max_tokens: true                   # the server fills the 8,192-token context, as deepseek_ocr_free
+    temperature: 0.0
+    skip_special_tokens: false
+    vllm_xargs: {ngram_size: 30, window_size: 90, whitelist_token_ids: [128821, 128822]}
+  unlimited_ocr_card:                        # baidu/Unlimited-OCR at 8249d20b, the card's vLLM recipe (gundam, single image)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: unlimited-ocr                     # server: --trust-remote-code --logits_processors <unlimited_ocr NGramPerReqLogitsProcessor> --no-enable-prefix-caching --mm-processor-cache-gb 0
+    weights_sha256: 41019c0b969d3b9ffb1cc447d7ddb163692bf139ca82e61ff016cc9650a38333   # combined digest of the safetensors files
+    prompt_file: configs/prompts/unlimited_ocr_parsing.txt   # "<image>document parsing.", sent before the image as the recipe client does
+    text_first: true
+    max_tokens: 8192                          # the recipe client
+    temperature: 0.0
+    skip_special_tokens: false
+    vllm_xargs: {ngram_size: 35, window_size: 128}   # the card: no-repeat n-gram 35 over a 128-token window (single image)
+    output_map: unlimited-remove-det          # the card's remove_det()
+  glm_ocr_sdk:                               # zai-org/GLM-OCR at 2e85a628 through the GLM-OCR SDK (layout PP-DocLayoutV3, then region requests)
+    type: pipeline_http
+    base_url: http://localhost:8080
+    pipeline: glmocr_sdk                      # scripts/pipeline_server.py; SDK glmocr 0.1.5, layout model PaddlePaddle/PP-DocLayoutV3_safetensors at e4f489dc
+    model: glm-ocr                           # server: vllm serve <GLM-OCR> --speculative-config '{"method": "mtp", "num_speculative_tokens": 3}' (the SDK README)
+    package: glmocr==0.1.5
+    weights_sha256: a16eb0de98d199293371c560f95f83130d2a2c9612449df16839f08ff9498815
+  dots_ocr_parser:                           # dots-studio/dots.ocr at c0111ce6 through the authors' parser (GitHub studio-dots-ai/dots.ocr c3084bd4, last commit before dots.ocr 1.5)
+    type: pipeline_http
+    base_url: http://localhost:8080
+    pipeline: dots_parser                     # parser command-line defaults: prompt_layout_all_en, temperature 0.1, top_p 1.0, 16,384 tokens, fitz preprocessing
+    model: dots-ocr                          # server: vllm serve <dots.ocr> --trust-remote-code --async-scheduling (native dots.ocr support, the authors' README)
+    package: dots_ocr@c3084bd437
+    weights_sha256: 7a1195db9a5df67eb166d1bd9d36a3884e702d2bc6b3f631b3991faa4d3063d9   # combined digest of the safetensors shards
+  chandra_ocr2:                              # datalab-to/chandra-ocr-2 at af93b47d through chandra-ocr 0.3.0 (the card's Python example, package defaults)
+    type: pipeline_http
+    base_url: http://localhost:8080
+    pipeline: chandra_vllm                    # InferenceManager(method="vllm"), prompt ocr_layout, result.markdown; the package's own retries on repeats
+    model: chandra                           # server: the chandra_vllm flags on vLLM 0.17.0 (the package's docker image), 48 GB settings
+    package: chandra-ocr==0.3.0
+    weights_sha256: 0804568be9f099d6479fad9ed77a4da4611f3c1e7bc6e009af7dce45e8aa3847
+  gemma4_31b:                                # google/gemma-4-31B-it at 842da379, the benchmark zero-shot settings (as qwen35_4b)
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: gemma-4-31b-it                    # server: --reasoning-parser gemma4 (the empty thought block stays out of the reply); image budget in the launcher record
+    weights_sha256: 9771ee3cf0e09447abbaf3ae53aedc57a7573335a19d65d4038d4ef3da9a5b73   # combined digest of the safetensors shards
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0                          # the vendor recommends sampling (1.0, top_p 0.95, top_k 64); greedy as the existing zero-shot rows
+    repetition_penalty: 1.1
+    chat_template_kwargs: {enable_thinking: false}
+  qwen35_27b:                                # Qwen/Qwen3.5-27B at 81a287ca, the settings of qwen35_4b
+    type: vlm_openai
+    base_url: http://localhost:8080/v1
+    model: qwen3.5-27b
+    weights_sha256: 7382ac70bb3a2e9794ce2fbc85716cf5d66a9ebe481408185f2554166802d2c7   # combined digest of the safetensors shards
+    prompt_file: configs/prompts/vlm_default.txt
+    max_tokens: 4096
+    temperature: 0.0                          # the vendor recommends sampling for non-thinking mode (0.7, top_p 0.8, top_k 20); greedy as qwen35_4b
+    repetition_penalty: 1.1
+    chat_template_kwargs: {enable_thinking: false}
   churro:                                   # vllm serve stanford-oval/churro-3B --port 8001
     type: vlm_openai
     base_url: http://localhost:8001/v1

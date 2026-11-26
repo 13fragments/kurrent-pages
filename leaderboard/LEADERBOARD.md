@@ -1,6 +1,6 @@
 # Leaderboard: Kurrent Pages Benchmark v1.0
 
-Held-out set of 53 scored pages, ground truth v1.0, scored with harness v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5). Aggregates only: no page scores and no outputs are published. `cer_norm` is the normalized character error rate (protocol §4, §5); lower is better. Entity recall is the share of gold persons, places, and dates found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above 0.75 or an empty output (§5.4). Licence: CC BY 4.0.
+Held-out set of 53 scored pages, ground truth v1.0, scored with harness v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5; in v1.0.7: v1.0.7). Aggregates only: no page scores and no outputs are published. `cer_norm` is the normalized character error rate (protocol §4, §5); lower is better. Entity recall is the share of gold persons, places, and dates found in the output (§5.5). Seg-fail is the share of pages with `cer_norm` above 0.75 or an empty output (§5.4). Licence: CC BY 4.0.
 
 ## Overall and hard strata
 
@@ -11,16 +11,22 @@ Held-out set of 53 scored pages, ground truth v1.0, scored with harness v1.0.0-r
 | Transkribus German Genius (Super Model, model ID 265149) | commercial reference, run 2026-09-24 | 53 | **0.131** | 0.186 | 0.850 | 2% | 0.128 | 0.825 | 2 |
 | Transkribus Text Titan II (model ID 579509) | commercial reference, run 2026-09-24 | 53 | **0.169** | 0.214 | 0.857 | 2% | 0.150 | 0.804 | 1 |
 | CHURRO 3B (stanford-oval/churro-3B) | open VLM, zero-shot | 53 | **0.258** | 0.412 | 0.588 | 4% | 0.266 | 0.508 | 4 |
+| Gemma 4 31B (google/gemma-4-31B-it, revision 842da379), benchmark zero-shot settings | open VLM, zero-shot; run by the maintainer | 53 | **0.290** | 0.271 | 0.667 | 0% | 0.328 | 0.658 | 1 |
 | Kraken 7.0, kraken-german-xix-v1 model (dh-unibe/kraken-german-xix-v1, revision 945658d6) | open CRNN pipeline; run by the maintainer | 53 | **0.292** | 0.294 | 0.400 | 2% | 0.309 | 0.267 | 2 |
+| Qwen3.5-27B (Qwen/Qwen3.5-27B, revision 81a287ca), benchmark zero-shot settings | open VLM, zero-shot; run by the maintainer | 53 | **0.346** | 0.369 | 0.650 | 6% | 0.403 | 0.500 | 2 |
 | LightOnOCR-3-1B (lightonai/LightOnOCR-3-1B, revision 23d54408), model card settings | open VLM, zero-shot; run by the maintainer | 53 | **0.359** | 0.380 | 0.500 | 6% | 0.363 | 0.333 | 5 |
 | LightOnOCR-3-4B (lightonai/LightOnOCR-3-4B, revision b71010f0), model card settings | open VLM, zero-shot; run by the maintainer | 53 | **0.375** | 0.355 | 0.562 | 4% | 0.397 | 0.567 | 0 |
 | olmOCR-2-7B-1025 (BF16) | open VLM, zero-shot | 53 | **0.440** | 0.385 | 0.533 | 2% | 0.440 | 0.485 | 0 |
 | Qwen3.5-4B | open VLM, zero-shot | 53 | **0.461** | 0.428 | 0.400 | 11% | 0.461 | 0.342 | 0 |
 | Qwen3.5-4B, script-hint prompt | open VLM, zero-shot | 53 | **0.465** | 0.612 | 0.471 | 9% | 0.467 | 0.450 | 3 |
+| GLM-OCR (zai-org/GLM-OCR, revision 2e85a628), GLM-OCR SDK 0.1.5 defaults | open OCR model, zero-shot; run by the maintainer | 53 | **0.538** | 0.505 | 0.250 | 11% | 0.538 | 0.218 | 0 |
 | Qwen3-VL-4B-Instruct, script-hint prompt | open VLM, zero-shot | 53 | **0.540** | 0.587 | 0.250 | 13% | 0.572 | 0.250 | 2 |
 | Qwen3-VL-4B-Instruct | open VLM, zero-shot | 53 | **0.581** | 0.601 | 0.250 | 13% | 0.585 | 0.232 | 3 |
 | Kraken 7.0, rec_bohemica model (Zenodo 11673242) | open CRNN pipeline | 53 | **0.714** | 0.671 | 0.000 | 30% | 0.696 | 0.000 | 1 |
+| dots.ocr (dots-studio/dots.ocr, revision c0111ce6), authors' parser defaults | open OCR model, zero-shot; run by the maintainer | 53 | **0.748** | 76.245 | 0.400 | 49% | 0.664 | 0.310 | 11 |
+| DeepSeek-OCR-2 (deepseek-ai/DeepSeek-OCR-2, revision aaa02f38), "Free OCR." prompt | open OCR model, zero-shot; run by the maintainer | 53 | **0.802** | 2.026 | 0.000 | 64% | 0.779 | 0.000 | 9 |
 | Tesseract 5.5.2, deu_latf (tessdata_best) | open CRNN pipeline | 53 | **0.840** | 0.786 | 0.000 | 87% | 0.871 | 0.000 | 0 |
+| DeepSeek-OCR (deepseek-ai/DeepSeek-OCR, revision 9f30c71f), model card settings, "Free OCR." prompt | open OCR model, zero-shot; run by the maintainer | 53 | **0.868** | 1.505 | 0.000 | 70% | 0.868 | 0.000 | 5 |
 | Calamari 2.3.1, fraktur_historical | open CRNN pipeline | 53 | **0.907** | 0.836 | 0.000 | 89% | 0.914 | 0.000 | 0 |
 
 ## `cer_norm` median per stratum
@@ -34,16 +40,22 @@ Pages per stratum in brackets.
 | Transkribus German Genius (Super Model, model ID 265149) | 0.080 | 0.168 | 0.087 | 0.275 | 0.133 | 0.013 | 0.247 | 0.128 | 0.174 | 0.079 |
 | Transkribus Text Titan II (model ID 579509) | 0.077 | 0.211 | 0.145 | 0.199 | 0.147 | 0.016 | 0.372 | 0.150 | 0.269 | 0.184 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.232 | 0.387 | 2.902 | 0.452 | 0.303 | 0.004 | 0.419 | 0.182 | 0.238 | 0.216 |
+| Gemma 4 31B (google/gemma-4-31B-it, revision 842da379), benchmark zero-shot settings | 0.174 | 0.371 | 0.338 | 0.284 | 0.298 | 0.007 | 0.396 | 0.268 | 0.434 | 0.122 |
 | Kraken 7.0, kraken-german-xix-v1 model (dh-unibe/kraken-german-xix-v1, revision 945658d6) | 0.198 | 0.338 | 0.113 | 0.362 | 0.169 | 0.065 | 0.449 | 0.188 | 0.454 | 0.387 |
+| Qwen3.5-27B (Qwen/Qwen3.5-27B, revision 81a287ca), benchmark zero-shot settings | 0.230 | 0.461 | 0.566 | 0.359 | 0.461 | 0.006 | 0.470 | 0.275 | 0.512 | 0.124 |
 | LightOnOCR-3-1B (lightonai/LightOnOCR-3-1B, revision 23d54408), model card settings | 0.286 | 0.523 | 0.428 | 0.486 | 0.402 | 0.008 | 0.563 | 0.247 | 0.601 | 0.199 |
 | LightOnOCR-3-4B (lightonai/LightOnOCR-3-4B, revision b71010f0), model card settings | 0.225 | 0.451 | 0.471 | 0.419 | 0.411 | 0.011 | 0.611 | 0.222 | 0.537 | 0.137 |
 | olmOCR-2-7B-1025 (BF16) | 0.291 | 0.507 | 0.653 | 0.516 | 0.509 | 0.007 | 0.482 | 0.254 | 0.541 | 0.124 |
 | Qwen3.5-4B | 0.392 | 0.521 | 0.585 | 0.531 | 0.526 | 0.009 | 0.628 | 0.304 | 0.550 | 0.151 |
 | Qwen3.5-4B, script-hint prompt | 0.388 | 0.545 | 0.561 | 0.563 | 0.535 | 0.009 | 0.516 | 0.299 | 0.560 | 0.151 |
+| GLM-OCR (zai-org/GLM-OCR, revision 2e85a628), GLM-OCR SDK 0.1.5 defaults | 0.499 | 0.534 | 0.798 | 0.595 | 0.637 | 0.030 | 0.643 | 0.408 | 0.709 | 0.278 |
 | Qwen3-VL-4B-Instruct, script-hint prompt | 0.512 | 0.604 | 0.670 | 0.593 | 0.614 | 0.021 | 0.627 | 0.441 | 0.735 | 0.278 |
 | Qwen3-VL-4B-Instruct | 0.472 | 0.631 | 0.775 | 0.603 | 0.706 | 0.021 | 0.627 | 0.458 | 0.738 | 0.253 |
 | Kraken 7.0, rec_bohemica model (Zenodo 11673242) | 0.758 | 0.681 | 0.514 | 0.742 | 0.771 | 0.347 | 0.737 | 0.581 | 0.742 | 0.734 |
+| dots.ocr (dots-studio/dots.ocr, revision c0111ce6), authors' parser defaults | 0.654 | 0.815 | 1.190 | 0.652 | 0.758 | 0.010 | 284.631 | 0.460 | 0.778 | 119.243 |
+| DeepSeek-OCR-2 (deepseek-ai/DeepSeek-OCR-2, revision aaa02f38), "Free OCR." prompt | 0.761 | 0.784 | 4.206 | 0.890 | 0.962 | 0.225 | 2.071 | 0.555 | 6.603 | 5.534 |
 | Tesseract 5.5.2, deu_latf (tessdata_best) | 1.000 | 0.862 | 0.847 | 0.839 | 0.825 | 0.034 | 0.864 | 0.776 | 0.810 | 0.754 |
+| DeepSeek-OCR (deepseek-ai/DeepSeek-OCR, revision 9f30c71f), model card settings, "Free OCR." prompt | 0.836 | 0.868 | 0.843 | 1.097 | 0.926 | 0.030 | 0.842 | 0.546 | 0.935 | 7.369 |
 | Calamari 2.3.1, fraktur_historical | 0.886 | 0.913 | 0.911 | 0.938 | 0.919 | 0.360 | 0.942 | 0.914 | 0.853 | 0.744 |
 
 ## Entity recall median per stratum
@@ -57,16 +69,22 @@ Pages per stratum in brackets.
 | Transkribus German Genius (Super Model, model ID 265149) | 1.000 | 0.758 | 1.000 | 0.633 | 0.875 | 0.917 | 0.571 | 0.857 | 0.714 | 0.694 |
 | Transkribus Text Titan II (model ID 579509) | 1.000 | 0.321 | 1.000 | 0.550 | 0.875 | 0.929 | 0.429 | 0.750 | 0.143 | 0.528 |
 | CHURRO 3B (stanford-oval/churro-3B) | 0.667 | 0.094 | 0.750 | 0.450 | 0.067 | 1.000 | 0.400 | 0.688 | 0.429 | 0.514 |
+| Gemma 4 31B (google/gemma-4-31B-it, revision 842da379), benchmark zero-shot settings | 0.750 | 0.038 | 1.000 | 0.300 | 0.750 | 0.964 | 0.333 | 0.688 | 0.143 | 0.444 |
 | Kraken 7.0, kraken-german-xix-v1 model (dh-unibe/kraken-german-xix-v1, revision 945658d6) | 0.333 | 0.105 | 0.750 | 0.400 | 0.500 | 0.653 | 0.143 | 0.429 | 0.000 | 0.083 |
+| Qwen3.5-27B (Qwen/Qwen3.5-27B, revision 81a287ca), benchmark zero-shot settings | 0.750 | 0.038 | 1.000 | 0.200 | 0.688 | 1.000 | 0.400 | 0.812 | 0.000 | 0.528 |
 | LightOnOCR-3-1B (lightonai/LightOnOCR-3-1B, revision 23d54408), model card settings | 0.500 | 0.000 | 1.000 | 0.333 | 0.667 | 0.792 | 0.286 | 0.750 | 0.000 | 0.444 |
 | LightOnOCR-3-4B (lightonai/LightOnOCR-3-4B, revision b71010f0), model card settings | 0.667 | 0.000 | 0.500 | 0.367 | 0.688 | 0.853 | 0.222 | 0.667 | 0.000 | 0.375 |
 | olmOCR-2-7B-1025 (BF16) | 0.643 | 0.038 | 0.500 | 0.350 | 0.533 | 0.980 | 0.400 | 0.562 | 0.000 | 0.542 |
 | Qwen3.5-4B | 0.529 | 0.000 | 0.250 | 0.450 | 0.000 | 0.857 | 0.000 | 0.667 | 0.000 | 0.514 |
 | Qwen3.5-4B, script-hint prompt | 0.667 | 0.000 | 0.250 | 0.250 | 0.000 | 0.815 | 0.111 | 0.667 | 0.143 | 0.444 |
+| GLM-OCR (zai-org/GLM-OCR, revision 2e85a628), GLM-OCR SDK 0.1.5 defaults | 0.214 | 0.000 | 0.500 | 0.000 | 0.500 | 0.690 | 0.222 | 0.375 | 0.000 | 0.417 |
 | Qwen3-VL-4B-Instruct, script-hint prompt | 0.250 | 0.000 | 0.500 | 0.000 | 0.467 | 0.768 | 0.286 | 0.562 | 0.000 | 0.319 |
 | Qwen3-VL-4B-Instruct | 0.250 | 0.000 | 0.500 | 0.000 | 0.000 | 0.768 | 0.200 | 0.571 | 0.000 | 0.431 |
 | Kraken 7.0, rec_bohemica model (Zenodo 11673242) | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.069 |
+| dots.ocr (dots-studio/dots.ocr, revision c0111ce6), authors' parser defaults | 0.333 | 0.000 | 0.500 | 0.333 | 0.600 | 1.000 | 0.286 | 0.500 | 0.000 | 0.403 |
+| DeepSeek-OCR-2 (deepseek-ai/DeepSeek-OCR-2, revision aaa02f38), "Free OCR." prompt | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.208 | 0.000 | 0.286 | 0.000 | 0.000 |
 | Tesseract 5.5.2, deu_latf (tessdata_best) | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.857 | 0.000 | 0.000 | 0.000 | 0.042 |
+| DeepSeek-OCR (deepseek-ai/DeepSeek-OCR, revision 9f30c71f), model card settings, "Free OCR." prompt | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.768 | 0.000 | 0.125 | 0.000 | 0.000 |
 | Calamari 2.3.1, fraktur_historical | 0.000 | 0.000 | 0.000 | 0.000 | 0.000 | 0.208 | 0.000 | 0.000 | 0.000 | 0.000 |
 
 ## Frontier reference
@@ -117,6 +135,10 @@ General-purpose frontier models, each a single run on one date through the vendo
   except the LightOnOCR-3 rows (one sample at temperature 0.2 with a fixed seed). On the
   maintainer's hardware, a serving-state change moved medians by about 0.02. Rows from
   one run compare exactly; rows from different runs carry that noise.
+- **Repeat runs (v1.0.7).** Four rows ran three more times on 2026-11-26 (§10). The three
+  LightOnOCR rows gave the same median in all four runs. CHURRO 3B gave 0.236 to 0.263,
+  with 13 of 53 replies at the token limit in each repeat. Every pairwise order held, and no
+  published score changed. Read a row within about 0.03 of CHURRO 3B as not ordered against it.
 - **Image position.** The author of LightOnOCR-HGH observed that a shift of the image by
   half a patch (7 pixels) can change what models of this kind read, for example whether a
   faint first line is read. The maintainer has not measured this on the benchmark pages.
@@ -150,11 +172,29 @@ General-purpose frontier models, each a single run on one date through the vendo
   LightOnOCR-3 rows differ by less than the serving drift; read them as level.
   kraken-german-xix-v1: the card's command, kraken 7.0 baseline segmentation and
   recognition. Model owners can ask for a run with other settings (`SUBMITTING.md`).
+- **Maintainer runs, batch 3 (added in v1.0.7).** The maintainer ran six open models on
+  2026-11-25 and 2026-11-26 (§10), each once, at a pinned revision. Gemma 4 31B and
+  Qwen3.5-27B: the zero-shot settings of the Qwen3.5-4B row (greedy, repetition penalty 1.1,
+  at most 4,096 tokens, thinking off; both vendors recommend sampling). Gemma 4 used an
+  image budget of 1,120 vision tokens. GLM-OCR: its SDK 0.1.5 with defaults, without
+  speculative decoding.
+- **Batch 3, document-OCR models.** dots.ocr: the authors' parser with its defaults
+  (temperature 0.1, no seed, at most 16,384 tokens). Its picture regions come out as base64
+  image data, which counts against the engine and explains its mean. DeepSeek-OCR and
+  DeepSeek-OCR-2: the card prompt "Free OCR."; on many pages both repeat one short sequence
+  until the token limit.
+- **Batch 3, not run.** Unlimited-OCR (setup failed after two server starts), Chandra OCR 2 (its
+  licence excludes users with a competing product), and Unlimited-OCR-2 (needs its own
+  serving build). The drift control, LightOnOCR-HGH with the image step, reproduced its
+  median of 0.075 in every session where it ran.
 - **Harness.** The rows added in v1.0.4 were scored with harness v1.0.4. It adds opt-in
   engine keys: an image step, run removal, and an output map (§10, 2026-11-13 and
   2026-11-15). The rows added in v1.0.5 were scored with harness v1.0.5. It adds opt-in
   sampling keys, an image step, and a line-model engine type (§10, 2026-11-19). The row
   added in v1.0.6 was scored with the same harness.
+- **Harness v1.0.7.** The rows added in v1.0.7 were scored with harness v1.0.7. It adds an
+  engine type for the authors' page pipelines, a key that sends the prompt before the image,
+  and an output map (§10, 2026-11-25).
 - **Illegible marks.** `cer_norm` scores `[unleserlich]` as ordinary text. Where the ground
   truth has text, the mark costs its 13 characters. So an engine that marks a spot instead
   of guessing pays this cost. LightOnOCR-HGH writes ▨, which its output map turns into
@@ -163,7 +203,8 @@ General-purpose frontier models, each a single run on one date through the vendo
   aggregates use unchanged code. The earlier rows keep their scores.
 - **Self-reported row.** Kurrent Transcriber 1B is in its own section, outside the
   rank order, because the maintainer of this benchmark built it (§10, 2026-11-25). Its
-  scores did not change.
+  scores did not change. From v1.0.7, a maintainer model runs on the held-out pages at most
+  once per public release, after it is chosen on development sets (§10, 2026-11-26).
 - **Annex pages** are reported only and are not a fabrication signal (§10, 2026-10-18).
 - **Commercial references.** Transkribus rows ran on 2026-09-24 through the Transkribus
   service.

@@ -33,6 +33,8 @@ def token_limited(record: dict, engine_description: dict) -> bool:
     config = engine_description.get("config") or {}
     if config.get("server_max_tokens"):  # §10 2026-11-19: the server fills the context; its stop reason decides
         return meta.get("finish_reason") == "length"
+    if engine_description.get("type") == "pipeline_http":  # §10 2026-11-25: the stop reason of the request behind the text
+        return meta.get("finish_reason") == "length"
     limit = config.get("max_tokens")
     if limit is None and engine_description.get("type") == "vlm_openai":
         limit = VLM_DEFAULT_MAX_TOKENS

@@ -155,3 +155,11 @@ def test_token_limited_uses_finish_reason_when_the_server_fills_the_context():
     full = {"meta": {"usage": {"completion_tokens": 7900}, "finish_reason": "length"}}
     assert token_limited(long_stop, desc) is False
     assert token_limited(full, desc) is True
+
+
+def test_token_limited_reads_finish_reason_for_pipeline_engines():
+    """§10 2026-11-25: a pipeline engine reports the stop reason of the model request behind its text."""
+    desc = {"type": "pipeline_http", "config": {"type": "pipeline_http"}}
+    assert token_limited({"meta": {"finish_reason": "length"}}, desc) is True
+    assert token_limited({"meta": {"finish_reason": "stop", "usage": {"completion_tokens": 4096}}}, desc) is False
+    assert token_limited({"meta": {}}, desc) is False

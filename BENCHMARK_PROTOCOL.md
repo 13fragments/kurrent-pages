@@ -1529,6 +1529,132 @@ lucky subset while most pages collapsed.
   - **Editorial, for the public release.** Two sentences of the registration entry (Engine and 30-day cap
     bullets) were reworded after the run; their meaning did not change.
 
+* **2026-11-25 — Maintainer runs of open models, batch 3; sealed gold runs (§1, §6, §10).** Owner decisions in
+  session (2026-11-25): "write the plan at $40 limit" (the engines below and a RunPod cap of $40) and "Yes, accept
+  both" (the two optional engines run inside the cap if they need no extra setup; no plan review; the readout review
+  stays). Plan: the maintainer's batch 3 plan, v1. These are external reference readings, not model-track candidates.
+  - **Engines.** Each runs at a pinned revision. Its settings are in `configs/engines.yml` and do not change after
+    the first scored request.
+    - `gemma4_31b` (google/gemma-4-31B-it at `842da379`) and `qwen35_27b` (Qwen/Qwen3.5-27B at `81a287ca`): the
+      zero-shot settings of `qwen35_4b` (the default prompt, temperature 0, repetition penalty 1.1, 4,096 tokens,
+      thinking off). Both vendors recommend sampling; the rows say so. Gemma 4: the server's `gemma4` reasoning
+      parser keeps the empty thought block out of the reply. The Gemma 4 image budget (the vision tokens per image) is fixed by an amendment before its first scored request.
+    - `deepseek_ocr_free` (DeepSeek-OCR at `9f30c71f`): the batch 1 entry, unchanged. Its one run of 2026-11-19
+      made no gold request.
+    - `deepseek_ocr2_free` (optional; DeepSeek-OCR-2 at `aaa02f38`): the same request on the same stack.
+    - `unlimited_ocr_card` (baidu/Unlimited-OCR at `8249d20b`): the vLLM recipe that the card names. The text
+      "<image>document parsing." goes before the image; temperature 0, 8,192 tokens, special tokens kept, no-repeat
+      n-gram 35 over 128 tokens. Output map `unlimited-remove-det`: the card's `remove_det()`.
+    - `glm_ocr_sdk` (zai-org/GLM-OCR at `2e85a628`): the GLM-OCR SDK (`glmocr` 0.1.5) in self-hosted mode with its
+      default configuration: layout analysis with PP-DocLayoutV3 (at `e4f489dc`), then region requests. The server
+      uses the MTP speculative decoding of the SDK README. The text is the SDK's Markdown.
+    - `dots_ocr_parser` (dots-studio/dots.ocr at `c0111ce6`): the authors' parser (GitHub `c3084bd4`, the last
+      commit before dots.ocr 1.5) with the defaults of its command line: `prompt_layout_all_en`, temperature 0.1,
+      top_p 1.0, 16,384 tokens, and its image preprocessing. The text is the parser's Markdown, with page headers and
+      footers.
+    - `chandra_ocr2` (datalab-to/chandra-ocr-2 at `af93b47d`): `chandra-ocr` 0.3.0 with its package defaults, as in
+      the card's Python example: prompt `ocr_layout`, temperature 0, top_p 0.1, 12,384 tokens, the image scaled to at
+      most 3,072 x 2,048 pixels, the package's own retries on repeated tokens (up to 6, temperature rising to 0.8),
+      and `result.markdown` (page headers and footers dropped by the package default). Its licence (modified
+      OpenRAIL-M, Attachment A 2 (c)) is open for an owner decision; it makes no request before an amendment records
+      that decision.
+  - **Stacks.** One environment per serving stack. vLLM 0.30.0 with transformers 5.16.1 for the two general VLMs.
+    vLLM 0.29.0 for DeepSeek-OCR, DeepSeek-OCR-2, Unlimited-OCR, and the GLM-OCR and dots.ocr servers: vLLM 0.30.0
+    added the DeepEncoder Triton kernel that failed to compile in batch 1, and 0.29.0 is the newest release without
+    it. vLLM 0.17.0, the version of the `chandra_vllm` Docker image, for Chandra. Unlimited-OCR uses the card's vLLM
+    route, not the card's SGLang wheel: that server command needs FlashAttention 3, which runs only on Hopper GPUs.
+    dots.ocr uses the native vLLM support that its authors document since vLLM 0.11.0, not the vLLM 0.9.1 patch.
+    The package list of each environment is recorded per session.
+  - **New harness parts, opt-in.** The key `text_first` sends the text part before the image. The engine type
+    `pipeline_http` sends the frozen page and its file suffix (not its name) to `scripts/pipeline_server.py` on the
+    serving machine. That server calls the authors' code once per page with its documented defaults and returns
+    that code's text unchanged. HTTP 422 (the authors' code raised) fails the page; any other error stops the engine
+    without a record. For `pipeline_http`, the loop guard reads the finish reason "length" of the model request
+    behind the text. The output map `unlimited-remove-det` is new. Engines without these parts send unchanged
+    requests; this was checked for all 27 existing VLM entries.
+  - **Run rules.** The run rules of the batch 1 entry apply. Added: (1) self-hosted only: no gold page goes to an
+    API provider; (2) the general VLMs use the zero-shot settings above; (3) the OCR models use the page route that
+    their card documents, and their text comes out through the authors' own code; (4) an engine that does not pass
+    its preflight after 2 server starts or 1 GPU-hour of setup is not run, and its row reads "not run: setup failed"
+    with the reason.
+  - **Preflight.** Six public non-benchmark pages (three ICFHR 2016 Ratsprotokolle test pages, three BullingerDB
+    unseen-writer pages), two passes through the harness request path. Pass: no error and no empty reply in either
+    pass. For engines with one greedy request per page, pass B must equal pass A. For dots.ocr (temperature 0.1),
+    GLM-OCR (concurrent region requests), and Chandra (sampled retries), the similarity of A and B is recorded and
+    not gated. The batch 1 offline check of DeepSeek-OCR is not repeated.
+  - **Where.** RunPod Pods in EU data centers without a network volume. Weights go to the Pod disk, with hash
+    checks. Gold pages reach the Pod only as requests. Each Pod session ends with `merge_r2s1702_hgh` unchanged as
+    the drift control: `lighton_hgh_fp_v16` unchanged (recorded median 0.0751174, 2026-11-19), on vLLM 0.23.0 with
+    transformers 5.13.0, with the processor check of batch 1. Owner decision D-2026-11-25-01 (model track): no gold
+    runs of the maintainer's own models outside one run per public release, so `merge_r2s1702_hgh` is not a drift
+    control in this batch.
+  - **Sampling.** dots.ocr and the retries of Chandra sample without a seed. Each such row is one sample and says
+    so.
+  - **Scoring and rows.** Under the GT version of the 2026-11-13 check, as v1.0.4 to v1.0.6. No T3. Each row says
+    that the maintainer ran the engine and names its settings. Markup that remains after the authors' output code
+    counts against the engine. Differences within the serving drift (about 0.02 median) are not ranked in the
+    notes. The drift control of each session is reported against its recorded median 0.0751174; rows from a session
+    whose control differs by more than 0.0200 carry a note.
+  - **Repeat runs (addendum A, owner: "Yes, add repeats", 2026-11-25).** After every new engine of this batch is done:
+    three new runs on all 55 pages for each of `lighton_hgh_fp_v16`, `lighton_hgh`, `churro` (the entry behind the
+    leaderboard row "CHURRO 3B"), and `lightonocr3_1b_card`, with their entries unchanged. Runs 1 and 2 use one
+    server process; run 3 follows a server restart on the same stack. Each runs on the serving stack of its recorded
+    run (vLLM 0.23.0 with transformers 5.13.0; `lightonocr3_1b_card`: vLLM 0.30.0 with transformers 5.16.1) on an
+    RTX PRO 6000; `churro` was recorded on another machine, so its GPU type differs and is stated. The run rules of
+    batch 1 apply. The repeats are a variance study: no leaderboard score changes, and no best run, mean, or median
+    of runs replaces a recorded score. Reported: median `cer_norm` and entity recall per run, range and standard
+    deviation across the recorded run and the repeats, the share of pages whose `cer_norm` changes by more than 0.01
+    between any two runs, and whether each pairwise order of the four engines holds in every run. Kurrent
+    Transcriber 1B has no repeats (D-2026-11-25-01). If the spend would pass the cap, the repeats go first, starting
+    with `lightonocr3_1b_card`.
+  - **Outside page sets (model track, not benchmark gold).** After its benchmark run, each new engine also reads the
+    three public outside sets of model-track EXP-20261125-outside-field on the same server, with the same entry.
+    These runs send no gold page and change nothing here.
+  - **Not run.** baidu/Unlimited-OCR-2 (optional): its card documents Transformers and its own SGLang build only,
+    so it does not run on the stack of version 1 without extra setup.
+  - **Unchanged.** No page IDs, images, GT, prompts or entries of existing engines, metric definitions, or
+    thresholds changed.
+  - **Amendment, 2026-11-25, before any request of `gemma4_31b` or `chandra_ocr2`.** Owner decisions in session:
+    (1) "1120, card OCR advice": the Gemma 4 server uses an image budget of 1,120 vision tokens per image, the
+    highest budget, which the model card advises for OCR and small text; the server flags are
+    `--mm-processor-kwargs '{"max_soft_tokens": 1120}'` and the matching vision-tower capacity of the vLLM recipe
+    (`--hf-overrides '{"vision_config": {"default_output_length": 1120}, "vision_soft_tokens_per_image": 1120}'`).
+    (2) "Skip: licence": `chandra_ocr2` is not run. Its row reads "not run: licence". Attachment A 2 (c) of its
+    licence (modified OpenRAIL-M) forbids use for any purpose by an entity that offers a product or service that
+    competes with one of the licensor's, without a research exception, and the benchmark maintainer publishes an OCR
+    model. Its entry in `configs/engines.yml` stays as registered and is not used.
+  - **Amendment, 2026-11-25, setup fixes before the first scored request of the engines concerned (rule 4).** The
+    first Pod session (A40) found three setup problems; each engine keeps its request and settings.
+    (1) `unlimited_ocr_card`: with `--trust-remote-code`, vLLM loads the card's modeling file, which imports `addict`
+    and `matplotlib`; the server exited (server start 1 of 2). Its environment now holds the card's listed
+    Transformers requirements at the card's versions (addict 2.4.0, matplotlib 3.10.8, einops 0.8.2, easydict 1.13).
+    (2) `glm_ocr_sdk`: with the SDK README's MTP speculative decoding, vLLM 0.29.0 did not load the checkpoint's MTP
+    layer (layer 16 at `2e85a628`); the server exited (start 1 of 2). The server now runs without speculative
+    decoding. MTP is a speed feature: with greedy decoding, speculative decoding keeps the tokens of the model
+    itself, so the text is the model's own greedy reply.
+    (3) `dots_ocr_parser`: a regular install of the authors' package leaves out `dots_ocr.model` (the folder has no
+    `__init__.py`); the authors' README installs it with `pip install -e .`, which the environment now uses. No
+    server started.
+  - **Amendment, 2026-11-25, the processor check of the drift control.** In the first session (A40), the check of
+    `lighton_hgh_fp_v16` on dev page D1 gave 810 characters; the no-penalty setting 810 (similarity 1.000); the
+    strong setting (penalty 50 over 200 tokens) 749 (similarity 0.771). The batch 1 limit (strong setting at most
+    0.70) was set for `merge_r2s1702_hgh`; this engine gave 0.430 on 2026-11-19 on another GPU. So the control made no
+    gold run in that session, and its rows have no drift reading. From the next session, the check passes when the
+    no-penalty reply matches the default reply (similarity at least 0.85) and the strong reply differs from it
+    (similarity below 1.0): the replies are greedy, so a processor that does not act gives identical replies. The
+    check gates only the control; no score depends on it.
+  - **Amendment, 2026-11-26, before the first scored request of `gemma4_31b` and `qwen35_27b`.** The preflight of
+    `gemma4_31b` (server start 1 of 2) failed the stability rule: pass B differed from pass A on 4 of 6 pages
+    (similarity 0.822 to 0.993). The server ran with vLLM's default prefix caching, so pass B read the cached
+    blocks of pass A's identical request, and greedy decoding drifted on the changed numbers. Both general VLMs now
+    run with `--no-enable-prefix-caching`, as the OCR engines of this batch already do. Each gold page is requested
+    once, so prefix caching could share only the short chat header between pages. Requests and settings do not
+    change. The preflight showed 1,204 prompt tokens per page, so the image budget of 1,120 took effect.
+  - **Amendment, 2026-11-26, before the first scored request of `qwen35_27b`.** Its first server start exited:
+    vLLM's default of 1,024 concurrent sequences exceeds the 629 Mamba cache blocks of this hybrid model at memory
+    utilization 0.90. The server now runs with `--max-num-seqs 64`, a capacity limit that does not change a reply;
+    the harness sends one request at a time.
+
 * **2026-11-25 — Kurrent Transcriber 1B listed as self-reported, outside the rank order (§10).** Owner decision in
   session, after an adversarial review of the planned paper named the conflict of interest: 13fragments maintains
   this benchmark and also built Kurrent Transcriber 1B, which had the lowest median `cer_norm` of the ranked rows.
@@ -1539,6 +1665,75 @@ lucky subset while most pages collapsed.
     section. The main table has 16 ranked rows.
   - **Unchanged.** No page IDs, images, GT, prompts, harness code, metric definitions, or scores changed. The row
     keeps the same scorer, protocol, and aggregates as every other row.
+* **2026-11-26 — Batch 3 results (2026-11-25 entry and its amendments; §2, §6, §10).** Every engine of the
+  2026-11-25 entry has a sealed run or a "not run" record. Aggregates only; no page is named.
+  - **Runs.** `20261125-175130_batch3_b1_sealed` (A40, EU-SE-1): `deepseek_ocr_free`, `deepseek_ocr2_free`.
+    `20261125-202609_batch3_b2_sealed` (A40, EU-SE-1): `glm_ocr_sdk`, `dots_ocr_parser`, control.
+    `20261126-081705_batch3_a2_sealed` (RTX PRO 6000, EU-NL-1): `gemma4_31b`, control.
+    `20261126-100222_batch3_a3_sealed` (RTX PRO 6000, EU-NL-1): `qwen35_27b`, control. Each run has 55 page
+    records and 0 error records.
+  - **Rows** (median `cer_norm`; loop-guard pages): `gemma4_31b` 0.2902 (0); `qwen35_27b` 0.3457 (2);
+    `glm_ocr_sdk` 0.5382 (0); `dots_ocr_parser` 0.7479 (9); `deepseek_ocr2_free` 0.8024 (13);
+    `deepseek_ocr_free` 0.8682 (24). In `dots_ocr_parser`, the authors' output code writes picture regions as
+    base64 image data on 9 of the 53 scored pages; as registered, this text counts against the engine. That row is
+    one sample (temperature 0.1, no seed).
+  - **Not run.** `unlimited_ocr_card`: "not run: setup failed" (rule 4, 2 server starts). Start 1 (B1): the card's
+    remote code imported `addict` and `matplotlib`, which were missing (amendment of 2026-11-25). Start 2 (B2): the
+    card's remote code imports `is_torch_fx_available` from `transformers.utils.import_utils`, which transformers 5
+    removed; vLLM 0.29.0 needs transformers 5. It made no gold request. `chandra_ocr2`: "not run: licence"
+    (amendment of 2026-11-25). Unlimited-OCR-2: not run, as registered.
+  - **Setup ledger (rule 4).** `gemma4_31b`, `qwen35_27b`, and `glm_ocr_sdk` passed at server start 2, after the
+    amendments recorded above. The longest setup was `dots_ocr_parser`, 838 s. No engine came near 1 GPU-hour.
+  - **Drift control.** `lighton_hgh_fp_v16` gave 0.0751174 in B2, A2, and A3, its recorded median. B1 has no
+    control reading (processor check amendment of 2026-11-25). No row carries a drift note.
+  - **Repeat runs (addendum A).** Runs `20261126-123323_batch3_r1_sealed`, `20261126-124610_batch3_r2_sealed`,
+    and `20261126-130140_batch3_r3_sealed` (`lighton_hgh_fp_v16`, `churro`), and `20261126-141235_batch3_rb1_sealed`,
+    `20261126-141715_batch3_rb2_sealed`, and `20261126-142348_batch3_rb3_sealed` (`lighton_hgh`,
+    `lightonocr3_1b_card`), all on an RTX PRO 6000 in EUR-IS-2. The recorded runs were scored again with the same
+    harness from per-engine copies.
+  - **Repeat results.** Median `cer_norm`, recorded run then repeats 1 to 3: `lighton_hgh_fp_v16`
+    0.0751 in all four; `lighton_hgh` 0.0899 in all four; `lightonocr3_1b_card` 0.3589 in all four; `churro`
+    0.2583, 0.2627, 0.2359, 0.2627 (range 0.0268, SD 0.0128). Pages whose `cer_norm` changed by more than 0.01
+    between any two runs: 3, 2, 0, and 36 of 53. Every pairwise order of the four engines holds in every run; the
+    smallest difference is `lighton_hgh` minus `lighton_hgh_fp_v16`, +0.0148 in each run. In each repeat, 13 of
+    53 `churro` replies reached the token limit (7 in the recorded run). No score changes.
+  - **Outside page sets: deviation.** The outside runs of `deepseek_ocr_free`, `deepseek_ocr2_free`, and
+    `dots_ocr_parser` did not fit in their benchmark sessions (benchmark rows first). They ran in outside-only
+    sessions on a new server with the same entry, stack, and weights. `dots_ocr_parser` needed two such sessions:
+    its pipeline server answers one request at a time, at about 97 s per item; the second session asked only for
+    the items without a reply. The 2026-11-25 entry registered "on the same server". The outside runs send no gold
+    page; their results are in model-track EXP-20261125-outside-field.
+  - **Other deviations from the plan.** The repeat runs ran before the deferred outside runs; the plan's priority
+    (rows, then outside sets, then repeats) is for a shortage of time or money, and the cap was not reached. The
+    second outside-only session ran up to 8 hours instead of the plan's 3, so that one session could finish
+    `dots_ocr_parser`. The spend stayed within the cap. Neither change touches a gold request.
+  - **Spend.** $24.20 of the $40 cap (RunPod; all Pods deleted).
+  - **Editorial.** (1) The "Where" bullet of the 2026-11-25 entry still has the words "ends with
+    `merge_r2s1702_hgh` unchanged as the drift control:" from a draft. The control was `lighton_hgh_fp_v16`, as the
+    rest of the bullet says; the bullet is not rewritten. (2) The comment of `glm_ocr_sdk` in `configs/engines.yml`
+    still names the MTP server flag; the server ran without it (amendment of 2026-11-25). The file is not edited
+    after the run.
+* **2026-11-26 — Gold use of the maintainer's models; release v1.0.7 (§10, §11).** Owner decision D-2026-11-25-01
+  (model track), in session: "Unranked section", then "Stop scoring our own models on our gold. At most one gold run
+  per public release, with the model chosen on dev sets first." The unranked section is the self-reported section of
+  the 2026-11-25 entry above.
+  - **Gold use.** A maintainer model runs on the gold pages at most once per public release, after it is chosen on
+    development sets. No gold run of a maintainer model serves selection, a gate, an ablation, a diagnostic, a
+    repeat run, or a drift control. This replaces the gold-per-round rule of the 2026-11-06 entry "Gate 2: one
+    sealed gold run per self-training round" for all later rounds. Batch 3 applied it: its drift control was
+    `lighton_hgh_fp_v16`, and Kurrent Transcriber 1B had no repeat runs.
+  - **Earlier gold runs with maintainer models.** Ten sealed runs, each logged in this section, scored maintainer
+    checkpoints; some scored more than one. Eight served the model track: `20261018-154538_gate1_sealed` (Gate 1
+    adapters), `20261020-164104_gate1_9b_sealed` and `20261025-065703_gate1_run11_sealed` (9B),
+    `20261106-094256_gate2_round0_sealed` (Round 0), `20261109-234104_gate2_round2_sealed` (Round 2),
+    `20261113-101027_release_1b_sealed` (1B candidate), `20261115-151958_budget_08b_sealed` (budget 0.8B), and
+    `20261117-114437_merge_gold_sealed` (the merge, published as Kurrent Transcriber 1B). In two the merge was the
+    drift control: `20261119-073625_batch1_vlm_sealed` and `20261119-121555_hgh_fp_v16_sealed`. No batch 3 run made
+    a gold request of a maintainer model.
+  - **Release v1.0.7.** The six batch 3 rows (entry above), the self-reported section of the 2026-11-25 entry, the
+    repeat-run note, the harness parts of the 2026-11-25 batch 3 entry, and version 1.0.7 on the website. The
+    benchmark version stays v1.0; no page, ground truth, prompt of an existing engine, metric definition, or
+    existing score changed. The new rows were scored as `docs/release/RESCORE_V1.md` describes.
 
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 

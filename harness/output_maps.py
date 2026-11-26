@@ -74,4 +74,36 @@ def churro_xml(text: str) -> str:
     return "\n\n".join(pages).strip()
 
 
-OUTPUT_MAPS = {"lighton-marks": lighton_marks, "churro-xml": churro_xml}
+# baidu/Unlimited-OCR model card at 8249d20b (MIT), "For OmniDocBench evaluation, you need to perform the following
+# post-processing": remove_det(), copied unchanged (§10 2026-11-25). It strips the <|det|>category [bbox]<|/det|>
+# markers, drops image blocks, joins the lines of one block with a newline, and separates blocks with a blank line.
+_UNLIMITED_DET_RE = re.compile(r'<\|det\|>([^<\s]+)(?:\s*\[[^\]]*\])?\s*<\|/det\|>(.*)', re.DOTALL)
+
+
+def unlimited_remove_det(raw: str) -> str:
+    """Unlimited-OCR reply -> text, as the card's remove_det() returns it."""
+    blocks = []
+    cur = None
+    for line in raw.splitlines():
+        line = line.rstrip()
+        if not line:
+            continue
+        m = _UNLIMITED_DET_RE.match(line)
+        if m:
+            category, content = m.group(1).strip(), m.group(2).strip()
+            if category == 'image':
+                continue
+            if cur is not None:
+                blocks.append(cur)
+            cur = [content] if content else []
+            continue
+        if cur is None:
+            cur = []
+        cur.append(line)
+    if cur is not None:
+        blocks.append(cur)
+    text = '\n\n'.join('\n'.join(b) for b in blocks).strip()
+    return text
+
+
+OUTPUT_MAPS = {"lighton-marks": lighton_marks, "churro-xml": churro_xml, "unlimited-remove-det": unlimited_remove_det}

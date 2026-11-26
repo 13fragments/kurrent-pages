@@ -4,7 +4,7 @@
 # `section: frontier` puts a row in the frontier reference section (`frontier_rows`).
 # `section: self_reported` puts a row in the self-reported section (`self_reported_rows`).
 version: "Kurrent Pages Benchmark v1.0"
-harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5)"
+harness_tag: "v1.0.0-rc1 (rows added in v1.0.4: v1.0.4; in v1.0.5 and v1.0.6: v1.0.5; in v1.0.7: v1.0.7)"
 rows:
   - aggregates: 20260924-112302_sealed__transkribus_german_genius
     engine: Transkribus German Genius (Super Model, model ID 265149)
@@ -73,6 +73,31 @@ rows:
     engine: Kraken 7.0, kraken-german-xix-v1 model (dh-unibe/kraken-german-xix-v1, revision 945658d6)
     category: open CRNN pipeline; run by the maintainer
     access: open source
+  # Added in v1.0.7: maintainer runs of open models, batch 3, 2026-11-25 and 2026-11-26 (§10), scored with harness v1.0.7.
+  - aggregates: 20261126-081705_batch3_a2_sealed__gemma4_31b
+    engine: Gemma 4 31B (google/gemma-4-31B-it, revision 842da379), benchmark zero-shot settings
+    category: open VLM, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261126-100222_batch3_a3_sealed__qwen35_27b
+    engine: Qwen3.5-27B (Qwen/Qwen3.5-27B, revision 81a287ca), benchmark zero-shot settings
+    category: open VLM, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261125-202609_batch3_b2_sealed__glm_ocr_sdk
+    engine: GLM-OCR (zai-org/GLM-OCR, revision 2e85a628), GLM-OCR SDK 0.1.5 defaults
+    category: open OCR model, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261125-202609_batch3_b2_sealed__dots_ocr_parser
+    engine: dots.ocr (dots-studio/dots.ocr, revision c0111ce6), authors' parser defaults
+    category: open OCR model, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261125-175130_batch3_b1_sealed__deepseek_ocr2_free
+    engine: DeepSeek-OCR-2 (deepseek-ai/DeepSeek-OCR-2, revision aaa02f38), "Free OCR." prompt
+    category: open OCR model, zero-shot; run by the maintainer
+    access: open weights
+  - aggregates: 20261125-175130_batch3_b1_sealed__deepseek_ocr_free
+    engine: DeepSeek-OCR (deepseek-ai/DeepSeek-OCR, revision 9f30c71f), model card settings, "Free OCR." prompt
+    category: open OCR model, zero-shot; run by the maintainer
+    access: open weights
   # Frontier reference: a separate section, not ranked with the rows above.
   - aggregates: 20261031-155542_fable51_max_sealed__fable51_max
     engine: Claude Fable 5.1 (claude-fable-5-1, effort max, Claude Code CLI)

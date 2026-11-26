@@ -413,3 +413,29 @@ def test_vlm_records_finish_reason(monkeypatch, tmp_path):
     engine = create_engine("vlm", _vlm_config())
     monkeypatch.setattr(engine, "_post", lambda payload: {"choices": [{"message": {"content": "ok"}, "finish_reason": "length"}]})
     assert engine.transcribe(image).meta["finish_reason"] == "length"
+
+
+# Batch 3 key (§10 2026-11-25): text_first sends the text part before the image, as the Unlimited-OCR vLLM recipe
+# client does. Ways it could fail, written before the code:
+#   T1 an engine without the key changes its content order;
+#   T2 the key does not put the text first;
+#   T3 the key combines with image_only, which sends no text part at all;
+#   T4 a non-boolean value is accepted.
+
+
+def test_vlm_text_first_absent_keeps_image_first(monkeypatch, tmp_path):  # T1
+    payload = _payload_for(monkeypatch, tmp_path, {})
+    assert [c["type"] for c in payload["messages"][0]["content"]] == ["image_url", "text"]
+
+
+def test_vlm_text_first_puts_text_before_image(monkeypatch, tmp_path):  # T2
+    payload = _payload_for(monkeypatch, tmp_path, {"text_first": True})
+    assert [c["type"] for c in payload["messages"][0]["content"]] == ["text", "image_url"]
+    assert set(payload) == {"model", "temperature", "max_tokens", "messages"}
+
+
+def test_vlm_text_first_rejects_image_only_and_non_booleans():  # T3, T4
+    with pytest.raises(EngineUnavailable, match="image_only"):
+        create_engine("vlm", {**_vlm_config(), "text_first": True, "image_only": True})
+    with pytest.raises(EngineUnavailable, match="text_first"):
+        create_engine("vlm", {**_vlm_config(), "text_first": "yes"})
