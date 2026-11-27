@@ -27,8 +27,10 @@ double-keyed transcription.
 
 **Release: Kurrent Pages Benchmark v1.0** = ground truth v1.0 + harness tag `v1.0.0` +
 `BENCHMARK_PROTOCOL.md` with §10 up to the tag date.
-The rows added in release v1.0.4 were scored with harness tag `v1.0.4`. It adds opt-in engine
-keys; for engines without them, the OCR metrics and the public aggregates use unchanged code.
+Rows added in later releases were scored with a later harness tag: the rows added in v1.0.4
+with `v1.0.4`, in v1.0.5 and v1.0.6 with `v1.0.5`, and in v1.0.7 with `v1.0.7`. Each of these
+tags adds opt-in engine settings. For engines without them, the OCR metrics and the public
+aggregates use unchanged code.
 
 | Document | Contents |
 |---|---|
