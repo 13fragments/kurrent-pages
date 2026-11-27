@@ -6,30 +6,32 @@
 <!-- Source for site/public/og-image.png. Render with scripts/render_social_card.sh.
      The page image is practice page P01 (Fanny Hensel to Wilhelm Hensel, 1829;
      Staatsbibliothek zu Berlin, Public Domain Mark 1.0). The line below it is
-     the first line of practice/gt/P01.txt. -->
+     the first line of practice/gt/P01.txt. Colors and type follow site/public/assets/site.css. -->
 <style>
-  @font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 400; src: url("../public/assets/fonts/stix-two-text-latin-400-normal.woff2") format("woff2"); }
-  @font-face { font-family: "STIX Two Text"; font-style: italic; font-weight: 400; src: url("../public/assets/fonts/stix-two-text-latin-400-italic.woff2") format("woff2"); }
-  @font-face { font-family: "STIX Two Text"; font-style: normal; font-weight: 600; src: url("../public/assets/fonts/stix-two-text-latin-600-normal.woff2") format("woff2"); }
-  :root { --paper: #ffffff; --ink: #1c2128; --muted: #5b6470; --hair: #d5d9de; --link: #1d4f91; }
+  @font-face { font-family: "IBM Plex Serif"; font-style: normal; font-weight: 400; src: url("../public/assets/fonts/ibm-plex-serif-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Serif"; font-style: italic; font-weight: 400; src: url("../public/assets/fonts/ibm-plex-serif-latin-400-italic.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Serif"; font-style: normal; font-weight: 600; src: url("../public/assets/fonts/ibm-plex-serif-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-style: normal; font-weight: 500; src: url("../public/assets/fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 500; src: url("../public/assets/fonts/ibm-plex-mono-latin-500-normal.woff2") format("woff2"); }
+  :root { --paper: #f3f4ef; --surface: #fdfdfb; --frame: #cdd1c5; --ink: #141815; --ink-soft: #39403a; --muted: #5b635c; --link: #1d4d3d; --accent: #25604c; }
   * { box-sizing: border-box; margin: 0; }
   html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--paper); }
-  body { color: var(--ink); font-family: "STIX Two Text", serif; font-variant-numeric: lining-nums; display: grid; grid-template-columns: 1fr 470px; }
+  body { color: var(--ink); font-family: "IBM Plex Serif", serif; font-variant-numeric: lining-nums; display: grid; grid-template-columns: 1fr 470px; }
 
-  .text { padding: 60px 92px 52px 72px; position: relative; z-index: 0; display: flex; flex-direction: column; }
-  .label { font-size: 24px; color: var(--muted); font-style: italic; }
-  h1 { margin-top: auto; font-size: 88px; white-space: nowrap; line-height: 1; font-weight: 600; letter-spacing: -0.01em; }
-  .subtitle { margin-top: 20px; font-size: 34px; line-height: 1.25; font-style: italic; color: var(--muted); }
-  .facts { margin-top: 36px; display: flex; gap: 44px; font-size: 24px; color: var(--muted); }
-  .facts b { display: block; font-size: 38px; line-height: 1.15; font-weight: 600; color: var(--ink); }
-  footer { margin-top: auto; padding-top: 16px; border-top: 2px solid var(--hair); font-size: 26px; display: flex; justify-content: space-between; }
-  footer .url { color: var(--link); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; }
+  .text { padding: 60px 80px 52px 72px; position: relative; z-index: 0; display: flex; flex-direction: column; }
+  .label { font-family: "IBM Plex Mono", monospace; font-size: 19px; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin-top: auto; font-size: 84px; white-space: nowrap; line-height: 1; font-weight: 600; letter-spacing: -.02em; }
+  .subtitle { margin-top: 22px; font-size: 32px; line-height: 1.3; color: var(--ink-soft); }
+  .facts { margin-top: 36px; display: flex; gap: 44px; font-family: "IBM Plex Sans", sans-serif; font-size: 21px; font-weight: 500; color: var(--muted); }
+  .facts b { display: block; font-family: "IBM Plex Serif", serif; font-size: 38px; line-height: 1.15; font-weight: 600; color: var(--ink); }
+  footer { margin-top: auto; padding-top: 16px; border-top: 2px solid var(--frame); display: flex; justify-content: space-between; }
+  footer .url { font-family: "IBM Plex Sans", sans-serif; font-size: 26px; font-weight: 500; color: var(--link); text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: var(--accent); text-underline-offset: 6px; }
 
   .plate { position: relative; background: #e9e1d0 url("../../practice/images/P01.jpg") no-repeat; background-size: 940px auto; background-position: -40px -28px; }
-  .plate::before { content: ""; position: absolute; inset: 0; box-shadow: inset 12px 0 18px -12px rgba(28, 33, 40, .35); }
-  .out { position: absolute; left: -64px; right: 28px; bottom: 36px; background: var(--paper); padding: 16px 22px 18px; box-shadow: 0 2px 14px rgba(28, 33, 40, .18); }
-  .out .k { font-size: 18px; color: var(--muted); }
-  .out p { margin-top: 4px; font-size: 28px; white-space: nowrap; line-height: 1.2; font-style: italic; }
+  .plate::before { content: ""; position: absolute; inset: 0; box-shadow: inset 12px 0 18px -12px rgba(20, 24, 21, .35); }
+  .out { position: absolute; left: -64px; right: 28px; bottom: 36px; background: var(--surface); border-left: 3px solid var(--accent); padding: 16px 22px 18px; box-shadow: 0 2px 14px rgba(20, 24, 21, .18); }
+  .out .k { font-family: "IBM Plex Mono", monospace; font-size: 15px; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+  .out p { margin-top: 6px; font-size: 28px; white-space: nowrap; line-height: 1.2; font-style: italic; }
 </style>
 </head>
 <body>

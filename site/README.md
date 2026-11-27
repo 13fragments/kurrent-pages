@@ -54,4 +54,13 @@ image again from the repository root:
 scripts/render_social_card.sh
 ```
 
-Font: STIX Two Text, SIL Open Font License (`public/assets/fonts/OFL.txt`).
+## Style
+
+The site uses the 13fragments.com document language: the Ledger palette,
+IBM Plex (Serif for reading, Sans for structure, Mono for labels and
+numbers), a ruled header, numbered sections, and a three-part footer.
+`public/assets/site.css` lists the rules. When the palette or the type on
+13fragments.com changes, change `site.css` and `social/og-image.html` to
+match, then render the link preview image again.
+
+Font: IBM Plex, SIL Open Font License (`public/assets/fonts/OFL.txt`).

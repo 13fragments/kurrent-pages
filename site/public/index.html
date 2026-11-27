@@ -12,13 +12,14 @@
 <meta property="og:url" content="https://kurrentpages.org/">
 <meta property="og:title" content="Kurrent Pages">
 <meta property="og:description" content="A held-out benchmark for transcribing German historical pages, 1565 to 1948. The ground truth is sealed.">
-<meta property="og:image" content="https://kurrentpages.org/og-image.png?v=2">
+<meta property="og:image" content="https://kurrentpages.org/og-image.png?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Kurrent Pages, a held-out benchmark for transcribing German historical pages, beside a letter in Kurrent script from 1829 and its first line as text.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/stix-two-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#f3f4ef">
+<link rel="preload" href="/assets/fonts/ibm-plex-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">
 {
@@ -46,34 +47,37 @@
 </script>
 </head>
 <body>
-<div class="page">
-  <header class="running-head">
-    <a class="home" href="/">Kurrent Pages</a>
-    <nav aria-label="Site">
-      <a href="/" aria-current="page">Overview</a>
+<main>
+  <header class="masthead">
+    <div class="doc-header">
+      <a class="doc-mark" href="/" aria-label="Kurrent Pages overview"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect x="5" y="2" width="22" height="28" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9h14M9 14h14M9 19h14M9 24h9" stroke="currentColor" stroke-width="2"/></svg></a>
+      <div><span class="label">Benchmark</span><strong>Kurrent Pages</strong></div>
+      <div><span class="label">Version</span><span>1.0</span></div>
+      <div><span class="label">Maintainer</span><a href="https://13fragments.com/">13fragments</a></div>
+    </div>
+    <nav class="site-nav links" aria-label="Site">
+      <span aria-current="page">Overview</span>
       <a href="/leaderboard/">Leaderboard</a>
       <a href="#submit">Submit</a>
       <a href="#cite">Cite</a>
     </nav>
   </header>
 
-  <main>
-    <div class="title-block">
+    <div class="title">
       <h1>Kurrent Pages</h1>
-      <p class="subtitle">A held-out benchmark for transcribing German historical pages, 1565 to 1948</p>
+      <p class="dek">A held-out benchmark for transcribing German historical pages, 1565 to 1948</p>
       <dl class="front-matter">
         <dt>Version</dt><dd>1.0 (release 1.0.7, 27 November 2026)</dd>
         <dt>DOI</dt><dd><a href="https://doi.org/10.5281/zenodo.24015417">10.5281/zenodo.24015417</a></dd>
         <dt>Source</dt><dd><a href="https://github.com/13fragments/kurrent-pages">github.com/13fragments/kurrent-pages</a></dd>
         <dt>Dataset</dt><dd><a href="https://huggingface.co/datasets/13fragments/kurrent-pages-v1">huggingface.co/datasets/13fragments/kurrent-pages-v1</a> (gated)</dd>
-        <dt>Maintainer</dt><dd><a href="https://13fragments.com/">13fragments</a></dd>
       </dl>
     </div>
 
     <p class="abstract"><span class="run-in">Abstract.</span>An engine receives a raw page image and returns the page text. The 53 scored pages cover Kurrent, Sütterlin, degraded Fraktur, early-modern hands, registers, and marginalia, from 20 volumes in 10 strata. Each output is scored offline against a private, double-keyed transcription with normalized character error rate (CER). The transcriptions are not published, so no model can have them in its training data. Only aggregate scores are published.</p>
 
     <section class="prose" aria-labelledby="differs">
-      <h2 id="differs"><span class="num">1</span>How it differs from other test sets</h2>
+      <h2 id="differs"><span class="num">1.0</span> &nbsp;How it differs from other test sets</h2>
       <ul>
         <li><strong>The ground truth is sealed.</strong> No transcription of these pages is known to be online. Common Kurrent test sets, such as READ 2016 and the Swiss Federal Council minutes, publish theirs.</li>
         <li><strong>The pages are broad.</strong> They span almost four centuries and ten kinds of page, from tidy Kurrent to tables, marginalia, and pages that mix print and handwriting. READ 2016 and the Swiss set each come from one series of minutes.</li>
@@ -82,16 +86,16 @@
     </section>
 
     <section aria-labelledby="results">
-      <h2 id="results"><span class="num">2</span>Results</h2>
+      <h2 id="results"><span class="num">2.0</span> &nbsp;Results</h2>
       <figure>
-        <p class="caption" id="table-1"><b>Table 1.</b>Median scores on the 53 scored pages, sorted by CER. Lower CER is better. Bold marks the best ranked value in each column.</p>
+        <p class="caption" id="table-1"><span class="figlabel">Table 1.</span>Median scores on the 53 scored pages, sorted by CER. Lower CER is better. Bold marks the best ranked value in each column.</p>
         <div class="table-scroll">
           <table data-results="summary" aria-labelledby="table-1">
             <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
           </table>
         </div>
         <figcaption class="notes">
-          <p><span class="mark flag">†</span> Not ranked. 13fragments built the benchmark and this model, so the result is self-reported. See section 4.</p>
+          <p><span class="mark flag">†</span> Not ranked. 13fragments built the benchmark and this model, so the result is self-reported. See section 4.0.</p>
           <p>‡ Not ranked. Vendor models change, so these rows are single dated snapshots.</p>
           <p>Hard-strata CER covers the 33 pages in the hard strata. <a href="/leaderboard/">Full results, per-stratum scores, and metric definitions</a>.</p>
         </figcaption>
@@ -99,7 +103,7 @@
     </section>
 
     <section class="prose" aria-labelledby="submit">
-      <h2 id="submit"><span class="num">3</span>Submitting an engine</h2>
+      <h2 id="submit"><span class="num">3.0</span> &nbsp;Submitting an engine</h2>
       <ol>
         <li>Test your pipeline on the seven public <a href="https://github.com/13fragments/kurrent-pages/tree/main/practice">practice pages</a>. They come with transcriptions and run on your own computer.</li>
         <li>Request the page images from the <a href="https://huggingface.co/datasets/13fragments/kurrent-pages-v1">gated dataset</a> on Hugging Face and accept its evaluation-only terms.</li>
@@ -110,7 +114,7 @@
     </section>
 
     <section class="prose" aria-labelledby="disclosure">
-      <h2 id="disclosure"><span class="num">4</span>Disclosure</h2>
+      <h2 id="disclosure"><span class="num">4.0</span> &nbsp;Disclosure</h2>
       <div class="disclosure">
         <p>13fragments maintains this benchmark and also develops <a href="https://huggingface.co/13fragments/kurrent-transcriber-1b">Kurrent Transcriber 1B</a>. Because of this conflict of interest, results for models built by 13fragments are self-reported and are not ranked.</p>
         <p>13fragments scores every submission, its own included, with the same scorer and the published <a href="https://github.com/13fragments/kurrent-pages/blob/main/BENCHMARK_PROTOCOL.md">protocol</a>. The reference transcriptions are private, so only 13fragments can compute scores.</p>
@@ -118,9 +122,9 @@
     </section>
 
     <section class="prose" aria-labelledby="cite">
-      <h2 id="cite"><span class="num">5</span>Citation</h2>
+      <h2 id="cite"><span class="num">5.0</span> &nbsp;Citation</h2>
       <p>Please cite the benchmark with its DOI.</p>
-      <div class="cite">
+      <div class="citation">
         <button type="button" data-copy="bibtex">Copy BibTeX</button>
 <pre id="bibtex">@misc{kurrentpages2026,
   title     = {Kurrent Pages Benchmark},
@@ -133,13 +137,17 @@
 }</pre>
       </div>
     </section>
-  </main>
+    <div class="colophon">
+      <p>Protocol, documentation, and leaderboard data: CC BY 4.0. Code: Apache-2.0.</p>
+      <p class="links"><a href="https://github.com/13fragments/kurrent-pages">Source</a><a href="/leaderboard.json">Leaderboard data (JSON)</a><a href="mailto:kurrent-pages@13fragments.com">kurrent-pages@13fragments.com</a></p>
+    </div>
 
   <footer>
-    <p>Maintained by <a href="https://13fragments.com/">13fragments</a>. Protocol, documentation, and leaderboard data: CC BY 4.0. Code: Apache-2.0.</p>
-    <p><a href="https://github.com/13fragments/kurrent-pages">Source</a>. <a href="/leaderboard.json">Leaderboard data (JSON)</a>. Contact: <a href="mailto:kurrent-pages@13fragments.com">kurrent-pages@13fragments.com</a>.</p>
+    <span><a href="https://13fragments.com/">13fragments</a> &middot; <a href="https://13fragments.com/legal/">Legal notice</a></span>
+    <span>&copy; 2026</span>
+    <span>Page 1 of 2</span>
   </footer>
-</div>
+</main>
 <script src="/assets/results.js" defer></script>
 </body>
 </html>

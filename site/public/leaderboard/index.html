@@ -11,37 +11,42 @@
 <meta property="og:url" content="https://kurrentpages.org/leaderboard/">
 <meta property="og:title" content="Kurrent Pages leaderboard">
 <meta property="og:description" content="Overall and per-stratum scores for every engine on the Kurrent Pages Benchmark v1.0.">
-<meta property="og:image" content="https://kurrentpages.org/og-image.png?v=2">
+<meta property="og:image" content="https://kurrentpages.org/og-image.png?v=3">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Kurrent Pages, a held-out benchmark for transcribing German historical pages, beside a letter in Kurrent script from 1829 and its first line as text.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/assets/fonts/stix-two-text-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#f3f4ef">
+<link rel="preload" href="/assets/fonts/ibm-plex-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
-<div class="page wide">
-  <header class="running-head">
-    <a class="home" href="/">Kurrent Pages</a>
-    <nav aria-label="Site">
+<main class="wide">
+  <header class="masthead">
+    <div class="doc-header">
+      <a class="doc-mark" href="/" aria-label="Kurrent Pages overview"><svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><rect x="5" y="2" width="22" height="28" fill="none" stroke="currentColor" stroke-width="2"/><path d="M9 9h14M9 14h14M9 19h14M9 24h9" stroke="currentColor" stroke-width="2"/></svg></a>
+      <div><span class="label">Benchmark</span><a href="/">Kurrent Pages</a></div>
+      <div><span class="label">Version</span><span>1.0</span></div>
+      <div><span class="label">Maintainer</span><a href="https://13fragments.com/">13fragments</a></div>
+    </div>
+    <nav class="site-nav links" aria-label="Site">
       <a href="/">Overview</a>
-      <a href="/leaderboard/" aria-current="page">Leaderboard</a>
+      <span aria-current="page">Leaderboard</span>
       <a href="/#submit">Submit</a>
       <a href="/#cite">Cite</a>
     </nav>
   </header>
 
-  <main>
-    <div class="title-block prose">
+    <div class="title">
       <h1>Leaderboard</h1>
-      <p class="subtitle"><span data-field="benchmark">Kurrent Pages Benchmark v1.0</span>, <span data-field="ranked">16</span> ranked engines</p>
+      <p class="dek"><span data-field="benchmark">Kurrent Pages Benchmark v1.0</span>, <span data-field="ranked">16</span> ranked engines</p>
     </div>
 
-    <section aria-labelledby="overall">
-      <h2 id="overall"><span class="num">1</span>Overall</h2>
+    <section class="results" aria-labelledby="overall">
+      <h2 id="overall"><span class="num">1.0</span> &nbsp;Overall</h2>
       <figure>
-        <p class="caption" id="table-1"><b>Table 1.</b>Scores on the 53 scored pages, sorted by median CER. Lower is better, except entity recall. Bold marks the best ranked value in each column.</p>
+        <p class="caption" id="table-1"><span class="figlabel">Table 1.</span>Scores on the 53 scored pages, sorted by median CER. Lower is better, except entity recall. Bold marks the best ranked value in each column.</p>
         <div class="table-scroll">
           <table data-results="full" aria-labelledby="table-1">
             <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
@@ -55,10 +60,10 @@
       </figure>
     </section>
 
-    <section aria-labelledby="strata">
-      <h2 id="strata"><span class="num">2</span>By stratum</h2>
+    <section class="results" aria-labelledby="strata">
+      <h2 id="strata"><span class="num">2.0</span> &nbsp;By stratum</h2>
       <figure>
-        <p class="caption" id="table-2"><b>Table 2.</b>Median CER for each stratum, ranked engines. Gray columns have three pages or fewer; treat them as indicative.</p>
+        <p class="caption" id="table-2"><span class="figlabel">Table 2.</span>Median CER for each stratum, ranked engines. Gray columns have three pages or fewer; treat them as indicative.</p>
         <div class="table-scroll">
           <table data-results="strata" aria-labelledby="table-2">
             <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
@@ -66,7 +71,7 @@
         </div>
       </figure>
       <figure>
-        <p class="caption" id="table-3"><b>Table 3.</b>Median CER for each stratum, engines that are not ranked.</p>
+        <p class="caption" id="table-3"><span class="figlabel">Table 3.</span>Median CER for each stratum, engines that are not ranked.</p>
         <div class="table-scroll">
           <table data-results="strata-unranked" aria-labelledby="table-3">
             <tbody><tr><td class="status">Loading the results.</td></tr></tbody>
@@ -76,7 +81,7 @@
     </section>
 
     <section class="prose" aria-labelledby="metrics">
-      <h2 id="metrics"><span class="num">3</span>Metrics</h2>
+      <h2 id="metrics"><span class="num">3.0</span> &nbsp;Metrics</h2>
       <dl class="defs">
         <dt>CER</dt><dd>Normalized character error rate against the private transcription. Lower is better.</dd>
         <dt>Hard-strata CER</dt><dd>Median CER on the 33 pages in the hard strata.</dd>
@@ -86,12 +91,17 @@
       </dl>
       <p class="note">Only aggregates are published. Page scores, engine outputs, and the transcriptions stay private. The <a href="https://github.com/13fragments/kurrent-pages/blob/main/BENCHMARK_PROTOCOL.md">protocol</a> has the full definitions.</p>
     </section>
-  </main>
+    <div class="colophon">
+      <p>Leaderboard data: CC BY 4.0.</p>
+      <p class="links"><a href="/leaderboard.json">Leaderboard data (JSON)</a><a href="https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md">LEADERBOARD.md</a></p>
+    </div>
 
   <footer>
-    <p>Maintained by <a href="https://13fragments.com/">13fragments</a>. Leaderboard data: CC BY 4.0. <a href="/leaderboard.json">Download the data (JSON)</a> or read <a href="https://github.com/13fragments/kurrent-pages/blob/main/leaderboard/LEADERBOARD.md">LEADERBOARD.md</a>.</p>
+    <span><a href="https://13fragments.com/">13fragments</a> &middot; <a href="https://13fragments.com/legal/">Legal notice</a></span>
+    <span>&copy; 2026</span>
+    <span>Page 2 of 2</span>
   </footer>
-</div>
+</main>
 <script src="/assets/results.js" defer></script>
 </body>
 </html>
