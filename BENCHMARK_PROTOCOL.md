@@ -1734,6 +1734,13 @@ lucky subset while most pages collapsed.
     repeat-run note, the harness parts of the 2026-11-25 batch 3 entry, and version 1.0.7 on the website. The
     benchmark version stays v1.0; no page, ground truth, prompt of an existing engine, metric definition, or
     existing score changed. The new rows were scored as `docs/release/RESCORE_V1.md` describes.
+* **2026-11-27 — Ground-truth hashes published (§2, §11).** Owner decision in session ("publish them"). The
+  SHA-256 hash of each of the 53 frozen ground-truth text files is now in `gold/v1_gt.sha256`, and the hash of each
+  of the 53 frozen entity lists is in `gold/v1_entities.sha256`. The text was frozen on 2026-10-16 and the entity
+  lists on 2026-10-18; on 2026-11-27 every file still matched the hash recorded at its freeze in the private
+  repository. The SHA-256 of `gold/v1_entities.sha256` itself is the entity set hash recorded on 2026-10-18
+  (`0b76da03…`). From this date on, anyone can check that a later ground-truth release or audit uses the same
+  files. The ground truth stays sealed. No page, ground truth, metric definition, or score changed.
 
 ## 11. Release, versioning, and distribution (added 2026-07-09)
 

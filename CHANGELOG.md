@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Ground truth: publish the SHA-256 hashes of the 53 frozen ground-truth text files
+  (`gold/v1_gt.sha256`) and of the 53 frozen entity lists (`gold/v1_entities.sha256`). The ground
+  truth stays sealed and did not change.
+
 ## v1.0.7
 
 Leaderboard, harness, and protocol release; the benchmark version stays Kurrent Pages Benchmark
