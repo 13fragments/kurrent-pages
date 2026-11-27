@@ -14,7 +14,7 @@ abstract: >-
 authors:
   - name: "13fragments"
 version: "1.0.7"
-date-released: "2026-11-26"
+date-released: "2026-11-27"
 doi: "10.5281/zenodo.24015417"
 identifiers:
   - type: doi
