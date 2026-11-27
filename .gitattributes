@@ -8,3 +8,5 @@ scripts/page_dev_score.py export-ignore
 # Reviewer form for the fabrication review (deployed Worker; private operations).
 hosting/pilot-review/** export-ignore
 scripts/pilot_site.py export-ignore
+# Drafts: not part of a public export.
+paper/** export-ignore

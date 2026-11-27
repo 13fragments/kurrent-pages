@@ -20,3 +20,8 @@ public. You get access on these conditions:
 These terms are a condition of access through this repository. They do not
 change the licence of any image: each image keeps the licence of its source
 record (CC0, Public Domain Mark, or CC BY 4.0; see `metadata.csv`).
+
+Some pages date up to 1948, so people named on them may still be alive. If you
+are named on a page and object to its use, write to kurrent-pages@13fragments.com.
+The next release replaces that page from the alternates fixed in advance, and
+the withdrawn page falls under condition 5.
